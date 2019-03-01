@@ -1,0 +1,16 @@
+{
+  "name": "workchain-validator-ui",
+  "version": "1.0.0",
+  "description": "Simple block validation interface for a Workchain",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  }
+}
