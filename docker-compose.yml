@@ -1,0 +1,124 @@
+version: "3"
+services:
+  workchain_bootnode:
+    hostname: workchain_bootnode
+    build:
+      context: ./Docker
+      dockerfile: ./bootnode/Dockerfile
+    ports:
+    - ${BOOTNODE_PORT}:${BOOTNODE_PORT}/udp
+    environment:
+    - BOOTNODE_PORT=${BOOTNODE_PORT}
+
+  workchain_validator_1:
+    hostname: workchain_validator_1
+    depends_on:
+    - workchain_bootnode
+    environment:
+    - PUBLIC_ADDRESS=${EV1_PUBLIC_ADDRESS}
+    - BOOTNODE_ID=${BOOTNODE_ID}
+    - BOOTNODE_IP=${BOOTNODE_IP}
+    - BOOTNODE_PORT=${BOOTNODE_PORT}
+    - WORKCHAIN_NETWORK_ID=${WORKCHAIN_NETWORK_ID}
+    - GETH_LISTEN_PORT=${WORKCHAIN_EV1_GETH_LISTEN_PORT}
+    build:
+      context: ./Docker
+      dockerfile: ./validator/Dockerfile
+      args:
+        PRIVATE_KEY: ${EV1_PRIVATE_KEY}
+        WALLET_PASS: ${EV1_WALLET_PASS}
+        GENESIS_JSON_FILENAME: ${WORKCHAIN_GENESIS_JSON_FILENAME}
+    container_name: workchain_validator_1
+    ports:
+    - ${WORKCHAIN_EV1_GETH_LISTEN_PORT}:${WORKCHAIN_EV1_GETH_LISTEN_PORT}/udp
+
+  workchain_validator_2:
+    hostname: workchain_validator_2
+    depends_on:
+    - workchain_bootnode
+    environment:
+    - PUBLIC_ADDRESS=${EV2_PUBLIC_ADDRESS}
+    - BOOTNODE_ID=${BOOTNODE_ID}
+    - BOOTNODE_IP=${BOOTNODE_IP}
+    - BOOTNODE_PORT=${BOOTNODE_PORT}
+    - WORKCHAIN_NETWORK_ID=${WORKCHAIN_NETWORK_ID}
+    - GETH_LISTEN_PORT=${WORKCHAIN_EV2_GETH_LISTEN_PORT}
+    build:
+      context: ./Docker
+      dockerfile: ./validator/Dockerfile
+      args:
+        PRIVATE_KEY: ${EV2_PRIVATE_KEY}
+        WALLET_PASS: ${EV2_WALLET_PASS}
+        GENESIS_JSON_FILENAME: ${WORKCHAIN_GENESIS_JSON_FILENAME}
+    container_name: workchain_validator_2
+    ports:
+    - ${WORKCHAIN_EV2_GETH_LISTEN_PORT}:${WORKCHAIN_EV2_GETH_LISTEN_PORT}/udp
+
+  workchain_node_1:
+    hostname: workchain_node_1
+    depends_on:
+    - workchain_validator_1
+    environment:
+    - BOOTNODE_ID=${BOOTNODE_ID}
+    - BOOTNODE_IP=${BOOTNODE_IP}
+    - BOOTNODE_PORT=${BOOTNODE_PORT}
+    - WORKCHAIN_NETWORK_ID=${WORKCHAIN_NETWORK_ID}
+    - GETH_LISTEN_PORT=${WORKCHAIN_RPC_NODE_GETH_LISTEN_PORT}
+    - RPC_PORT=${WORKCHAIN_RPC_PORT}
+    build:
+      context: ./Docker
+      dockerfile: ./node/Dockerfile
+      args:
+        PRIVATE_KEY: ${RPC_NODE_PRIVATE_KEY}
+        WALLET_PASS: ${RPC_NODE_WALLET_PASS}
+        GENESIS_JSON_FILENAME: ${WORKCHAIN_GENESIS_JSON_FILENAME}
+    container_name: workchain_node_1
+    ports:
+    - ${WORKCHAIN_RPC_PORT}:${WORKCHAIN_RPC_PORT}
+
+  workchain_explorer:
+    hostname: workchain_explorer
+    depends_on:
+    - workchain_node_1
+    ports:
+    - ${WORKCHAIN_EXPLORER_PORT}:${WORKCHAIN_EXPLORER_PORT}
+    environment:
+    - WORKCHAIN_EXPLORER_PORT=${WORKCHAIN_EXPLORER_PORT}
+    build:
+      context: ./Docker
+      dockerfile: ./explorer/Dockerfile
+      args:
+        WORKCHAIN_EXPLORER_PORT: ${WORKCHAIN_EXPLORER_PORT}
+        WORKCHAIN_RPC_PORT: ${WORKCHAIN_RPC_PORT}
+        COIN_SYM: ${WORKCHAIN_COIN_SYM}
+        WORKCHAIN_NAME: ${WORKCHAIN_NAME}
+
+    container_name: workchain_explorer
+
+  workchain_validator_service:
+    hostname: workchain_validator_service
+    depends_on:
+      - workchain_node_1
+    build:
+      context: ./Docker
+      dockerfile: ./workchain_validator_service/Dockerfile
+    ports:
+    - ${WORKCHAIN_VALIDATOR_SERVICE_PORT}:${WORKCHAIN_VALIDATOR_SERVICE_PORT}
+    container_name: workchain_validator_service
+
+  workchain_oracle:
+    hostname: workchain_oracle
+    depends_on:
+      - workchain_validator_service
+    build:
+      context: ./Docker
+      dockerfile: ./workchain_oracle/Dockerfile
+    container_name: workchain_oracle
+    environment:
+    - MAINCHAIN_WEB3_PROVIDER_URL=${MAINCHAIN_WEB3_PROVIDER_URL}
+    - WORKCHAIN_WEB3_PROVIDER_URL=${WORKCHAIN_WEB3_PROVIDER_URL}
+    - PRIVATE_KEY=${EV1_PRIVATE_KEY}
+    - WORKCHAIN_ROOT_CONTRACT_ADDRESS=${WORKCHAIN_ROOT_CONTRACT_ADDRESS}
+    - WORKCHAIN_ROOT_WRITE_TIMEOUT=${WORKCHAIN_ROOT_WRITE_TIMEOUT}
+    - WORKCHAIN_NETWORK_ID=${WORKCHAIN_NETWORK_ID}
+
