@@ -17,7 +17,7 @@ clique_template = {
         }
     },
     "nonce": "0x0",
-    "timestamp": "0x5c49efa1",
+    "timestamp": None,
     "extraData": "",
     "gasLimit": "0x2cd29c0",
     "difficulty": "0x1",
