@@ -25,7 +25,7 @@ def main():
 def validate(config_file):
     log.info(f'Validating: {config_file}')
     d = check_valid(config_file)
-    block_period = d['workchain']['period']
+    block_period = d['workchain']['ledger']['consensus']['period']
     genesis_json = build_genesis(block_period=block_period)
     click.echo(genesis_json)
 
