@@ -26,6 +26,7 @@ template = {
 }
 
 
-def build_genesis(block_period):
+def build_genesis(mainchain_network_id, block_period):
+    template['config']['chainId'] = mainchain_network_id
     template['config']['poaund']['period'] = block_period
     return template

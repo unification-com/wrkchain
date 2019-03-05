@@ -23,4 +23,4 @@ def test_basic():
 
 def test_genesis():
     from workchain_sdk.genesis import build_genesis
-    build_genesis(block_period=10)
+    build_genesis(mainchain_network_id=50005, block_period=10)
