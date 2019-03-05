@@ -1,4 +1,4 @@
-template = {
+clique_template = {
     "config": {
         "chainId": 50002,
         "homesteadBlock": 1,
@@ -8,7 +8,7 @@ template = {
         "eip158Block": 3,
         "byzantiumBlock": 4,
         "constantinopleBlock": 5,
-        "poaund": {
+        "clique": {
             "period": 5,
             "epoch": 30000
         }
@@ -27,6 +27,7 @@ template = {
 
 
 def build_genesis(mainchain_network_id, block_period):
-    template['config']['chainId'] = mainchain_network_id
-    template['config']['poaund']['period'] = block_period
-    return template
+    t = clique_template
+    t['config']['chainId'] = mainchain_network_id
+    t['config']['clique']['period'] = block_period
+    return t
