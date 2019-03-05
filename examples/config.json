@@ -1,9 +1,37 @@
 {
    "workchain":{
       "title":"Example Workchain",
-      "type":"Clique",
-      "num_validators":3,
-      "num_rpc_nodes":0,
-      "period": 15
+      "ledger":{
+          "base": "geth",
+          "consensus": {
+              "type": "clique",
+              "period": 5,
+              "epoch": 30000
+          },
+          "permission": "public"
+      },
+      "validators":[
+          {
+              "address": "0x1234"
+          },
+          {
+              "address": "0x5678"
+          }
+      ],
+      "rpc_nodes": [
+          {
+              "address": "0xAbC"
+          }
+      ],
+      "mainchain_network_id": 50005,
+      "coin": {
+          "symbol": "COIN",
+          "prefund": [
+              {
+                  "address": "0x1234",
+                  "balance": "1000000000"
+              }
+          ]
+      }
    }
 }
