@@ -1,5 +1,4 @@
-import time
-
+from datetime import datetime
 from random import SystemRandom
 from web3.auto import w3
 
@@ -38,7 +37,7 @@ def generate_workchain_id():
 
 
 def generate_timestamp():
-    timestamp = int(time.time())
+    timestamp = int(datetime.utcnow().strftime("%s"))
     hex_timestamp = '0x{:02x}'.format(timestamp)
     return hex_timestamp
 
