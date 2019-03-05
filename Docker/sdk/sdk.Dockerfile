@@ -9,14 +9,14 @@ RUN apt-get update && \
         libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev
 
 RUN curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash && \
-    /root/.pyenv/bin/pyenv install 3.7.1
+    /root/.pyenv/bin/pyenv install 3.7.2
 
 RUN mkdir /src
 COPY sdk/requirements.txt /src/requirements.txt
 
 WORKDIR /src
 
-ENV PATH="/root/.pyenv/versions/3.7.1/bin:${PATH}"
+ENV PATH="/root/.pyenv/versions/3.7.2/bin:${PATH}"
 
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
