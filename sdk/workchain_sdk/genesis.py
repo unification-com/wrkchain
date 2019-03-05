@@ -1,6 +1,6 @@
 clique_template = {
     "config": {
-        "chainId": 50002,
+        "chainId": None,
         "homesteadBlock": 1,
         "eip150Block": 2,
         "eip150Hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -9,7 +9,7 @@ clique_template = {
         "byzantiumBlock": 4,
         "constantinopleBlock": 5,
         "clique": {
-            "period": 5,
+            "period": None,
             "epoch": 30000
         }
     },
