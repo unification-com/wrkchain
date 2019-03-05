@@ -3,6 +3,7 @@ import os
 
 from pathlib import Path
 
+
 def examples():
     current_script = Path(os.path.abspath(__file__))
     examples_path = current_script.parent.parent.parent / 'examples'
