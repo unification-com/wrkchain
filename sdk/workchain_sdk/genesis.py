@@ -40,9 +40,16 @@ def generate_timestamp():
     return hex_timestamp
 
 
-def build_genesis(block_period):
+def build_extra_data(validators):
+    # TODO: This is incorrect and still work in progress
+    addresses = [x['address'] for x in validators]
+    return ''.join(addresses)
+
+
+def build_genesis(block_period, validators):
     t = clique_template
     t['config']['chainId'] = generate_workchain_id()
     t['config']['clique']['period'] = block_period
+    t['extraData'] = build_extra_data(validators)
     t['timestamp'] = generate_timestamp()
     return t

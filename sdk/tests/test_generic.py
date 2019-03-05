@@ -13,15 +13,11 @@ def examples():
 
 
 def test_basic():
-    from workchain_sdk.config import check_valid
+    from workchain_sdk.config import parse_config
 
     config_files = examples()
     assert len(config_files) > 0
 
     for f in config_files:
-        check_valid(f)
-
-
-def test_genesis():
-    from workchain_sdk.genesis import build_genesis
-    build_genesis(block_period=10)
+        genesis_json = parse_config(f)
+        print(genesis_json)
