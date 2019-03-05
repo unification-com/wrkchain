@@ -25,7 +25,8 @@ def main():
 def validate(config_file):
     log.info(f'Validating: {config_file}')
     check_valid(config_file)
-    build_genesis()
+    genesis_json = build_genesis()
+    click.echo(genesis_json)
 
 
 if __name__ == "__main__":

@@ -32,4 +32,6 @@ COPY sdk/workchain_sdk /src/workchain_sdk
 COPY sdk/tests /src/tests
 COPY examples /examples
 
-CMD ["py.test", "/src/tests"]
+RUN py.test /src/tests
+
+CMD ["python", "-m", "workchain_sdk.config", "validate", "/examples/config.json"]
