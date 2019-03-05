@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM ubuntu:xenial
 
 RUN apt-get update && \
     apt-get -y install \
@@ -6,7 +6,12 @@ RUN apt-get update && \
         vim \
         telnet \
         make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
-        libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev
+        libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev \
+        software-properties-common
+
+RUN add-apt-repository -y ppa:ethereum/ethereum && \
+    apt-get update && \
+    apt-get -y install solc
 
 RUN curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash && \
     /root/.pyenv/bin/pyenv install 3.7.2
