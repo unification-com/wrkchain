@@ -1,3 +1,5 @@
+from random import SystemRandom
+
 clique_template = {
     "config": {
         "chainId": None,
@@ -26,8 +28,13 @@ clique_template = {
 }
 
 
-def build_genesis(mainchain_network_id, block_period):
+def generate_workchain_id():
+    sys_random = SystemRandom()
+    return sys_random.randint(99999, 9999999999)
+
+
+def build_genesis(block_period):
     t = clique_template
-    t['config']['chainId'] = mainchain_network_id
+    t['config']['chainId'] = generate_workchain_id()
     t['config']['clique']['period'] = block_period
     return t
