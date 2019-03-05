@@ -1,4 +1,5 @@
 from random import SystemRandom
+import time
 
 clique_template = {
     "config": {
@@ -33,8 +34,15 @@ def generate_workchain_id():
     return sys_random.randint(99999, 9999999999)
 
 
+def generate_timestamp():
+    timestamp = int(time.time())
+    hex_timestamp = '0x{:02x}'.format(timestamp)
+    return hex_timestamp
+
+
 def build_genesis(block_period):
     t = clique_template
     t['config']['chainId'] = generate_workchain_id()
     t['config']['clique']['period'] = block_period
+    t['timestamp'] = generate_timestamp()
     return t
