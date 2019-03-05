@@ -27,7 +27,9 @@ def validate(config_file):
     d = check_valid(config_file)
     block_period = d['workchain']['ledger']['consensus']['period']
     genesis_json = build_genesis(block_period=block_period)
-    click.echo(genesis_json)
+
+    rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
+    click.echo(rendered)
 
 
 if __name__ == "__main__":
