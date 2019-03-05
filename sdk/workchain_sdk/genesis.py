@@ -46,6 +46,7 @@ def generate_timestamp():
 def build_extra_data(validators):
     strip = lambda x: x[2:]
     addresses = [strip(x['address']) for x in validators]
+    addresses.sort()
     return f"{'0'*32}{''.join(addresses)}{'0'*65}"
 
 
