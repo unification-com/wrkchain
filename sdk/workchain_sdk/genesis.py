@@ -26,5 +26,6 @@ template = {
 }
 
 
-def build_genesis():
+def build_genesis(block_period):
+    template['config']['poaund']['period'] = block_period
     return template
