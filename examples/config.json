@@ -12,10 +12,10 @@
       },
       "validators":[
           {
-              "address": "0x1234"
+              "address": "0xDccc523747B80c56cdF45aF1aB8bc6E9234b59F9"
           },
           {
-              "address": "0x5678"
+              "address": "0x33756c26e881b64B993D3FeC57b1cDCa8Bf5d20a"
           }
       ],
       "rpc_nodes": [
@@ -28,7 +28,7 @@
           "symbol": "COIN",
           "prefund": [
               {
-                  "address": "0x1234",
+                  "address": "0x015d1CBC280a455885b98DD6e5C5C173ad45B366",
                   "balance": "1000000000"
               }
           ]
