@@ -1,4 +1,5 @@
 .DEFAULT_GOAL := help
+.PHONY: sdk
 
 # Set some variables
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
@@ -27,6 +28,10 @@ help:
 	@echo "1. make init"
 	@echo "2. make build"
 	@echo "3. make run"
+
+sdk:
+	docker build -f Docker/sdk/sdk.Dockerfile -t sdk .
+	docker run sdk
 
 
 # Initialise environment. By default, the environment is initialised
