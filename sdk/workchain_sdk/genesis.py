@@ -20,7 +20,7 @@ clique_template = {
     },
     "nonce": "0x0",
     "timestamp": None,
-    "extraData": "",
+    "extraData": None,
     "gasLimit": "0x2cd29c0",
     "difficulty": "0x1",
     "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -43,9 +43,9 @@ def generate_timestamp():
 
 
 def build_extra_data(validators):
-    # TODO: This is incorrect and still work in progress
-    addresses = [x['address'] for x in validators]
-    return ''.join(addresses)
+    strip = lambda x: x[2:]
+    addresses = [strip(x['address']) for x in validators]
+    return f"{'0'*32}{''.join(addresses)}{'0'*65}"
 
 
 def pre_fund(pre_funded_accounts):
