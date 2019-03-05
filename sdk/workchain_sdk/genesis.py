@@ -1,6 +1,6 @@
 template = {
     "config": {
-        "chainId": 0,
+        "chainId": 50002,
         "homesteadBlock": 1,
         "eip150Block": 2,
         "eip150Hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
