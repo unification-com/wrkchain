@@ -37,6 +37,8 @@ COPY sdk/workchain_sdk /src/workchain_sdk
 COPY sdk/tests /src/tests
 COPY examples /examples
 
+RUN git clone https://github.com/unification-com/workchain-root-contract.git
+
 RUN py.test /src/tests
 
 CMD ["python", "-m", "workchain_sdk.config", "validate", "/examples/config.json"]
