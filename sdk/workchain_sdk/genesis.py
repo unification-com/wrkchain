@@ -1,5 +1,6 @@
 from datetime import datetime
 from random import SystemRandom
+
 from web3.auto import w3
 
 
@@ -49,7 +50,6 @@ def build_extra_data(validators):
 
 
 def pre_fund(pre_funded_accounts):
-
     alloc = {}
 
     for account in pre_funded_accounts:
@@ -64,8 +64,7 @@ def pre_fund(pre_funded_accounts):
     return alloc
 
 
-def build_genesis(block_period, validators,
-                  pre_funded_accounts=None):
+def build_genesis(block_period, validators, pre_funded_accounts=None):
     t = clique_template
     t['config']['chainId'] = generate_workchain_id()
     t['config']['clique']['period'] = block_period
