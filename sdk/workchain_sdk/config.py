@@ -15,9 +15,11 @@ def parse_config(config_file):
 
     block_period = d['workchain']['ledger']['consensus']['period']
     validators = d['workchain']['validators']
+    pre_funded_accounts = d['workchain']['coin']['prefund']
 
     genesis_json = build_genesis(
-        block_period=block_period, validators=validators)
+        block_period=block_period, validators=validators,
+        pre_funded_accounts=pre_funded_accounts)
 
     return genesis_json
 
