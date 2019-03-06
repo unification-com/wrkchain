@@ -23,7 +23,6 @@
               "address": "0x821aea9a577a9b44299b9c15c88cf3087f3b5544"
           }
       ],
-      "mainchain_network_id": 50005,
       "coin": {
           "symbol": "COIN",
           "prefund": [
@@ -36,6 +35,7 @@
    },
    "mainchain": {
      "network": "testnet",
+     "network_id": 50005,
      "web3_provider": {
        "type": "http",
        "uri": "http://52.14.173.249:8101"
