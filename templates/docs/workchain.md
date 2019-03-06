@@ -1,6 +1,6 @@
 # [__WORKCHAIN_NAME__] Documentation
 
-## Running your Validatiors
+## Running your Validators
 
 [__VALIDATORS_SECTION__]
 
