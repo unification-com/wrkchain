@@ -41,4 +41,4 @@ COPY examples /examples
 
 RUN py.test /src/tests
 
-CMD ["python", "-m", "workchain_sdk.config", "validate", "/examples/config.json"]
+CMD ["python", "-m", "workchain_sdk.config", "validate", "/examples/config.json", "/build"]
