@@ -6,7 +6,7 @@ from random import SystemRandom
 from web3.auto import w3
 
 
-def load_template(workchain_base, workchain_consensus):
+def load_genesis_template(workchain_base, workchain_consensus):
     template_file = os.path.join(os.path.dirname(__file__), os.pardir,
                                  'templates', 'genesis', workchain_base,
                                  workchain_consensus + '.json')
@@ -55,7 +55,7 @@ def build_genesis(block_period, validators,
                   workchain_base="geth",
                   workchain_consensus="clique",
                   pre_funded_accounts=None):
-    t = load_template(workchain_base, workchain_consensus)
+    t = load_genesis_template(workchain_base, workchain_consensus)
     t['config']['chainId'] = generate_workchain_id()
     t['config']['clique']['period'] = block_period
     t['extraData'] = build_extra_data(validators)
