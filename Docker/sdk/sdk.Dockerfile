@@ -35,6 +35,7 @@ RUN echo "py.test /src/tests" >> /root/.bash_history && \
 
 COPY sdk/workchain_sdk /src/workchain_sdk
 COPY sdk/tests /src/tests
+COPY sdk/systemtests /src/systemtests
 COPY examples /examples
 
 RUN git clone https://github.com/unification-com/workchain-root-contract.git
