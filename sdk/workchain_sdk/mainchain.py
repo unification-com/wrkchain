@@ -18,14 +18,3 @@ def check_und_funds(address):
         und_balance = web3.eth.getBalance(address)
 
     return und_balance
-
-
-def fund_address(address):
-    address = clean_address(address)
-    # Todo: set faucet URL based on selected Mainchain network
-    faucet_url = "http://52.14.173.249:6969/sendtx"
-    params = {"to": address}
-
-    # Todo: catch exceptions
-    req = requests.request('GET', faucet_url, params=params, timeout=1)
-    return req.text
