@@ -1,9 +1,44 @@
 {
    "workchain":{
       "title":"Example Workchain",
-      "type":"Clique",
-      "num_validators":3,
-      "num_rpc_nodes":0,
-      "network_id":0
+      "ledger":{
+          "base": "geth",
+          "consensus": {
+              "type": "clique",
+              "period": 5,
+              "epoch": 30000
+          },
+          "permission": "public"
+      },
+      "validators":[
+          {
+              "address": "0xDccc523747B80c56cdF45aF1aB8bc6E9234b59F9"
+          },
+          {
+              "address": "0x33756c26e881b64B993D3FeC57b1cDCa8Bf5d20a"
+          }
+      ],
+      "rpc_nodes": [
+          {
+              "address": "0x821aea9a577a9b44299b9c15c88cf3087f3b5544"
+          }
+      ],
+      "mainchain_network_id": 50005,
+      "coin": {
+          "symbol": "COIN",
+          "prefund": [
+              {
+                  "address": "0x015d1CBC280a455885b98DD6e5C5C173ad45B366",
+                  "balance": "1000000000"
+              }
+          ]
+      }
+   },
+   "mainchain": {
+     "network": "testnet",
+     "web3_provider": {
+       "type": "http",
+       "uri": "http://52.14.173.249:8101"
+     }
    }
 }

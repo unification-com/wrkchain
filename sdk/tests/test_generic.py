@@ -1,10 +1,28 @@
+import glob
+import os
+
+from pathlib import Path
+
+
+def examples():
+    current_script = Path(os.path.abspath(__file__))
+    examples_path = current_script.parent.parent.parent / 'examples'
+    query = os.path.join(examples_path, "*.json")
+    config_files = glob.glob(query)
+    return config_files
+
+
 def test_basic():
-    f = "/examples/config.json"
+    from workchain_sdk.config import parse_config
 
-    from workchain_sdk.config import check_valid
-    check_valid(f)
+    config_files = examples()
+    assert len(config_files) > 0
+
+    for f in config_files:
+        genesis_json = parse_config(f)
+        print(genesis_json)
 
 
-def test_genesis():
-    from workchain_sdk.genesis import build_genesis
-    build_genesis()
+def test_composer():
+    from workchain_sdk.composer import generate
+    generate()

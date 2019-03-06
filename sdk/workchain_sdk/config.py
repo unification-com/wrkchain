@@ -8,11 +8,20 @@ from workchain_sdk.genesis import build_genesis
 log = logging.getLogger(__name__)
 
 
-
-def check_valid(config_file):
+def parse_config(config_file):
     with open(config_file, 'r') as f:
         contents = f.read()
         d = json.loads(contents)
+
+    block_period = d['workchain']['ledger']['consensus']['period']
+    validators = d['workchain']['validators']
+    pre_funded_accounts = d['workchain']['coin']['prefund']
+
+    genesis_json = build_genesis(
+        block_period=block_period, validators=validators,
+        pre_funded_accounts=pre_funded_accounts)
+
+    return genesis_json
 
 
 @click.group()
@@ -24,9 +33,10 @@ def main():
 @click.argument('config_file')
 def validate(config_file):
     log.info(f'Validating: {config_file}')
-    check_valid(config_file)
-    genesis_json = build_genesis()
-    click.echo(genesis_json)
+    genesis_json = parse_config(config_file)
+
+    rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
+    click.echo(rendered)
 
 
 if __name__ == "__main__":
