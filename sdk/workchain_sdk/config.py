@@ -18,8 +18,13 @@ def parse_config(config_file):
     validators = d['workchain']['validators']
     pre_funded_accounts = d['workchain']['coin']['prefund']
 
+    workchain_base = d['workchain']['ledger']['base']
+    workchain_consensus = d['workchain']['ledger']['consensus']['type']
+
     genesis_json = build_genesis(
         block_period=block_period, validators=validators,
+        workchain_base=workchain_base,
+        workchain_consensus=workchain_consensus,
         pre_funded_accounts=pre_funded_accounts)
 
     return genesis_json
