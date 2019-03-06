@@ -38,7 +38,7 @@ COPY sdk/tests /src/tests
 COPY sdk/systemtests /src/systemtests
 COPY examples /examples
 
-RUN git clone https://github.com/unification-com/workchain-root-contract.git
+RUN git clone https://github.com/unification-com/workchain-root-contract.git --depth 1
 
 RUN py.test /src/tests
 
