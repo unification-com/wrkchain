@@ -28,6 +28,7 @@ ENV LANG C.UTF-8
 ENV PYTHONPATH /src
 
 RUN pip install -r requirements.txt
+RUN git clone https://github.com/unification-com/workchain-root-contract.git --depth 1
 
 RUN echo "py.test /src/tests" >> /root/.bash_history && \
     echo "python -m workchain_sdk.config validate /examples/config.json" >> /root/.bash_history && \
@@ -38,7 +39,6 @@ COPY sdk/tests /src/tests
 COPY sdk/systemtests /src/systemtests
 COPY examples /examples
 
-RUN git clone https://github.com/unification-com/workchain-root-contract.git --depth 1
 
 RUN py.test /src/tests
 
