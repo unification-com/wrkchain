@@ -21,3 +21,8 @@ def test_basic():
     for f in config_files:
         genesis_json = parse_config(f)
         print(genesis_json)
+
+
+def test_composer():
+    from workchain_sdk.composer import generate
+    generate()
