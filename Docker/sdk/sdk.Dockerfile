@@ -39,7 +39,6 @@ COPY sdk/tests /src/tests
 COPY sdk/systemtests /src/systemtests
 COPY examples /examples
 
-
 RUN py.test /src/tests
 
 CMD ["python", "-m", "workchain_sdk.config", "validate", "/examples/config.json"]
