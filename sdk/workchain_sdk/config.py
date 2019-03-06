@@ -4,6 +4,7 @@ import os
 
 import click
 
+from workchain_sdk.documentation import WorkchainDocumentation
 from workchain_sdk.genesis import build_genesis
 
 log = logging.getLogger(__name__)
@@ -14,12 +15,22 @@ def parse_config(config_file):
         contents = f.read()
         d = json.loads(contents)
 
-    block_period = d['workchain']['ledger']['consensus']['period']
-    validators = d['workchain']['validators']
-    pre_funded_accounts = d['workchain']['coin']['prefund']
+    return d
 
-    workchain_base = d['workchain']['ledger']['base']
-    workchain_consensus = d['workchain']['ledger']['consensus']['type']
+
+def generate_readme(config, genesis_json):
+    doc_gen = WorkchainDocumentation(config, genesis_json['config']['chainId'])
+    readme = doc_gen.generate()
+    return readme
+
+
+def generate_genesis(config):
+    block_period = config['workchain']['ledger']['consensus']['period']
+    validators = config['workchain']['validators']
+    pre_funded_accounts = config['workchain']['coin']['prefund']
+
+    workchain_base = config['workchain']['ledger']['base']
+    workchain_consensus = config['workchain']['ledger']['consensus']['type']
 
     genesis_json = build_genesis(
         block_period=block_period, validators=validators,
@@ -28,6 +39,21 @@ def parse_config(config_file):
         pre_funded_accounts=pre_funded_accounts)
 
     return genesis_json
+
+
+def write_genesis(build_dir, genesis_json):
+    genesis_file = open(build_dir + "/genesis.json", "w")
+    genesis_file.write(genesis_json)
+    genesis_file.close()
+    os.chmod(build_dir + '/genesis.json', 0o666)
+
+
+def write_reademe(build_dir, readme):
+    readme_file = open(build_dir + "/README.md", "w")
+    readme_file.write(readme)
+    readme_file.close()
+
+    os.chmod(build_dir + '/README.md', 0o666)
 
 
 @click.group()
@@ -40,15 +66,15 @@ def main():
 @click.argument('build_dir')
 def validate(config_file, build_dir):
     log.info(f'Validating: {config_file}')
-    genesis_json = parse_config(config_file)
+    config = parse_config(config_file)
+
+    genesis_json = generate_genesis(config)
+    readme = generate_readme(config, genesis_json)
 
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
 
-    f = open(build_dir + "/genesis.json", "w")
-    f.write(rendered)
-    f.close()
-
-    os.chmod(build_dir + '/genesis.json', 0o666)
+    write_genesis(build_dir, rendered)
+    write_reademe(build_dir, readme)
 
     click.echo(rendered)
 
