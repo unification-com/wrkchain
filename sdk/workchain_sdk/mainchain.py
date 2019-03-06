@@ -1,18 +1,40 @@
 from web3 import Web3
 
 
-def clean_address(address):
-    return Web3.toChecksumAddress(address)
+class UndMainchain:
+    def __init__(self, network="testnet", web3_type=None, web3_uri=None):
+        self.__network = network
+        self.__web3_type = web3_type
+        self.__web3_uri = web3_uri
 
+        self.__web3_provider = None
+        self.__web3 = None
 
-def check_und_funds(address):
-    und_balance = 0
-    address = clean_address(address)
+        self.__get_web3()
 
-    # Todo: set provider based on selected Mainchain network
-    web3 = Web3(Web3.HTTPProvider("http://52.14.173.249:8101"))
+    @staticmethod
+    def clean_address(address):
+        return Web3.toChecksumAddress(address)
 
-    if web3.isAddress(address):
-        und_balance = web3.eth.getBalance(address)
+    def check_und_funds(self, address):
+        und_balance = 0
+        address = self.clean_address(address)
 
-    return und_balance
+        if self.__web3.isAddress(address):
+            und_balance = self.__web3.eth.getBalance(address)
+
+        return und_balance
+
+    def __get_web3(self):
+
+        if self.__web3_type == 'http':
+            self.__web3_provider = Web3.HTTPProvider(self.__web3_uri)
+        elif self.__web3_type == 'ipc':
+            self.__web3_provider = Web3.IPCProvider(self.__web3_uri)
+        elif self.__web3_type == 'ws':
+            self.__web3_provider = Web3.WebsocketProvider(self.__web3_uri)
+        else:
+            print("unknown Web3 type")
+
+        if self.__web3_provider:
+            self.__web3 = Web3(self.__web3_provider)
