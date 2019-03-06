@@ -30,8 +30,10 @@ help:
 	@echo "3. make run"
 
 sdk:
+	$(MAKE) init-prepare
+	@mkdir `pwd`/build
 	docker build -f Docker/sdk/sdk.Dockerfile -t sdk .
-	docker run sdk
+	docker run -v `pwd`/build:/build sdk
 
 
 # Initialise environment. By default, the environment is initialised
@@ -134,6 +136,7 @@ clean:
 	@rm -f $(ROOT_DIR)/.env
 	@rm -rf $(WORKCHAIN_ASSETS_DIR)/build
 	@rm -f $(ROOT_DIR)/docker-compose.override.yml
+	@rm -rf $(ROOT_DIR)/build
 
 check-mainchain:
 ifneq ($(BUILD),aws_testnet)
