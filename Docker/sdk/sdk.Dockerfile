@@ -38,6 +38,7 @@ COPY sdk/workchain_sdk /src/workchain_sdk
 COPY sdk/tests /src/tests
 COPY sdk/systemtests /src/systemtests
 COPY examples /examples
+COPY templates /src/templates
 
 RUN py.test /src/tests
 
