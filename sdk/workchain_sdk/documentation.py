@@ -1,4 +1,4 @@
-import os
+from workchain_sdk.genesis import repo_root
 
 
 class WorkchainDocumentation:
@@ -33,10 +33,10 @@ class WorkchainDocumentation:
         return self.__templates['workchain']['contents']
 
     def __load_templates(self):
+        root = repo_root()
 
         for key, data in self.__templates.items():
-            template_path = os.path.join(
-            os.path.dirname(__file__), os.pardir, data['path'])
+            template_path = root / data['path']
 
             with open(template_path, 'r') as f:
                 self.__templates[key]['contents'] = f.read()
