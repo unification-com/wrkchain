@@ -1,11 +1,26 @@
 from workchain_sdk.utils import repo_root
 from string import Template
 
+GITHUB_REPOS = {
+    'geth': 'https://github.com/ethereum/go-ethereum'
+}
+
 
 class WorkchainDocumentation:
-    def __init__(self, config, workchain_id):
+    def __init__(self, config, workchain_id, bootnode_address=None):
         self.__config = config
         self.__workchain_id = workchain_id
+        self.__bootnode_address = bootnode_address
+
+        if self.__bootnode_address:
+            self.__bootnode_enode = f'{self.__bootnode_address}@' \
+                f'{self.__config["workchain"]["bootnode"]["ip"]}:' \
+                f'{self.__config["workchain"]["bootnode"]["port"]}'
+            self.__bootnode_flag = f'--bootnodes "enode://' \
+                f'{self.__bootnode_enode}" '
+        else:
+            self.__bootnode_enode = None
+            self.__bootnode_flag = ''
 
         self.__templates = {
             'readme': {
@@ -25,6 +40,12 @@ class WorkchainDocumentation:
                     'contents': '',
                     'template': None,
                     'generate': self.__generate_rpc_nodes_section
+                },
+                '__SECTION_BOOTNODE__':  {
+                    'path': 'templates/docs/sections/bootnode.md',
+                    'contents': '',
+                    'template': None,
+                    'generate': self.__generate_bootnode_section
                 }
             }
         }
@@ -55,31 +76,34 @@ class WorkchainDocumentation:
                         'template'] = template_path.read_text()
 
     def __generate_validators_section(self, section_name):
-        bootnode = 'abcd@123.123.123.123:30301'
-        base_clone = 'https://github.com/ethereum/go-ethereum'
-
         validators = self.__config['workchain']['validators']
 
         for i in range(len(validators)):
-            d = {'__VALIDATOR_NUM__': str(i),
+            d = {'__VALIDATOR_NUM__': str(i+1),
                  '__WORKCHAIN_NETWORK_ID__': str(self.__workchain_id),
-                 '__BOOTNODE__': bootnode,
-                 '__EV_PUBLIC_ADDRESS__': validators[i]['address'],
-                 '__BASE_TO_CLONE__': base_clone}
+                 '__BOOTNODE__': self.__bootnode_flag,
+                 '__EV_PUBLIC_ADDRESS__': validators[i]['address']
+                 }
 
             self.__generate_section(section_name, d)
 
     def __generate_rpc_nodes_section(self, section_name):
-        bootnode = 'abcd@123.123.123.123:30301'
-        base_clone = 'https://github.com/ethereum/go-ethereum'
-
         rpc_nodes = self.__config['workchain']['rpc_nodes']
 
         for i in range(len(rpc_nodes)):
-            d = {'__NODE_NUM__': str(i),
+            d = {'__NODE_NUM__': str(i+1),
                  '__WORKCHAIN_NETWORK_ID__': str(self.__workchain_id),
-                 '__BOOTNODE__': bootnode,
-                 '__BASE_TO_CLONE__': base_clone}
+                 '__BOOTNODE__': self.__bootnode_flag
+                 }
+
+            self.__generate_section(section_name, d)
+
+    def __generate_bootnode_section(self, section_name):
+        if self.__bootnode_enode:
+            d = {'__BOOTNODE_ENODE': self.__bootnode_enode,
+                 '__BOOTNODE_PORT':
+                     self.__config["workchain"]["bootnode"]["port"]
+                 }
 
             self.__generate_section(section_name, d)
 
@@ -96,7 +120,10 @@ class WorkchainDocumentation:
 
     def __generate_readme(self):
         template = Template(self.__templates['readme']['template'])
-        d = {'__WORKCHAIN_NAME__': self.__config['workchain']['title']}
+        d = {'__WORKCHAIN_NAME__': self.__config['workchain']['title'],
+             '__BASE_TO_CLONE__':
+                 GITHUB_REPOS[self.__config['workchain']['ledger']['base']]
+             }
 
         for section_key, section_data in self.__templates['sections'].items():
             d[section_key] = section_data['contents']

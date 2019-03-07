@@ -10,7 +10,11 @@
           },
           "permission": "public"
       },
-      "bootnode": true,
+      "bootnode": {
+        "use": true,
+        "ip": "127.0.0.1",
+        "port": "30301"
+      },
       "validators":[
           {
               "address": "0xDccc523747B80c56cdF45aF1aB8bc6E9234b59F9"
