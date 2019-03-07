@@ -48,7 +48,7 @@ def write_genesis(build_dir, genesis_json):
     os.chmod(build_dir + '/genesis.json', 0o666)
 
 
-def write_reademe(build_dir, readme):
+def write_readme(build_dir, readme):
     readme_file = open(build_dir + "/README.md", "w")
     readme_file.write(readme)
     readme_file.close()
@@ -74,9 +74,10 @@ def validate(config_file, build_dir):
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
 
     write_genesis(build_dir, rendered)
-    write_reademe(build_dir, readme)
+    write_readme(build_dir, readme)
 
     click.echo(rendered)
+
 
 
 if __name__ == "__main__":
