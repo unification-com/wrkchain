@@ -107,7 +107,8 @@ class WorkchainDocumentation:
         for key, data in self.__documentation.items():
             if key == 'readme':
                 template_path = root / data['path']
-                self.__documentation[key]['template'] = template_path.read_text()
+                self.__documentation[key]['template'] = \
+                    template_path.read_text()
             else:
                 for section_key, section_data in data.items():
                     template_path = root / section_data['path']
@@ -174,7 +175,8 @@ class WorkchainDocumentation:
         template = Template(self.__documentation['readme']['template'])
         d = {'__WORKCHAIN_NAME__': self.__config['workchain']['title']}
 
-        for section_key, section_data in self.__documentation['sections'].items():
+        for section_key, section_data in \
+                self.__documentation['sections'].items():
             d[section_key] = section_data['contents']
 
         self.__documentation['readme']['contents'] = template.substitute(d)
