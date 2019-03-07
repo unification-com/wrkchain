@@ -10,6 +10,7 @@
           },
           "permission": "public"
       },
+      "bootnode": true,
       "validators":[
           {
               "address": "0xDccc523747B80c56cdF45aF1aB8bc6E9234b59F9"
