@@ -4,6 +4,7 @@ import os
 
 import click
 
+from workchain_sdk.composer import generate
 from workchain_sdk.documentation import WorkchainDocumentation
 from workchain_sdk.genesis import build_genesis
 
@@ -56,6 +57,13 @@ def write_readme(build_dir, readme):
     os.chmod(build_dir + '/README.md', 0o666)
 
 
+def write_composition(build_dir, composition):
+    readme_file = open(build_dir + "/docker-compose.yml", "w")
+    readme_file.write(composition)
+    readme_file.close()
+    os.chmod(build_dir + '/docker-compose.yml', 0o666)
+
+
 @click.group()
 def main():
     pass
@@ -72,12 +80,13 @@ def validate(config_file, build_dir):
     readme = generate_readme(config, genesis_json)
 
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
+    composition = generate()
 
     write_genesis(build_dir, rendered)
     write_readme(build_dir, readme)
+    write_composition(build_dir, composition)
 
     click.echo(rendered)
-
 
 
 if __name__ == "__main__":
