@@ -1,7 +1,6 @@
+import click
 import json
 import logging
-
-import click
 
 from workchain_sdk.bootnode import BootnodeKey
 from workchain_sdk.composer import generate

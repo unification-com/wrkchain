@@ -1,7 +1,6 @@
 import json
 
 from datetime import datetime
-
 from random import SystemRandom
 from web3.auto import w3
 from workchain_sdk.utils import repo_root
