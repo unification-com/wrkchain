@@ -105,10 +105,11 @@ def test_composer():
 
 
 def test_generate_documentation():
-    from workchain_sdk.config import generate_readme
-    readme = generate_readme(test_config, test_genesis)
-    print(readme)
-    assert len(readme) > 0
+    from workchain_sdk.config import generate_documentation
+    documentation = generate_documentation(test_config, test_genesis)
+    print(documentation)
+    assert len(documentation['md']) > 0
+    assert len(documentation['html']) > 0
 
 
 def test_generate_genesis():

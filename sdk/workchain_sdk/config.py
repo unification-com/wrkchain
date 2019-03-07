@@ -20,12 +20,18 @@ def parse_config(config_file):
     return d
 
 
-def generate_readme(config, genesis_json, bootnode_address=None):
+def generate_documentation(config, genesis_json, bootnode_address=None):
     doc_gen = WorkchainDocumentation(config,
                                      genesis_json['config']['chainId'],
                                      bootnode_address=bootnode_address)
-    readme = doc_gen.generate()
-    return readme
+    doc_gen.generate()
+
+    documentation = {
+        'md': doc_gen.get_md(),
+        'html': doc_gen.get_html()
+    }
+
+    return documentation
 
 
 def generate_genesis(config):
@@ -49,8 +55,10 @@ def write_genesis(build_dir, genesis_json):
     write_build_file(build_dir + '/genesis.json', genesis_json)
 
 
-def write_readme(build_dir, readme):
-    write_build_file(build_dir + '/README.md', readme)
+def write_documentation(build_dir, documentation):
+    write_build_file(build_dir + '/README.md', documentation['md'])
+    write_build_file(build_dir + '/documentation/index.html',
+                     documentation['html'])
 
 
 def write_composition(build_dir, composition):
@@ -77,16 +85,16 @@ def generate_workchain(config_file, build_dir):
         bootnode_address = bootnode_key.get_bootnode_address()
         click.echo(f'Bootnode Address: {bootnode_address}')
 
-    readme = generate_readme(config, genesis_json, bootnode_address)
+    documentation = generate_documentation(config, genesis_json, bootnode_address)
 
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
     composition = generate()
 
     write_genesis(build_dir, rendered)
-    write_readme(build_dir, readme)
+    write_documentation(build_dir, documentation)
     write_composition(build_dir, composition)
 
-    click.echo(readme)
+    click.echo(documentation['md'])
     click.echo(rendered)
     click.echo(composition)
 

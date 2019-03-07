@@ -1,3 +1,5 @@
+import markdown
+
 from workchain_sdk.utils import repo_root
 from string import Template
 
@@ -22,31 +24,31 @@ class WorkchainDocumentation:
 
         self.__documentation = {
             'readme': {
-                'path': 'templates/docs/README.md',
+                'path': 'templates/docs/md/README.md',
                 'contents': '',
                 'template': None
             },
             'sections': {
                 '__SECTION_VALIDATORS__':  {
-                    'path': 'templates/docs/sections/validators.md',
+                    'path': 'templates/docs/md/sections/validators.md',
                     'contents': '',
                     'template': None,
                     'generate': self.__generate_validators_section
                 },
                 '__SECTION_JSON_RPC_NODES__':  {
-                    'path': 'templates/docs/sections/nodes.md',
+                    'path': 'templates/docs/md/sections/nodes.md',
                     'contents': '',
                     'template': None,
                     'generate': self.__generate_rpc_nodes_section
                 },
                 '__SECTION_BOOTNODE__':  {
-                    'path': 'templates/docs/sections/bootnode.md',
+                    'path': 'templates/docs/md/sections/bootnode.md',
                     'contents': '',
                     'template': None,
                     'generate': self.__generate_bootnode_section
                 },
                 '__SECTION_INSTALLATION__': {
-                    'path': f'templates/docs/sections/{install_md}.md',
+                    'path': f'templates/docs/md/sections/{install_md}.md',
                     'contents': '',
                     'template': None,
                     'generate': self.__generate_installation_section
@@ -61,10 +63,28 @@ class WorkchainDocumentation:
             data['generate'](key)
 
         self.__generate_readme()
-        return self.get_doc()
 
-    def get_doc(self):
+    def get_md(self):
         return self.__documentation['readme']['contents']
+
+    def get_html(self):
+        html = ''
+        if self.__documentation['readme']['contents']:
+            root = repo_root()
+            template_path = root / 'templates/docs/html/index.html'
+            html_template = template_path.read_text()
+
+            html_body = markdown.markdown(
+                self.__documentation['readme']['contents'])
+            t = Template(html_template)
+
+            data = {
+                '__DOCUMENTATION_BODY': html_body
+            }
+
+            html = t.substitute(data)
+
+        return html
 
     def __load_templates(self):
         root = repo_root()
