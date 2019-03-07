@@ -37,10 +37,7 @@ class WorkchainDocumentation:
 
         for key, data in self.__templates.items():
             template_path = root / data['path']
-
-            with open(template_path, 'r') as f:
-                self.__templates[key]['contents'] = f.read()
-                f.close()
+            self.__templates[key]['contents'] = template_path.read_text()
 
     def __generate_validators_section(self):
         template = self.__templates['section_validators']['contents']
