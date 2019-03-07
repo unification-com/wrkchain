@@ -7,6 +7,7 @@ import click
 from workchain_sdk.composer import generate
 from workchain_sdk.documentation import WorkchainDocumentation
 from workchain_sdk.genesis import build_genesis
+from workchain_sdk.utils import write_build_file
 
 log = logging.getLogger(__name__)
 
@@ -43,25 +44,15 @@ def generate_genesis(config):
 
 
 def write_genesis(build_dir, genesis_json):
-    genesis_file = open(build_dir + "/genesis.json", "w")
-    genesis_file.write(genesis_json)
-    genesis_file.close()
-    os.chmod(build_dir + '/genesis.json', 0o666)
+    write_build_file(build_dir + '/genesis.json', genesis_json)
 
 
 def write_readme(build_dir, readme):
-    readme_file = open(build_dir + "/README.md", "w")
-    readme_file.write(readme)
-    readme_file.close()
-
-    os.chmod(build_dir + '/README.md', 0o666)
+    write_build_file(build_dir + '/README.md', readme)
 
 
 def write_composition(build_dir, composition):
-    readme_file = open(build_dir + "/docker-compose.yml", "w")
-    readme_file.write(composition)
-    readme_file.close()
-    os.chmod(build_dir + '/docker-compose.yml', 0o666)
+    write_build_file(build_dir + '/docker-compose.yml', composition)
 
 
 @click.group()
