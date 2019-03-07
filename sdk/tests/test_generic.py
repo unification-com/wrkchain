@@ -48,15 +48,18 @@ test_config = {
       },
       "validators":[
           {
-              "address": "0xDccc523747B80c56cdF45aF1aB8bc6E9234b59F9"
+              "address": "0xDccc523747B80c56cdF45aF1aB8bc6E9234b59F9",
+              "write_to_oracle": True
           },
           {
-              "address": "0x33756c26e881b64B993D3FeC57b1cDCa8Bf5d20a"
+              "address": "0x33756c26e881b64B993D3FeC57b1cDCa8Bf5d20a",
+              "write_to_oracle": True
           }
       ],
       "rpc_nodes": [
           {
-              "address": "0x821aea9a577a9b44299b9c15c88cf3087f3b5544"
+              "address": "0x821aea9a577a9b44299b9c15c88cf3087f3b5544",
+              "write_to_oracle": False
           }
       ],
       "coin": {

@@ -16,4 +16,6 @@ $__SECTION_JSON_RPC_NODES__
 
 ## Running your Workchain Oracle
 
+$__SECTION_ORACLE__
+
 ## Connecting to your Network

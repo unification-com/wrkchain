@@ -1,6 +1,6 @@
 import markdown
 
-from workchain_sdk.utils import repo_root
+from workchain_sdk.utils import repo_root, get_oracle_addresses
 from string import Template
 
 
@@ -52,6 +52,12 @@ class WorkchainDocumentation:
                     'contents': '',
                     'template': None,
                     'generate': self.__generate_installation_section
+                },
+                '__SECTION_ORACLE__': {
+                    'path': f'templates/docs/md/sections/oracle.md',
+                    'contents': '',
+                    'template': None,
+                    'generate': self.__generate_oracle_section
                 }
             }
         }
@@ -130,6 +136,13 @@ class WorkchainDocumentation:
                  }
 
             self.__generate_section(section_name, d)
+
+    def __generate_oracle_section(self, section_name):
+        oracle_addresses = get_oracle_addresses(self.__config)
+        d = {
+            '__ORACLE_ADDRESSES__': '\n'.join(oracle_addresses)
+        }
+        self.__generate_section(section_name, d)
 
     def __generate_installation_section(self, section_name):
         self.__generate_section(section_name, {})
