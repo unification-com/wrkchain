@@ -1,15 +1,21 @@
 import json
 import os
 
+from pathlib import Path
+
 from datetime import datetime
 from random import SystemRandom
 from web3.auto import w3
 
 
+def repo_root() -> Path:
+    current_script = Path(os.path.abspath(__file__))
+    return current_script.parent.parent.parent
+
+
 def load_genesis_template(workchain_base, workchain_consensus):
-    template_file = os.path.join(os.path.dirname(__file__), os.pardir,
-                                 'templates', 'genesis', workchain_base,
-                                 workchain_consensus + '.json')
+    template_file = repo_root() / 'templates' / 'genesis' / workchain_base / \
+                    f'{workchain_consensus}.json'
 
     with open(template_file, 'r') as f:
         contents = f.read()

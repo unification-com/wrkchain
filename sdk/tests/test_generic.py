@@ -82,9 +82,9 @@ test_config = {
 
 
 def examples():
-    current_script = Path(os.path.abspath(__file__))
-    examples_path = current_script.parent.parent.parent / 'examples'
-    query = os.path.join(examples_path, "*.json")
+    from workchain_sdk.genesis import repo_root
+    examples_path = repo_root() / 'examples'
+    query = os.path.join(str(examples_path), "*.json")
     config_files = glob.glob(query)
     return config_files
 
