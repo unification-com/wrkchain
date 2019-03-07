@@ -7,7 +7,8 @@ from workchain_sdk.bootnode import BootnodeKey
 from workchain_sdk.composer import generate
 from workchain_sdk.documentation import WorkchainDocumentation
 from workchain_sdk.genesis import build_genesis
-from workchain_sdk.utils import write_build_file
+from workchain_sdk.mainchain import UndMainchain
+from workchain_sdk.utils import write_build_file, get_oracle_addresses
 
 log = logging.getLogger(__name__)
 
@@ -65,6 +66,22 @@ def write_composition(build_dir, composition):
     write_build_file(build_dir + '/docker-compose.yml', composition)
 
 
+def check_oracle_address_funds(config):
+    oracle_addresses = get_oracle_addresses(config)
+    network = config['mainchain']['network']
+    web3_type = config['mainchain']['web3_provider']['type']
+    web3_uri = config['mainchain']['web3_provider']['uri']
+    und_mainchain = UndMainchain(network=network,
+                                 web3_type=web3_type,
+                                 web3_uri=web3_uri)
+    for address in oracle_addresses:
+        current_balance = und_mainchain.check_und_funds(address)
+        if current_balance == 0:
+            click.echo(f'WARNING: address {address} has 0 UND on {network}.'
+                       f'Funds required for deployment and running of'
+                       f'Workchain Root smart contract')
+
+
 @click.group()
 def main():
     pass
@@ -85,7 +102,8 @@ def generate_workchain(config_file, build_dir):
         bootnode_address = bootnode_key.get_bootnode_address()
         click.echo(f'Bootnode Address: {bootnode_address}')
 
-    documentation = generate_documentation(config, genesis_json, bootnode_address)
+    documentation = generate_documentation(config, genesis_json,
+                                           bootnode_address)
 
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
     composition = generate()
