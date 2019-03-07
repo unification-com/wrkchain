@@ -87,6 +87,7 @@ def validate(config_file, build_dir):
     write_composition(build_dir, composition)
 
     click.echo(rendered)
+    click.echo(composition)
 
 
 if __name__ == "__main__":
