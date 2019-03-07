@@ -4,6 +4,7 @@ import os
 
 import click
 
+from workchain_sdk.bootnode import BootnodeKey
 from workchain_sdk.composer import generate
 from workchain_sdk.documentation import WorkchainDocumentation
 from workchain_sdk.genesis import build_genesis
@@ -77,8 +78,12 @@ def validate(config_file, build_dir):
     write_readme(build_dir, readme)
     write_composition(build_dir, composition)
 
+    bootnode_key = BootnodeKey(build_dir)
+    bn_key = bootnode_key.get_key()
+
     click.echo(rendered)
     click.echo(composition)
+    click.echo("Bootnode Key: " + bn_key)
 
 
 if __name__ == "__main__":
