@@ -1,9 +1,9 @@
 import json
 import os
 
+from datetime import datetime
 from pathlib import Path
 
-from datetime import datetime
 from random import SystemRandom
 from web3.auto import w3
 
