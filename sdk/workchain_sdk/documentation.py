@@ -83,15 +83,18 @@ class WorkchainDocumentation:
         html = ''
         if self.__documentation['readme']['contents']:
             root = repo_root()
-            template_path = root / 'templates/docs/html/index.html'
-            html_template = template_path.read_text()
+            html_template_path = root / 'templates/docs/html/index.html'
+            html_template = html_template_path.read_text()
+
+            css_template_path = root / 'templates/docs/html/bare.min.css'
 
             html_body = markdown.markdown(
                 self.__documentation['readme']['contents'])
             t = Template(html_template)
 
             data = {
-                '__DOCUMENTATION_BODY': html_body
+                '__DOCUMENTATION_BODY__': html_body,
+                '__CSS__': css_template_path.read_text()
             }
 
             html = t.substitute(data)
