@@ -54,10 +54,16 @@ class WorkchainDocumentation:
                     'generate': self.__generate_installation_section
                 },
                 '__SECTION_ORACLE__': {
-                    'path': f'templates/docs/md/sections/oracle.md',
+                    'path': 'templates/docs/md/sections/oracle.md',
                     'contents': '',
                     'template': None,
                     'generate': self.__generate_oracle_section
+                },
+                '__SECTION_NETWORK__': {
+                    'path': 'templates/docs/md/sections/network.md',
+                    'contents': '',
+                    'template': None,
+                    'generate': self.__generate_network_section
                 }
             }
         }
@@ -143,6 +149,9 @@ class WorkchainDocumentation:
             '__ORACLE_ADDRESSES__': '\n'.join(oracle_addresses)
         }
         self.__generate_section(section_name, d)
+
+    def __generate_network_section(self, section_name):
+        self.__generate_section(section_name, {})
 
     def __generate_installation_section(self, section_name):
         self.__generate_section(section_name, {})

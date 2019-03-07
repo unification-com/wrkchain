@@ -19,3 +19,5 @@ $__SECTION_JSON_RPC_NODES__
 $__SECTION_ORACLE__
 
 ## Connecting to your Network
+
+$__SECTION_NETWORK__
