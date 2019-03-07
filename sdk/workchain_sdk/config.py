@@ -64,7 +64,7 @@ def main():
 @main.command()
 @click.argument('config_file')
 @click.argument('build_dir')
-def validate(config_file, build_dir):
+def generate_workchain(config_file, build_dir):
     log.info(f'Validating: {config_file}')
     config = parse_config(config_file)
 

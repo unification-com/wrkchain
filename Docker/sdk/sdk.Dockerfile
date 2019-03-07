@@ -42,4 +42,4 @@ COPY templates /templates
 
 RUN py.test /src/tests
 
-CMD ["python", "-m", "workchain_sdk.config", "validate", "/examples/config.json", "/build"]
+CMD ["python", "-m", "workchain_sdk.config", "generate_workchain", "/examples/config.json", "/build"]
