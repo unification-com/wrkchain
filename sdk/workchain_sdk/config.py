@@ -78,12 +78,12 @@ def generate_workchain(config_file, build_dir):
     write_composition(build_dir, composition)
 
     bootnode_key = BootnodeKey(build_dir)
-    bn_key = bootnode_key.get_key()
+    bootnode_address = bootnode_key.get_bootnode_address()
 
     click.echo(readme)
     click.echo(rendered)
     click.echo(composition)
-    click.echo("Bootnode Key: " + bn_key)
+    click.echo("Bootnode Address: " + bootnode_address)
 
 
 if __name__ == "__main__":

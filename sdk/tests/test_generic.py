@@ -124,6 +124,6 @@ def test_generate_bootnode_key():
 
     bootnode_key = BootnodeKey('/tmp')
     bootnode_key.generate_bootnode_key()
-    
+
     assert bootnode_key.have_key()
-    assert len(bootnode_key.get_key()) > 0
+    assert len(bootnode_key.get_bootnode_address()) > 0

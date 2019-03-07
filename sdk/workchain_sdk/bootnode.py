@@ -16,7 +16,7 @@ class BootnodeKey:
             else:
                 print(result)
 
-    def get_key(self):
+    def get_bootnode_address(self):
         if not self.have_key():
             self.generate_bootnode_key()
 
