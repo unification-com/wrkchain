@@ -1,4 +1,4 @@
-from workchain_sdk.genesis import repo_root
+from workchain_sdk.utils import repo_root
 
 
 class WorkchainDocumentation:

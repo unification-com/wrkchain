@@ -1,16 +1,10 @@
 import json
-import os
 
 from datetime import datetime
-from pathlib import Path
 
 from random import SystemRandom
 from web3.auto import w3
-
-
-def repo_root() -> Path:
-    current_script = Path(os.path.abspath(__file__))
-    return current_script.parent.parent.parent
+from workchain_sdk.utils import repo_root
 
 
 def load_genesis_template(workchain_base, workchain_consensus):

@@ -1,7 +1,6 @@
 import glob
 import os
 
-from pathlib import Path
 
 test_genesis = {
   "config":{
@@ -82,7 +81,7 @@ test_config = {
 
 
 def examples():
-    from workchain_sdk.genesis import repo_root
+    from workchain_sdk.utils import repo_root
     examples_path = repo_root() / 'examples'
     query = os.path.join(str(examples_path), "*.json")
     config_files = glob.glob(query)
