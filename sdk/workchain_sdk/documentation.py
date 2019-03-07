@@ -1,4 +1,5 @@
 from workchain_sdk.utils import repo_root
+from string import Template
 
 
 class WorkchainDocumentation:
@@ -7,17 +8,19 @@ class WorkchainDocumentation:
         self.__workchain_id = workchain_id
 
         self.__templates = {
-            'workchain': {
-                'path': 'templates/docs/workchain.md',
+            'readme': {
+                'path': 'templates/docs/README.md',
                 'contents': None
             },
-            'section_validators':  {
-                'path': 'templates/docs/sections/validators.md',
-                'contents': None
-            },
-            'section_nodes':  {
-                'path': 'templates/docs/sections/nodes.md',
-                'contents': None
+            'sections': {
+                '__SECTION_VALIDATORS__':  {
+                    'path': 'templates/docs/sections/validators.md',
+                    'contents': None,
+                },
+                '__SECTION_JSON_RPC_NODES__':  {
+                    'path': 'templates/docs/sections/nodes.md',
+                    'contents': None
+                }
             }
         }
 
@@ -30,66 +33,75 @@ class WorkchainDocumentation:
         return self.get_doc()
 
     def get_doc(self):
-        return self.__templates['workchain']['contents']
+        return self.__templates['readme']['contents']
 
     def __load_templates(self):
         root = repo_root()
 
         for key, data in self.__templates.items():
-            template_path = root / data['path']
-            self.__templates[key]['contents'] = template_path.read_text()
+            if key == 'readme':
+                template_path = root / data['path']
+                self.__templates[key]['contents'] = template_path.read_text()
+            else:
+                for section_key, section_data in data.items():
+                    template_path = root / section_data['path']
+                    self.__templates[key][section_key][
+                        'contents'] = template_path.read_text()
 
     def __generate_validators_section(self):
-        template = self.__templates['section_validators']['contents']
+        bootnode = 'abcd@123.123.123.123:30301'
+        base_clone = 'https://github.com/ethereum/go-ethereum'
         contents = ''
 
         validators = self.__config['workchain']['validators']
 
         val_count = 1
         for validator in validators:
-            c = template
-            c = c.replace('[__VALIDATOR_NUM__]', str(val_count))
-            c = c.replace('[__WORKCHAIN_NETWORK_ID__]', str(self.__workchain_id))
-            c = c.replace('[__BOOTNODE__]', 'abcd@123.123.123.123:30301')
-            c = c.replace('[__EV_PUBLIC_ADDRESS__]', validator['address'])
-            c = c.replace('[__BASE_TO_CLONE__]',
-                                      'https://github.com/ethereum/go-ethereum')
+            t = self.__get_section_template('__SECTION_VALIDATORS__')
+            d = {'__VALIDATOR_NUM__': str(val_count),
+                 '__WORKCHAIN_NETWORK_ID__': str(self.__workchain_id),
+                 '__BOOTNODE__': bootnode,
+                 '__EV_PUBLIC_ADDRESS__': validator['address'],
+                 '__BASE_TO_CLONE__': base_clone}
 
+            contents = contents + t.substitute(d)
             val_count = val_count + 1
 
-            contents = contents + c
-
-        self.__templates['section_validators']['contents'] = contents
+        self.__set_section_template('__SECTION_VALIDATORS__', contents)
 
     def __generate_rpc_nodes_section(self):
-        template = self.__templates['section_nodes']['contents']
+        bootnode = 'abcd@123.123.123.123:30301'
+        base_clone = 'https://github.com/ethereum/go-ethereum'
         contents = ''
 
         rpc_nodes = self.__config['workchain']['rpc_nodes']
 
         node_count = 1
         for rpc_node in rpc_nodes:
-            c = template
-            c = c.replace('[__NODE_NUM__]', str(node_count))
-            c = c.replace('[__WORKCHAIN_NETWORK_ID__]', str(self.__workchain_id))
-            c = c.replace('[__BOOTNODE__]', 'abcd@123.123.123.123:30301')
-            c = c.replace('[__BASE_TO_CLONE__]',
-                                      'https://github.com/ethereum/go-ethereum')
+            t = self.__get_section_template('__SECTION_JSON_RPC_NODES__')
+            d = {'__NODE_NUM__': str(node_count),
+                 '__WORKCHAIN_NETWORK_ID__': str(self.__workchain_id),
+                 '__BOOTNODE__': bootnode,
+                 '__BASE_TO_CLONE__': base_clone}
+
+            contents = contents + t.substitute(d)
 
             node_count = node_count + 1
 
-            contents = contents + c
+        self.__set_section_template('__SECTION_JSON_RPC_NODES__', contents)
 
-        self.__templates['section_nodes']['contents'] = contents
+    def __get_section_template(self, section):
+        t = Template(self.__templates['sections'][section]['contents'])
+        return t
+
+    def __set_section_template(self, section, contents):
+        self.__templates['sections'][section]['contents'] = contents
 
     def __generate_documentation(self):
-        content = self.__templates['workchain']['contents']
+        template = Template(self.__templates['readme']['contents'])
+        d = {'__WORKCHAIN_NAME__': self.__config['workchain']['title']}
 
-        content = content.replace('[__WORKCHAIN_NAME__]',
-                        self.__config['workchain']['title'])
-        content = content.replace('[__VALIDATORS_SECTION__]',
-                        self.__templates['section_validators']['contents'])
-        content = content.replace('[__JSON_RPC_NODES_SECTION__]',
-                        self.__templates['section_nodes']['contents'])
+        for section_key, section_data in self.__templates['sections'].items():
+            d[section_key] = section_data['contents']
 
-        self.__templates['workchain']['contents'] = content
+        self.__templates['readme']['contents'] = template.substitute(d)
