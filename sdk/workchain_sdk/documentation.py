@@ -1,10 +1,6 @@
 from workchain_sdk.utils import repo_root
 from string import Template
 
-GITHUB_REPOS = {
-    'geth': 'https://github.com/ethereum/go-ethereum'
-}
-
 
 class WorkchainDocumentation:
     def __init__(self, config, workchain_id, bootnode_address=None):
@@ -12,7 +8,7 @@ class WorkchainDocumentation:
         self.__workchain_id = workchain_id
         self.__bootnode_address = bootnode_address
 
-        if self.__bootnode_address:
+        if bootnode_address:
             self.__bootnode_enode = f'{self.__bootnode_address}@' \
                 f'{self.__config["workchain"]["bootnode"]["ip"]}:' \
                 f'{self.__config["workchain"]["bootnode"]["port"]}'
@@ -22,7 +18,9 @@ class WorkchainDocumentation:
             self.__bootnode_enode = None
             self.__bootnode_flag = ''
 
-        self.__templates = {
+        install_md = f'install_{self.__config["workchain"]["ledger"]["base"]}'
+
+        self.__documentation = {
             'readme': {
                 'path': 'templates/docs/README.md',
                 'contents': '',
@@ -46,6 +44,12 @@ class WorkchainDocumentation:
                     'contents': '',
                     'template': None,
                     'generate': self.__generate_bootnode_section
+                },
+                '__SECTION_INSTALLATION__': {
+                    'path': f'templates/docs/sections/{install_md}.md',
+                    'contents': '',
+                    'template': None,
+                    'generate': self.__generate_installation_section
                 }
             }
         }
@@ -53,26 +57,26 @@ class WorkchainDocumentation:
         self.__load_templates()
 
     def generate(self):
-        for key, data in self.__templates['sections'].items():
+        for key, data in self.__documentation['sections'].items():
             data['generate'](key)
 
         self.__generate_readme()
         return self.get_doc()
 
     def get_doc(self):
-        return self.__templates['readme']['contents']
+        return self.__documentation['readme']['contents']
 
     def __load_templates(self):
         root = repo_root()
 
-        for key, data in self.__templates.items():
+        for key, data in self.__documentation.items():
             if key == 'readme':
                 template_path = root / data['path']
-                self.__templates[key]['template'] = template_path.read_text()
+                self.__documentation[key]['template'] = template_path.read_text()
             else:
                 for section_key, section_data in data.items():
                     template_path = root / section_data['path']
-                    self.__templates[key][section_key][
+                    self.__documentation[key][section_key][
                         'template'] = template_path.read_text()
 
     def __generate_validators_section(self, section_name):
@@ -107,8 +111,11 @@ class WorkchainDocumentation:
 
             self.__generate_section(section_name, d)
 
+    def __generate_installation_section(self, section_name):
+        self.__generate_section(section_name, {})
+
     def __generate_section(self, section, data, append=True):
-        t = Template(self.__templates['sections'][section]['template'])
+        t = Template(self.__documentation['sections'][section]['template'])
         content = t.substitute(data)
         if append:
             self.__append_contents(section, content)
@@ -116,16 +123,13 @@ class WorkchainDocumentation:
             return content
 
     def __append_contents(self, section, contents):
-        self.__templates['sections'][section]['contents'] += contents
+        self.__documentation['sections'][section]['contents'] += contents
 
     def __generate_readme(self):
-        template = Template(self.__templates['readme']['template'])
-        d = {'__WORKCHAIN_NAME__': self.__config['workchain']['title'],
-             '__BASE_TO_CLONE__':
-                 GITHUB_REPOS[self.__config['workchain']['ledger']['base']]
-             }
+        template = Template(self.__documentation['readme']['template'])
+        d = {'__WORKCHAIN_NAME__': self.__config['workchain']['title']}
 
-        for section_key, section_data in self.__templates['sections'].items():
+        for section_key, section_data in self.__documentation['sections'].items():
             d[section_key] = section_data['contents']
 
-        self.__templates['readme']['contents'] = template.substitute(d)
+        self.__documentation['readme']['contents'] = template.substitute(d)
