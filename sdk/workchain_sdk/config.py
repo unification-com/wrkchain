@@ -81,6 +81,7 @@ def validate(config_file, build_dir):
     bootnode_key = BootnodeKey(build_dir)
     bn_key = bootnode_key.get_key()
 
+    click.echo(readme)
     click.echo(rendered)
     click.echo(composition)
     click.echo("Bootnode Key: " + bn_key)
