@@ -64,7 +64,7 @@ def main():
 @click.argument('config_file')
 @click.argument('build_dir')
 def generate_workchain(config_file, build_dir):
-    log.info(f'Validating: {config_file}')
+    log.info(f'Generating environment from: {config_file}')
     config = parse_config(config_file)
 
     genesis_json = generate_genesis(config)
@@ -79,7 +79,7 @@ def generate_workchain(config_file, build_dir):
 
     if config['workchain']['bootnode']:
         bootnode_key = BootnodeKey(build_dir)
-        click.echo("Bootnode Address: " + bootnode_key.get_bootnode_address())
+        click.echo(f'Bootnode Address: {bootnode_key.get_bootnode_address()}')
 
     click.echo(readme)
     click.echo(rendered)
