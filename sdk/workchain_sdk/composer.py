@@ -23,23 +23,31 @@ def bootnode():
 
 
 def generate_validators(n: int):
+
     d = []
     for i in range(n):
+        build_d = {
+            'context': '../Docker',
+            'dockerfile': './validator/Dockerfile',
+        }
+
         name = f'workchain-validator-{i+1}'
         d.append({
                 'name': name,
                 'image': 'validator',
                 'hostname': name,
                 'container_name': name,
+                'build': build_d
             })
     return d
 
 
 def generate(config):
-    validators = config['workchain']['validators']
+    workchain = config['workchain']
+    validators = workchain['validators']
 
     services = []
-    if config['workchain']['bootnode']['use']:
+    if workchain['bootnode']['use']:
         services.append(bootnode())
 
     evs = generate_validators(len(validators))
