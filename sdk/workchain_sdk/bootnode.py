@@ -1,17 +1,19 @@
 import os
+import shutil
 import subprocess
 
-BIN_BOOTNODE = "/usr/local/bin/bootnode"
+BIN_BOOTNODE = shutil.which("bootnode")
 
 
 class BootnodeKey:
     def __init__(self, build_dir):
+        # Todo - throw exception if BIN_BOOTNODE not found/empty
         self.__bootnode_key_path = build_dir + "/bootnode.key"
 
     def generate_bootnode_key(self):
         if not self.have_key():
 
-            cmd = ["/usr/bin/bootnode", "-genkey", self.__bootnode_key_path]
+            cmd = [BIN_BOOTNODE, "-genkey", self.__bootnode_key_path]
             result = self.__run(cmd)
             if result.returncode == 0:
                 os.chmod(self.__bootnode_key_path, 0o666)
