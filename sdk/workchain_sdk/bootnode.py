@@ -30,7 +30,7 @@ class BootnodeKey:
         result = self.__run(cmd)
 
         if result.returncode == 0:
-            bootnode_key = result.stdout
+            bootnode_key = result.stdout.rstrip("\n\r")
         else:
             print(result)
             bootnode_key = None
