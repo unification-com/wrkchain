@@ -1,4 +1,4 @@
-import markdown
+import pypandoc
 
 from workchain_sdk.utils import repo_root, get_oracle_addresses
 from string import Template
@@ -94,8 +94,9 @@ class WorkchainDocumentation:
 
             css_template_path = root / 'templates/docs/html/bare.min.css'
 
-            html_body = markdown.markdown(
-                self.__documentation['readme']['contents'])
+            html_body = pypandoc.convert_text(
+                self.__documentation['readme']['contents'],
+                'html', format='md')
             t = Template(html_template)
 
             data = {
