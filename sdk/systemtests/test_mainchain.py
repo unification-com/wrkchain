@@ -48,3 +48,13 @@ def test_check_und_funds():
         for address in addresses:
             current_balance = und_mainchain.check_und_funds(address)
             assert current_balance >= 0
+
+
+def test_generate_bootnode_key():
+    from workchain_sdk.bootnode import BootnodeKey
+
+    bootnode_key = BootnodeKey('/tmp')
+    bootnode_key.generate_bootnode_key()
+
+    assert bootnode_key.have_key()
+    assert len(bootnode_key.get_bootnode_address()) > 0

@@ -129,13 +129,3 @@ def test_generate_genesis():
     genesis_json = generate_genesis(test_config)
     print(genesis_json)
     assert len(genesis_json) > 0
-
-
-def test_generate_bootnode_key():
-    from workchain_sdk.bootnode import BootnodeKey
-
-    bootnode_key = BootnodeKey('/tmp')
-    bootnode_key.generate_bootnode_key()
-
-    assert bootnode_key.have_key()
-    assert len(bootnode_key.get_bootnode_address()) > 0
