@@ -17,7 +17,7 @@ ARG PRIVATE_KEY
 ARG GENESIS_JSON_FILENAME
 RUN echo $WALLET_PASS > /root/.walletpassword
 RUN echo $PRIVATE_KEY > /root/.privatekey
-ADD ./assets/build/$GENESIS_JSON_FILENAME /root/assets/genesis.json
+ADD build/$GENESIS_JSON_FILENAME /root/assets/genesis.json
 RUN geth init /root/assets/genesis.json
 RUN geth account import --password /root/.walletpassword  /root/.privatekey
 

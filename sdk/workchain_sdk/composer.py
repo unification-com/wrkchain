@@ -26,8 +26,10 @@ def generate_validators(n: int):
     d = []
     for i in range(n):
         build_d = {
-            'context': '../Docker',
-            'dockerfile': './validator/Dockerfile',
+            'context': '..',
+            'dockerfile': 'Docker/validator/Dockerfile',
+            'args': {
+                'GENESIS_JSON_FILENAME': 'genesis.json' }
         }
 
         name = f'workchain-validator-{i+1}'
