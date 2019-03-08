@@ -22,17 +22,22 @@ def bootnode():
     }
 
 
-def generate_validators(n: int):
+def generate_validators(validators):
     d = []
-    for i in range(n):
+    n = 1
+    for validator in validators:
+        n = n + 1
         build_d = {
             'context': '..',
             'dockerfile': 'Docker/validator/Dockerfile',
             'args': {
-                'GENESIS_JSON_FILENAME': 'genesis.json' }
+                'WALLET_PASS': 'pass',
+                'PRIVATE_KEY': validator['private_key'],
+                'GENESIS_JSON_FILENAME': 'genesis.json'
+            }
         }
 
-        name = f'workchain-validator-{i+1}'
+        name = f'workchain-validator-{n}'
         d.append({
             'name': name,
             'image': 'validator',
@@ -51,7 +56,7 @@ def generate(config):
     if workchain['bootnode']['use']:
         services.append(bootnode())
 
-    evs = generate_validators(len(validators))
+    evs = generate_validators(validators)
     services = services + evs
 
     config = Config(version=COMPOSE_VERSION, services=services, volumes=[],
