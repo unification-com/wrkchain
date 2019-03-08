@@ -11,7 +11,8 @@ RUN apt-get update && \
 
 RUN add-apt-repository -y ppa:ethereum/ethereum && \
     apt-get update && \
-    apt-get -y install solc ethereum
+    apt-get -y install solc ethereum && \
+    ln -s /usr/bin/bootnode /usr/local/bin/bootnode
 
 RUN curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash && \
     /root/.pyenv/bin/pyenv install 3.7.2
@@ -40,8 +41,6 @@ COPY sdk/tests /src/tests
 COPY sdk/systemtests /src/systemtests
 COPY examples /examples
 COPY templates /templates
-
-RUN ln -s /usr/bin/bootnode /usr/local/bin/bootnode
 
 RUN py.test /src/tests
 
