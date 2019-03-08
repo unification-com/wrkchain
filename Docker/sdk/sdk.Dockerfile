@@ -41,6 +41,8 @@ COPY sdk/systemtests /src/systemtests
 COPY examples /examples
 COPY templates /templates
 
+RUN ln -s /usr/bin/bootnode /usr/local/bin/bootnode
+
 RUN py.test /src/tests
 
 CMD ["python", "-m", "workchain_sdk.config", "generate_workchain", "/examples/config.json", "/build"]
