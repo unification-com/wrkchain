@@ -32,7 +32,7 @@ def build_extra_data(validators):
     strip = lambda x: x[2:]
     addresses = [strip(x['address']) for x in validators]
     addresses.sort()
-    return f"{'0'*32}{''.join(addresses)}{'0'*65}"
+    return f"0x{'0'*32}{''.join(addresses)}{'0'*65}"
 
 
 def pre_fund(pre_funded_accounts):
