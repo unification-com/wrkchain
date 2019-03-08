@@ -1,6 +1,8 @@
 import os
 import subprocess
 
+BIN_BOOTNODE = "/usr/bin/bootnode"
+
 
 class BootnodeKey:
     def __init__(self, build_dir):
@@ -20,7 +22,7 @@ class BootnodeKey:
         if not self.have_key():
             self.generate_bootnode_key()
 
-        cmd = ["/usr/bin/bootnode", "-nodekey",
+        cmd = [BIN_BOOTNODE, "-nodekey",
                self.__bootnode_key_path, "-writeaddress"]
 
         result = self.__run(cmd)
