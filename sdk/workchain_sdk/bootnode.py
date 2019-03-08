@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-BIN_BOOTNODE = "/usr/bin/bootnode"
+BIN_BOOTNODE = "/usr/local/bin/bootnode"
 
 
 class BootnodeKey:
