@@ -2,7 +2,9 @@ from web3 import Web3
 
 
 class UndMainchain:
-    def __init__(self, network="testnet", web3_type=None, web3_uri=None):
+    def __init__(self, network="testnet",
+                 web3_type="http",
+                 web3_uri="http://localhost:8545"):
         self.__network = network
         self.__web3_type = web3_type
         self.__web3_uri = web3_uri

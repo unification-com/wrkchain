@@ -11,7 +11,7 @@ RUN apt-get update && \
 
 RUN add-apt-repository -y ppa:ethereum/ethereum && \
     apt-get update && \
-    apt-get -y install solc
+    apt-get -y install solc ethereum
 
 RUN curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash && \
     /root/.pyenv/bin/pyenv install 3.7.2
@@ -38,7 +38,8 @@ COPY sdk/workchain_sdk /src/workchain_sdk
 COPY sdk/tests /src/tests
 COPY sdk/systemtests /src/systemtests
 COPY examples /examples
+COPY templates /templates
 
 RUN py.test /src/tests
 
-CMD ["python", "-m", "workchain_sdk.config", "validate", "/examples/config.json"]
+CMD ["python", "-m", "workchain_sdk.config", "generate_workchain", "/examples/config.json", "/build"]
