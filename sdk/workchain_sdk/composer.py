@@ -9,7 +9,6 @@ def bootnode():
     name = 'workchain_bootnode'
     return {
         'name': name,
-        'image': 'bootnode',
         'hostname': name,
         'container_name': name,
         'ports': [ServicePort(
@@ -40,7 +39,6 @@ def generate_validators(validators):
         name = f'workchain-validator-{n}'
         d.append({
             'name': name,
-            'image': 'validator',
             'hostname': name,
             'container_name': name,
             'build': build_d
