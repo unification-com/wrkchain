@@ -35,9 +35,15 @@ def generate_validators(n: int):
     return d
 
 
-def generate():
-    evs = generate_validators(3)
-    services = [bootnode()] + evs
+def generate(config):
+    validators = config['workchain']['validators']
+
+    services = []
+    if config['workchain']['bootnode']['use']:
+        services.append(bootnode())
+
+    evs = generate_validators(len(validators))
+    services = services + evs
 
     config = Config(version=COMPOSE_VERSION, services=services, volumes=[],
                     networks=[], secrets=[], configs=[])
