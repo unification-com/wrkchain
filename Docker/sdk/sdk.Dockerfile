@@ -32,6 +32,7 @@ RUN pip install -r requirements.txt && \
 
 RUN echo "py.test /src/tests" >> /root/.bash_history && \
     echo "python -m workchain_sdk.config generate_workchain /examples/config.json /build" >> /root/.bash_history && \
+    echo "py.test /src/systemtests" >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
 
 COPY sdk/workchain_sdk /src/workchain_sdk
