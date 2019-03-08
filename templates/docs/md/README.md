@@ -1,5 +1,9 @@
 # $__WORKCHAIN_NAME__ Documentation
 
+## Setup
+
+$__SECTION_SETUP__
+
 ## Installation
 
 $__SECTION_INSTALLATION__

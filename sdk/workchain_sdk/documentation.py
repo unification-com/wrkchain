@@ -64,6 +64,12 @@ class WorkchainDocumentation:
                     'contents': '',
                     'template': None,
                     'generate': self.__generate_network_section
+                },
+                '__SECTION_SETUP__': {
+                    'path': 'templates/docs/md/sections/setup.md',
+                    'contents': '',
+                    'template': None,
+                    'generate': self.__generate_setup_section
                 }
             }
         }
@@ -159,6 +165,31 @@ class WorkchainDocumentation:
 
     def __generate_installation_section(self, section_name):
         self.__generate_section(section_name, {})
+
+    def __generate_setup_section(self, section_name):
+        # Load the sub section
+        network = self.__config["mainchain"]["network"]
+        fund_md = f'templates/docs/md/sections/fund_{network}.md'
+        fund_template_path = repo_root() / fund_md
+        fund_template = fund_template_path.read_text()
+        t = Template(fund_template)
+
+        oracle_addresses = get_oracle_addresses(self.__config)
+
+        if network == 'testnet':
+            faucet_urls = ''
+            for address in oracle_addresses:
+                faucet_urls += f'<http://52.14.173.249/sendtx?to={address}>  \n'
+            fund_content = t.substitute({'__FAUCET_URLS___': faucet_urls})
+        elif network == 'mainnet':
+            fund_content = ''
+        else:
+            fund_content = ''
+
+        d = {
+            '__FUND_ORACLE_ADDRESSES__': fund_content
+        }
+        self.__generate_section(section_name, d)
 
     def __generate_section(self, section, data, append=True):
         t = Template(self.__documentation['sections'][section]['template'])
