@@ -5,27 +5,27 @@ from compose.config.types import ServicePort
 COMPOSE_VERSION = '3.2'
 
 
-def bootnode():
+def bootnode(config):
     name = 'workchain_bootnode'
     return {
         'name': name,
         'hostname': name,
         'container_name': name,
         'ports': [ServicePort(
-            published=30301, target=30301, protocol=None,
+            published=config['port'], target=config['port'], protocol=None,
             mode=None, external_ip=None),
-            ServicePort(
-                published=30303, target=30303, protocol=None,
-                mode=None, external_ip=None)
         ],
         'build': {
             'context': '..',
             'dockerfile': 'Docker/bootnode/Dockerfile',
+            'args': {
+                'BOOTNODE_PORT': config['port'],
+            }
         }
     }
 
 
-def generate_validators(validators):
+def generate_validators(validators, bootnode):
     d = []
     n = 0
     for validator in validators:
@@ -36,7 +36,8 @@ def generate_validators(validators):
             'args': {
                 'WALLET_PASS': 'pass',
                 'PRIVATE_KEY': validator['private_key'],
-                'GENESIS_JSON_FILENAME': 'genesis.json'
+                'GENESIS_JSON_FILENAME': 'genesis.json',
+                'BOOTNODE_PORT': bootnode['port']
             }
         }
 
@@ -53,12 +54,13 @@ def generate_validators(validators):
 def generate(config):
     workchain = config['workchain']
     validators = workchain['validators']
+    bootnode_cfg = workchain['bootnode']
 
     services = []
-    if workchain['bootnode']['use']:
-        services.append(bootnode())
+    if bootnode_cfg['use']:
+        services.append(bootnode(bootnode_cfg))
 
-    evs = generate_validators(validators)
+    evs = generate_validators(validators, bootnode_cfg)
     services = services + evs
 
     config = Config(version=COMPOSE_VERSION, services=services, volumes=[],

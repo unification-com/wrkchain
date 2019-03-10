@@ -13,7 +13,7 @@
       "bootnode": {
         "use": true,
         "ip": "127.0.0.1",
-        "port": "30301"
+        "port": "30304"
       },
       "validators":[
           {
