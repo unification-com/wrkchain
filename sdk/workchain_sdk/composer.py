@@ -23,7 +23,7 @@ def bootnode():
 
 def generate_validators(validators):
     d = []
-    n = 1
+    n = 0
     for validator in validators:
         n = n + 1
         build_d = {
