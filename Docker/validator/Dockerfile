@@ -14,6 +14,10 @@ RUN apt-get update \
 ARG WALLET_PASS
 ARG PRIVATE_KEY
 ARG GENESIS_JSON_FILENAME
+ARG BOOTNODE_ID
+ARG BOOTNODE_IP
+ARG BOOTNODE_PORT
+
 RUN echo $WALLET_PASS > /root/.walletpassword
 RUN echo $PRIVATE_KEY > /root/.privatekey
 ADD build/$GENESIS_JSON_FILENAME /root/assets/genesis.json
@@ -21,9 +25,6 @@ RUN geth init /root/assets/genesis.json
 RUN geth account import --password /root/.walletpassword  /root/.privatekey
 
 ENV PUBLIC_ADDRESS=""
-ENV BOOTNODE_ID=""
-ENV BOOTNODE_IP=""
-ENV BOOTNODE_PORT=""
 ENV WORKCHAIN_NETWORK_ID=""
 ENV GETH_LISTEN_PORT=""
 

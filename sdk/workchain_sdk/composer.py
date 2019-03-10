@@ -25,7 +25,7 @@ def bootnode(config):
     }
 
 
-def generate_validators(validators, bootnode):
+def generate_validators(validators, bootnode, bootnode_address):
     d = []
     n = 0
     for validator in validators:
@@ -37,6 +37,8 @@ def generate_validators(validators, bootnode):
                 'WALLET_PASS': 'pass',
                 'PRIVATE_KEY': validator['private_key'],
                 'GENESIS_JSON_FILENAME': 'genesis.json',
+                'BOOTNODE_ID': bootnode_address,
+                'BOOTNODE_IP': bootnode['ip'],
                 'BOOTNODE_PORT': bootnode['port']
             }
         }
@@ -51,7 +53,7 @@ def generate_validators(validators, bootnode):
     return d
 
 
-def generate(config):
+def generate(config, bootnode_address):
     workchain = config['workchain']
     validators = workchain['validators']
     bootnode_cfg = workchain['bootnode']
@@ -60,7 +62,7 @@ def generate(config):
     if bootnode_cfg['use']:
         services.append(bootnode(bootnode_cfg))
 
-    evs = generate_validators(validators, bootnode_cfg)
+    evs = generate_validators(validators, bootnode_cfg, bootnode_address)
     services = services + evs
 
     config = Config(version=COMPOSE_VERSION, services=services, volumes=[],
