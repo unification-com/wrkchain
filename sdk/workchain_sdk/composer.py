@@ -17,7 +17,11 @@ def bootnode():
             ServicePort(
                 published=30303, target=30303, protocol=None,
                 mode=None, external_ip=None)
-        ]
+        ],
+        'build': {
+            'context': '..',
+            'dockerfile': 'Docker/bootnode/Dockerfile',
+        }
     }
 
 
