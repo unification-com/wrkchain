@@ -11,7 +11,7 @@ RUN apt-get update && \
 
 RUN add-apt-repository -y ppa:ethereum/ethereum && \
     apt-get update && \
-    apt-get -y install solc ethereum
+    apt-get -y install solc ethereum pandoc
 
 RUN curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash && \
     /root/.pyenv/bin/pyenv install 3.7.2
