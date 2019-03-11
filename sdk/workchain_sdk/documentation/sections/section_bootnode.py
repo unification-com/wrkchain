@@ -19,7 +19,7 @@ class SectionBootNodes(DocSection):
                 self.__bootnode_port)
 
             d = {'__BOOTNODE_ENODE': bootnode_enode,
-                 '__BOOTNODE_PORT':self.__bootnode_port
+                 '__BOOTNODE_PORT': self.__bootnode_port
                  }
 
             self.add_content(d, append=False)
