@@ -1,66 +1,37 @@
 from string import Template
 
 import pypandoc
-
-from workchain_sdk.documentation.sections.section_node_validators \
-    import WorkchainDocSectionValidators
-from workchain_sdk.documentation.sections.section_node_rpc_nodes \
-    import WorkchainDocSectionRpcNodes
-from workchain_sdk.documentation.sections.section_node_bootnode \
-    import WorkchainDocSectionBootNodes
-from workchain_sdk.documentation.sections.section_oracle \
-    import WorkchainDocSectionOracle
-from workchain_sdk.documentation.sections.section_network \
-    import WorkchainDocSectionNetwork
-from workchain_sdk.documentation.sections.section_installation_geth \
-    import WorkchainDocSectionInstallationGeth
-from workchain_sdk.documentation.sections.section_setup \
-    import WorkchainDocSectionSetup
+from workchain_sdk.documentation.sections.section import factory
 from workchain_sdk.utils import repo_root, get_oracle_addresses
 
 
 class WorkchainDocumentation:
     def __init__(self, config, workchain_id, bootnode_address=None):
-        self.__config = config
         self.__workchain_id = workchain_id
         self.__bootnode_address = bootnode_address
 
+        self.__doc_params = {}
+
         self.__root_dir = repo_root()
 
-        self.__documentation_sections = {
-            '__SECTION_VALIDATORS__':  {
-                'contents': '',
-                'generate': self.__generate_validators_section
-            },
-            '__SECTION_JSON_RPC_NODES__':  {
-                'contents': '',
-                'generate': self.__generate_rpc_nodes_section
-            },
-            '__SECTION_BOOTNODE__':  {
-                'contents': '',
-                'generate': None
-            },
-            '__SECTION_INSTALLATION__': {
-                'contents': '',
-                'generate': self.__generate_installation_section
-            },
-            '__SECTION_ORACLE__': {
-                'contents': '',
-                'generate': self.__generate_oracle_section
-            },
-            '__SECTION_NETWORK__': {
-                'contents': '',
-                'generate': self.__generate_network_section
-            },
-            '__SECTION_SETUP__': {
-                'contents': '',
-                'generate': self.__generate_setup_section
-            }
-        }
+        self.__doc_params['title'] = config['workchain']['title']
+        self.__doc_params['workchain_id'] = workchain_id
+        self.__doc_params['bootnode_address'] = bootnode_address
+        self.__doc_params['validators'] = config['workchain']['validators']
+        self.__doc_params['rpc_nodes'] = config['workchain']['rpc_nodes']
+        self.__doc_params['network'] = config["mainchain"]["network"]
+        self.__doc_params['base'] = config["workchain"]["ledger"]["base"]
+        self.__doc_params['oracle_addresses'] = get_oracle_addresses(config)
 
-        if bootnode_address:
-            self.__documentation_sections['__SECTION_BOOTNODE__']['generate'] \
-                = self.__generate_bootnode_section
+        self.__documentation_sections = {
+            '__SECTION_VALIDATORS__':  '',
+            '__SECTION_JSON_RPC_NODES__':  '',
+            '__SECTION_BOOTNODE__': '',
+            '__SECTION_INSTALLATION__': '',
+            '__SECTION_ORACLE__': '',
+            '__SECTION_NETWORK__': '',
+            '__SECTION_SETUP__': ''
+        }
 
         self.__documentation = {
             'path': 'templates/docs/md/README.md',
@@ -72,8 +43,10 @@ class WorkchainDocumentation:
 
     def generate(self):
         for key, data in self.__documentation_sections.items():
-            if data['generate']:
-                data['generate'](key)
+            print(key)
+            section_generator = factory.create(key, **self.__doc_params)
+            print(section_generator)
+            self.__documentation_sections[key] = section_generator.generate()
 
         self.__generate_readme()
 
@@ -108,79 +81,12 @@ class WorkchainDocumentation:
         self.__documentation['template'] = \
             template_path.read_text()
 
-    def __generate_validators_section(self, section_key):
-        section_class = WorkchainDocSectionValidators(repo_root(),
-                                                      self.__config,
-                                                      self.__workchain_id)
-
-        self.__documentation_sections[section_key]['contents'] \
-            = section_class.generate(self.__config['workchain']['validators'],
-                                     bootnode_address=self.__bootnode_address)
-
-    def __generate_rpc_nodes_section(self, section_key):
-        section_class = WorkchainDocSectionRpcNodes(repo_root(),
-                                                    self.__config,
-                                                    self.__workchain_id)
-
-        self.__documentation_sections[section_key]['contents'] \
-            = section_class.generate(self.__config['workchain']['rpc_nodes'],
-                                     bootnode_address=self.__bootnode_address)
-
-    def __generate_bootnode_section(self, section_key):
-        section_class = WorkchainDocSectionBootNodes(repo_root(),
-                                                     self.__config,
-                                                     self.__workchain_id)
-
-        self.__documentation_sections[section_key]['contents'] \
-            = section_class.generate(bootnode_address=self.__bootnode_address)
-
-    def __generate_oracle_section(self, section_key):
-        section_class = WorkchainDocSectionOracle(repo_root(),
-                                                  self.__config,
-                                                  self.__workchain_id)
-
-        self.__documentation_sections[section_key]['contents'] \
-            = section_class.generate(get_oracle_addresses(self.__config))
-
-    def __generate_network_section(self, section_key):
-        section_class = WorkchainDocSectionNetwork(repo_root(),
-                                                  self.__config,
-                                                  self.__workchain_id)
-
-        self.__documentation_sections[section_key]['contents'] \
-            = section_class.generate()
-
-    def __generate_installation_section(self, section_key):
-
-        if self.__config["workchain"]["ledger"]["base"] == 'geth':
-            class_name = WorkchainDocSectionInstallationGeth
-        else:
-            class_name = WorkchainDocSectionInstallationGeth
-
-        section_class = class_name(repo_root(), self.__config,
-                                   self.__workchain_id)
-
-        self.__documentation_sections[section_key]['contents'] \
-            = section_class.generate()
-
-    def __generate_setup_section(self, section_key):
-        # Load the sub section
-        network = self.__config["mainchain"]["network"]
-        oracle_addresses = get_oracle_addresses(self.__config)
-
-        section_class = WorkchainDocSectionSetup(repo_root(),
-                                                 self.__config,
-                                                 self.__workchain_id)
-
-        self.__documentation_sections[section_key]['contents'] \
-            = section_class.generate(network, oracle_addresses)
-
     def __generate_readme(self):
         template = Template(self.__documentation['template'])
-        d = {'__WORKCHAIN_NAME__': self.__config['workchain']['title']}
+        d = {'__WORKCHAIN_NAME__': self.__doc_params['title']}
 
         for section_key, section_data in \
                 self.__documentation_sections.items():
-            d[section_key] = section_data['contents']
+            d[section_key] = section_data
 
         self.__documentation['contents'] = template.substitute(d)

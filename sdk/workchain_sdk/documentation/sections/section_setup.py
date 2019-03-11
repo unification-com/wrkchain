@@ -1,29 +1,27 @@
 from string import Template
 
-from workchain_sdk.documentation.sections.section import WorkchainDocSection
+from workchain_sdk.documentation.sections.doc_section import DocSection
 
 TESTNET_FAUCET_URL = 'http://52.14.173.249/sendtx?to='
 
 
-class WorkchainDocSectionSetup(WorkchainDocSection):
-    def __init__(self, root_dir, config, workchain_id):
+class SectionSetup(DocSection):
+    def __init__(self, network, oracle_addresses):
         path_to_md = 'sections/setup.md'
+        DocSection.__init__(self, path_to_md)
 
-        WorkchainDocSection.__init__(self, root_dir,
-                                          path_to_md, config,
-                                          workchain_id)
-        self.__oracle_addresses = None
-
-    def generate(self, network, oracle_addresses):
+        self.__network = network
         self.__oracle_addresses = oracle_addresses
-        fund_md = f'templates/docs/md/sections/fund_{network}.md'
+
+    def generate(self):
+        fund_md = f'templates/docs/md/sections/fund_{self.__network}.md'
         fund_template_path = self.root_dir / fund_md
         fund_template = fund_template_path.read_text()
         t = Template(fund_template)
 
-        if network == 'testnet':
+        if self.__network == 'testnet':
             fund_content = self.__func_testnet(t)
-        elif network == 'mainnet':
+        elif self.__network == 'mainnet':
             fund_content = ''
         else:
             fund_content = ''
@@ -31,8 +29,8 @@ class WorkchainDocSectionSetup(WorkchainDocSection):
         d = {
             '__FUND_ORACLE_ADDRESSES__': fund_content
         }
-
-        return self.generate_content(d, append=False)
+        self.add_content(d, append=False)
+        return self.get_contents()
 
     def __func_testnet(self, t):
         faucet_urls = ''
@@ -41,3 +39,14 @@ class WorkchainDocSectionSetup(WorkchainDocSection):
         fund_content = t.substitute({'__FAUCET_URLS___': faucet_urls})
 
         return fund_content
+
+
+class SectionSetupBuilder:
+    def __init__(self):
+        self.__instance = None
+
+    def __call__(self, network, oracle_addresses, **_ignored):
+
+        if not self.__instance:
+            self.__instance = SectionSetup(network, oracle_addresses)
+        return self.__instance
