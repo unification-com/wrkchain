@@ -51,7 +51,6 @@ def generate_validators(validators, bootnode, bootnode_id, workchain_id):
             'args': {
                 'WALLET_PASS': 'pass',
                 'PRIVATE_KEY': validator['private_key'],
-                'GENESIS_JSON_FILENAME': 'genesis.json',
                 'GETH_LISTEN_PORT': GETH_BASE_PORT,
             },
         }
