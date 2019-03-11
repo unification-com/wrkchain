@@ -7,16 +7,16 @@ from workchain_sdk.utils import repo_root, get_oracle_addresses
 
 class WorkchainDocumentation:
     def __init__(self, config, workchain_id, bootnode_address=None):
-        self.__doc_params = {}
-
-        self.__doc_params['title'] = config['workchain']['title']
-        self.__doc_params['workchain_id'] = workchain_id
-        self.__doc_params['bootnode_address'] = bootnode_address
-        self.__doc_params['validators'] = config['workchain']['validators']
-        self.__doc_params['rpc_nodes'] = config['workchain']['rpc_nodes']
-        self.__doc_params['network'] = config["mainchain"]["network"]
-        self.__doc_params['base'] = config["workchain"]["ledger"]["base"]
-        self.__doc_params['oracle_addresses'] = get_oracle_addresses(config)
+        self.__doc_params = {
+            'title': config['workchain']['title'],
+            'workchain_id': workchain_id,
+            'bootnode_address': bootnode_address,
+            'validators': config['workchain']['validators'],
+            'rpc_nodes':  config['workchain']['rpc_nodes'],
+            'network': config["mainchain"]["network"],
+            'base': config["workchain"]["ledger"]["base"],
+            'oracle_addresses': get_oracle_addresses(config)
+        }
 
         self.__documentation_sections = {
             '__SECTION_VALIDATORS__':  '',
