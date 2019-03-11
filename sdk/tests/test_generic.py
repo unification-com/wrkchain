@@ -124,6 +124,15 @@ def test_generate_documentation():
     assert len(documentation['html']) > 0
 
 
+def test_generate_documentation_no_bootnode():
+    from workchain_sdk.config import generate_documentation
+    test_config['workchain']['bootnode']['use'] = False
+    documentation = generate_documentation(test_config, test_genesis)
+    print(documentation)
+    assert len(documentation['md']) > 0
+    assert len(documentation['html']) > 0
+
+
 def test_generate_genesis():
     from workchain_sdk.config import generate_genesis
 
