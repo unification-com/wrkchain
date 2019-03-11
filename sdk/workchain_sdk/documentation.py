@@ -1,7 +1,8 @@
+from string import Template
+
 import pypandoc
 
 from workchain_sdk.utils import repo_root, get_oracle_addresses
-from string import Template
 
 
 class WorkchainDocumentation:
