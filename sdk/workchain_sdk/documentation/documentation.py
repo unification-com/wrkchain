@@ -38,9 +38,7 @@ class WorkchainDocumentation:
 
     def generate(self):
         for key, data in self.__documentation_sections.items():
-            print(key)
             section_generator = factory.create(key, **self.__doc_params)
-            print(section_generator)
             self.__documentation_sections[key] = section_generator.generate()
 
         self.__generate_readme()
