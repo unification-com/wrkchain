@@ -1,4 +1,7 @@
-### JSON RPC Node $__NODE_NUM__
+
+## 4. Running your JSON RPC Nodes
+
+### 4.$__NODE_NUM__ JSON RPC Node $__NODE_NUM__
 
 Copy the generated `genesis.json` to the computer you will be running JSON RPC Node $__NODE_NUM__
 

@@ -14,28 +14,16 @@
 5. [Running your Workchain Oracle](#running-your-workchain-oracle)  
 6. [Connecting to your Network](#connecting-to-your-network)  
 
-## 1. Setup
-
 $__SECTION_SETUP__
-
-## 2. Installation
 
 $__SECTION_INSTALLATION__
 
 $__SECTION_BOOTNODE__
 
-## 3. Running your Validators
-
 $__SECTION_VALIDATORS__
-
-## 4. Running your JSON RPC Nodes
 
 $__SECTION_JSON_RPC_NODES__
 
-## 5. Running your Workchain Oracle
-
 $__SECTION_ORACLE__
-
-## 6. Connecting to your Network
 
 $__SECTION_NETWORK__

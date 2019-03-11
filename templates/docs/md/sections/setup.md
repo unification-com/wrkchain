@@ -1,3 +1,6 @@
+
+## 1. Setup
+
 ### 1.1 Funding your addresses with UND
 
 Each of the addresses configured for interacting with the Workchain Oracle, and therefore

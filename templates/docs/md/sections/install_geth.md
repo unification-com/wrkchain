@@ -1,3 +1,6 @@
+
+## 2. Installation
+
 On each computer designated to run your network, you will need to install the relevant software.
 
 ### 2.1 Debian based systems
