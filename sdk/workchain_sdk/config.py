@@ -105,7 +105,7 @@ def generate_workchain(config_file, build_dir):
                                            bootnode_address)
 
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
-    composition = generate(config)
+    composition = generate(config, bootnode_address)
 
     write_genesis(build_dir, rendered)
     write_documentation(build_dir, documentation)

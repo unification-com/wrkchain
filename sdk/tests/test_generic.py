@@ -112,7 +112,7 @@ def test_parse_config():
 
 def test_composer():
     from workchain_sdk.composer import generate
-    generate(test_config)
+    generate(test_config, 'BOOTNODE_ADDRESS')
 
 
 def test_generate_documentation():

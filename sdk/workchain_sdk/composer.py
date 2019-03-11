@@ -3,6 +3,8 @@ from compose.config.serialize import serialize_config
 from compose.config.types import ServicePort
 
 COMPOSE_VERSION = '3.2'
+GETH_BASE_PORT = 30305
+NETWORK_ID = 50010
 
 
 def bootnode(config):
@@ -25,11 +27,25 @@ def bootnode(config):
     }
 
 
-def generate_validators(validators, bootnode, bootnode_address):
+def generate_validators(validators, bootnode, bootnode_id):
     d = []
     n = 0
+
     for validator in validators:
         n = n + 1
+        geth_port = GETH_BASE_PORT + n - 1
+        enode = f'enode://{bootnode_id}@{bootnode["ip"]}:{bootnode["port"]}'
+        cmd = f'/usr/bin/geth ' \
+              f'--bootnodes {enode} ' \
+              f'--networkid {NETWORK_ID} ' \
+              f'--verbosity=4 ' \
+              f'--syncmode=full ' \
+              f'--mine ' \
+              f'--gasprice "0" ' \
+              f'--etherbase {validator["address"]} ' \
+              f'--unlock {validator["address"]} ' \
+              f'--password /root/.walletpassword ' \
+              f'--port {geth_port}'
         build_d = {
             'context': '..',
             'dockerfile': 'Docker/validator/Dockerfile',
@@ -37,10 +53,8 @@ def generate_validators(validators, bootnode, bootnode_address):
                 'WALLET_PASS': 'pass',
                 'PRIVATE_KEY': validator['private_key'],
                 'GENESIS_JSON_FILENAME': 'genesis.json',
-                'BOOTNODE_ID': bootnode_address,
-                'BOOTNODE_IP': bootnode['ip'],
-                'BOOTNODE_PORT': bootnode['port']
-            }
+                'GETH_LISTEN_PORT': GETH_BASE_PORT,
+            },
         }
 
         name = f'workchain-validator-{n}'
@@ -48,7 +62,8 @@ def generate_validators(validators, bootnode, bootnode_address):
             'name': name,
             'hostname': name,
             'container_name': name,
-            'build': build_d
+            'build': build_d,
+            'command': cmd
         })
     return d
 
