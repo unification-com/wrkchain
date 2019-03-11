@@ -13,6 +13,8 @@ class DocSection:
         self.template = self.template_path.read_text()
         self.contents = ''
 
+    def generate(self): pass
+
     def get_contents(self):
         return self.contents
 
