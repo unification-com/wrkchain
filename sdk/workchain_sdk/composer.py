@@ -4,7 +4,6 @@ from compose.config.types import ServicePort
 
 COMPOSE_VERSION = '3.2'
 GETH_BASE_PORT = 30305
-NETWORK_ID = 50010
 
 
 def bootnode(config):
@@ -27,7 +26,7 @@ def bootnode(config):
     }
 
 
-def generate_validators(validators, bootnode, bootnode_id):
+def generate_validators(validators, bootnode, bootnode_id, workchain_id):
     d = []
     n = 0
 
@@ -37,7 +36,7 @@ def generate_validators(validators, bootnode, bootnode_id):
         enode = f'enode://{bootnode_id}@{bootnode["ip"]}:{bootnode["port"]}'
         cmd = f'/usr/bin/geth ' \
               f'--bootnodes {enode} ' \
-              f'--networkid {NETWORK_ID} ' \
+              f'--networkid {workchain_id} ' \
               f'--verbosity=4 ' \
               f'--syncmode=full ' \
               f'--mine ' \
@@ -68,7 +67,7 @@ def generate_validators(validators, bootnode, bootnode_id):
     return d
 
 
-def generate(config, bootnode_address):
+def generate(config, bootnode_address, workchain_id):
     workchain = config['workchain']
     validators = workchain['validators']
     bootnode_cfg = workchain['bootnode']
@@ -77,7 +76,8 @@ def generate(config, bootnode_address):
     if bootnode_cfg['use']:
         services.append(bootnode(bootnode_cfg))
 
-    evs = generate_validators(validators, bootnode_cfg, bootnode_address)
+    evs = generate_validators(
+        validators, bootnode_cfg, bootnode_address, workchain_id)
     services = services + evs
 
     config = Config(version=COMPOSE_VERSION, services=services, volumes=[],

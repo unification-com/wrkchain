@@ -112,7 +112,8 @@ def test_parse_config():
 
 def test_composer():
     from workchain_sdk.composer import generate
-    generate(test_config, 'BOOTNODE_ADDRESS')
+    from workchain_sdk.genesis import DEFAULT_NETWORK_ID
+    generate(test_config, 'BOOTNODE_ADDRESS', DEFAULT_NETWORK_ID)
 
 
 def test_generate_documentation():
@@ -126,6 +127,7 @@ def test_generate_documentation():
 def test_generate_genesis():
     from workchain_sdk.config import generate_genesis
 
-    genesis_json = generate_genesis(test_config)
+    genesis_json, workchain_id = generate_genesis(test_config)
     print(genesis_json)
     assert len(genesis_json) > 0
+    assert workchain_id > 0

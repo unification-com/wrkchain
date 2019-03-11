@@ -7,6 +7,8 @@ from web3.auto import w3
 
 from workchain_sdk.utils import repo_root
 
+DEFAULT_NETWORK_ID = 50050
+
 
 def load_genesis_template(workchain_base, workchain_consensus):
     template_file = repo_root() / 'templates' / 'genesis' / workchain_base / \
@@ -55,9 +57,10 @@ def pre_fund(pre_funded_accounts):
 def build_genesis(block_period, validators,
                   workchain_base="geth",
                   workchain_consensus="clique",
+                  workchain_id=DEFAULT_NETWORK_ID,
                   pre_funded_accounts=None):
     t = load_genesis_template(workchain_base, workchain_consensus)
-    t['config']['chainId'] = generate_workchain_id()
+    t['config']['chainId'] = workchain_id
     t['config']['clique']['period'] = block_period
     t['extraData'] = build_extra_data(validators)
     t['timestamp'] = generate_timestamp()
