@@ -19,6 +19,8 @@ class SectionValidators(DocSection):
             bootnode_enode, bootnode_flag = SectionUtils.set_geth_bootnode_flag(
                 self.__bootnode_address, self.__bootnode_ip,
                 self.__bootnode_port)
+        else:
+            bootnode_flag = ''
 
         for i in range(len(self.__validators)):
             d = {'__VALIDATOR_NUM__': str(i + 1),
