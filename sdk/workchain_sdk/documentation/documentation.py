@@ -7,12 +7,7 @@ from workchain_sdk.utils import repo_root, get_oracle_addresses
 
 class WorkchainDocumentation:
     def __init__(self, config, workchain_id, bootnode_address=None):
-        self.__workchain_id = workchain_id
-        self.__bootnode_address = bootnode_address
-
         self.__doc_params = {}
-
-        self.__root_dir = repo_root()
 
         self.__doc_params['title'] = config['workchain']['title']
         self.__doc_params['workchain_id'] = workchain_id
@@ -77,7 +72,7 @@ class WorkchainDocumentation:
         return html
 
     def __load_template(self):
-        template_path = self.__root_dir / self.__documentation['path']
+        template_path = repo_root() / self.__documentation['path']
         self.__documentation['template'] = \
             template_path.read_text()
 
