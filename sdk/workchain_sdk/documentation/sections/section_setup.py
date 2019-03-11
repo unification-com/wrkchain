@@ -4,6 +4,7 @@ from workchain_sdk.documentation.sections.section import WorkchainDocSection
 
 TESTNET_FAUCET_URL = 'http://52.14.173.249/sendtx?to='
 
+
 class WorkchainDocSectionSetup(WorkchainDocSection):
     def __init__(self, root_dir, config, workchain_id):
         path_to_md = 'sections/setup.md'
