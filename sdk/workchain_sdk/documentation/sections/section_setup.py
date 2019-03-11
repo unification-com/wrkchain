@@ -2,6 +2,7 @@ from string import Template
 
 from workchain_sdk.documentation.sections.section import WorkchainDocSection
 
+TESTNET_FAUCET_URL = 'http://52.14.173.249/sendtx?to='
 
 class WorkchainDocSectionSetup(WorkchainDocSection):
     def __init__(self, root_dir, config, workchain_id):
@@ -35,7 +36,7 @@ class WorkchainDocSectionSetup(WorkchainDocSection):
     def __func_testnet(self, t):
         faucet_urls = ''
         for address in self.__oracle_addresses:
-            faucet_urls += f'<http://52.14.173.249/sendtx?to={address}>  \n'
+            faucet_urls += f'<{TESTNET_FAUCET_URL}{address}>  \n'
         fund_content = t.substitute({'__FAUCET_URLS___': faucet_urls})
 
         return fund_content
