@@ -4,8 +4,8 @@ import logging
 
 from workchain_sdk.bootnode import BootnodeKey
 from workchain_sdk.composer import generate
-from workchain_sdk.documentation import WorkchainDocumentation
-from workchain_sdk.genesis import build_genesis
+from workchain_sdk.documentation.documentation import WorkchainDocumentation
+from workchain_sdk.genesis import build_genesis, generate_workchain_id
 from workchain_sdk.mainchain import UndMainchain
 from workchain_sdk.utils import write_build_file, get_oracle_addresses
 
@@ -41,14 +41,16 @@ def generate_genesis(config):
 
     workchain_base = config['workchain']['ledger']['base']
     workchain_consensus = config['workchain']['ledger']['consensus']['type']
+    workchain_id = generate_workchain_id()
 
     genesis_json = build_genesis(
-        block_period=block_period, validators=validators,
+        block_period=block_period,  validators=validators,
         workchain_base=workchain_base,
         workchain_consensus=workchain_consensus,
+        workchain_id=workchain_id,
         pre_funded_accounts=pre_funded_accounts)
 
-    return genesis_json
+    return genesis_json, workchain_id
 
 
 def write_genesis(build_dir, genesis_json):
@@ -57,7 +59,7 @@ def write_genesis(build_dir, genesis_json):
 
 def write_documentation(build_dir, documentation):
     write_build_file(build_dir + '/README.md', documentation['md'])
-    write_build_file(build_dir + '/documentation/index.html',
+    write_build_file(build_dir + '/documentation.html',
                      documentation['html'])
 
 
@@ -93,7 +95,7 @@ def generate_workchain(config_file, build_dir):
     log.info(f'Generating environment from: {config_file}')
     config = parse_config(config_file)
 
-    genesis_json = generate_genesis(config)
+    genesis_json, workchain_id = generate_genesis(config)
     bootnode_address = None
 
     if config['workchain']['bootnode']['use']:
@@ -105,7 +107,7 @@ def generate_workchain(config_file, build_dir):
                                            bootnode_address)
 
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
-    composition = generate()
+    composition = generate(config, bootnode_address, workchain_id)
 
     write_genesis(build_dir, rendered)
     write_documentation(build_dir, documentation)

@@ -13,21 +13,24 @@
       "bootnode": {
         "use": true,
         "ip": "127.0.0.1",
-        "port": "30301"
+        "port": 30304
       },
       "validators":[
           {
-              "address": "0xDccc523747B80c56cdF45aF1aB8bc6E9234b59F9",
+              "address": "0xA6ac533Bd51cc4c8BB0c72612669c62B35521578",
+              "private_key": "7deeb75a3bbaa57bc073380b77f47d701d7e2ef7551719f3767d4eee0a5fdffd",
               "write_to_oracle": true
           },
           {
-              "address": "0x33756c26e881b64B993D3FeC57b1cDCa8Bf5d20a",
+              "address": "0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA",
+              "private_key": "b7459e3be8b6825ac1b606d5f4ac61652e04086f0645d7f768b5e1a176afffcf",
               "write_to_oracle": true
           }
       ],
       "rpc_nodes": [
           {
-              "address": "0x821aea9a577a9b44299b9c15c88cf3087f3b5544",
+              "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
+              "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
               "write_to_oracle": false
           }
       ],
@@ -35,7 +38,8 @@
           "symbol": "COIN",
           "prefund": [
               {
-                  "address": "0x015d1CBC280a455885b98DD6e5C5C173ad45B366",
+                  "address": "0xfBf151E90436beC94DA59D0D4f434C9Ea6CC40Cd",
+                  "private_key": "5ad1aafaac60d4fd387a986c5807df43315ca6e589ac1c391fe00ec12ebfdc8c",
                   "balance": "1000000000"
               }
           ]

@@ -11,7 +11,7 @@ RUN apt-get update && \
 
 RUN add-apt-repository -y ppa:ethereum/ethereum && \
     apt-get update && \
-    apt-get -y install solc ethereum
+    apt-get -y install solc ethereum pandoc
 
 RUN curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash && \
     /root/.pyenv/bin/pyenv install 3.7.2
@@ -31,7 +31,8 @@ RUN pip install -r requirements.txt && \
     git clone https://github.com/unification-com/workchain-root-contract.git --depth 1
 
 RUN echo "py.test /src/tests" >> /root/.bash_history && \
-    echo "python -m workchain_sdk.config validate /examples/config.json" >> /root/.bash_history && \
+    echo "python -m workchain_sdk.config generate_workchain /examples/config.json /build" >> /root/.bash_history && \
+    echo "py.test /src/systemtests" >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
 
 COPY sdk/workchain_sdk /src/workchain_sdk

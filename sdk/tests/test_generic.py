@@ -46,19 +46,27 @@ test_config = {
           },
           "permission": "public"
       },
+      "bootnode": {
+        "use": True,
+        "ip": "127.0.0.1",
+        "port": "30301"
+      },
       "validators":[
           {
-              "address": "0xDccc523747B80c56cdF45aF1aB8bc6E9234b59F9",
+              "address": "0xA6ac533Bd51cc4c8BB0c72612669c62B35521578",
+              "private_key": "7deeb75a3bbaa57bc073380b77f47d701d7e2ef7551719f3767d4eee0a5fdffd",
               "write_to_oracle": True
           },
           {
-              "address": "0x33756c26e881b64B993D3FeC57b1cDCa8Bf5d20a",
+              "address": "0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA",
+              "private_key": "b7459e3be8b6825ac1b606d5f4ac61652e04086f0645d7f768b5e1a176afffcf",
               "write_to_oracle": True
           }
       ],
       "rpc_nodes": [
           {
-              "address": "0x821aea9a577a9b44299b9c15c88cf3087f3b5544",
+              "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
+              "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
               "write_to_oracle": False
           }
       ],
@@ -104,7 +112,8 @@ def test_parse_config():
 
 def test_composer():
     from workchain_sdk.composer import generate
-    generate()
+    from workchain_sdk.genesis import DEFAULT_NETWORK_ID
+    generate(test_config, 'BOOTNODE_ADDRESS', DEFAULT_NETWORK_ID)
 
 
 def test_generate_documentation():
@@ -115,19 +124,19 @@ def test_generate_documentation():
     assert len(documentation['html']) > 0
 
 
+def test_generate_documentation_no_bootnode():
+    from workchain_sdk.config import generate_documentation
+    test_config['workchain']['bootnode']['use'] = False
+    documentation = generate_documentation(test_config, test_genesis)
+    print(documentation)
+    assert len(documentation['md']) > 0
+    assert len(documentation['html']) > 0
+
+
 def test_generate_genesis():
     from workchain_sdk.config import generate_genesis
 
-    genesis_json = generate_genesis(test_config)
+    genesis_json, workchain_id = generate_genesis(test_config)
     print(genesis_json)
     assert len(genesis_json) > 0
-
-
-def test_generate_bootnode_key():
-    from workchain_sdk.bootnode import BootnodeKey
-
-    bootnode_key = BootnodeKey('/tmp')
-    bootnode_key.generate_bootnode_key()
-
-    assert bootnode_key.have_key()
-    assert len(bootnode_key.get_bootnode_address()) > 0
+    assert workchain_id > 0

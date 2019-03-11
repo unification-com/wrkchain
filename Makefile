@@ -31,7 +31,7 @@ help:
 
 sdk:
 	$(MAKE) init-prepare
-	@mkdir -p `pwd`/build/documentation
+	@mkdir -p `pwd`/build
 	docker build -f Docker/sdk/sdk.Dockerfile -t sdk .
 	docker run -v `pwd`/build:/build sdk
 
