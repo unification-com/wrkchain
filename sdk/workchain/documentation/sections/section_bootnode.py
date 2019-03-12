@@ -1,5 +1,5 @@
-from workchain_sdk.documentation.sections.doc_section import DocSection
-from workchain_sdk.documentation.sections.section_utils import SectionUtils
+from workchain.documentation.sections.doc_section import DocSection
+from workchain.documentation.sections.section_utils import SectionUtils
 
 
 class SectionBootNodes(DocSection):

@@ -2,12 +2,12 @@ import click
 import json
 import logging
 
-from workchain_sdk.bootnode import BootnodeKey
-from workchain_sdk.composer import generate
-from workchain_sdk.documentation.documentation import WorkchainDocumentation
-from workchain_sdk.genesis import build_genesis, generate_workchain_id
-from workchain_sdk.mainchain import UndMainchain
-from workchain_sdk.utils import write_build_file, get_oracle_addresses
+from workchain.bootnode import BootnodeKey
+from workchain.composer import generate
+from workchain.documentation.documentation import WorkchainDocumentation
+from workchain.genesis import build_genesis, generate_workchain_id
+from workchain.mainchain import UndMainchain
+from workchain.utils import write_build_file, get_oracle_addresses
 
 log = logging.getLogger(__name__)
 

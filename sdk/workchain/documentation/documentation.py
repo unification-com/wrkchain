@@ -1,8 +1,8 @@
 from string import Template
 
 import pypandoc
-from workchain_sdk.documentation.sections.section import factory
-from workchain_sdk.utils import repo_root, get_oracle_addresses
+from workchain.documentation.sections.section import factory
+from workchain.utils import repo_root, get_oracle_addresses
 
 
 class WorkchainDocumentation:

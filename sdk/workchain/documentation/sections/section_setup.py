@@ -1,6 +1,6 @@
 from string import Template
 
-from workchain_sdk.documentation.sections.doc_section import DocSection
+from workchain.documentation.sections.doc_section import DocSection
 
 TESTNET_FAUCET_URL = 'http://52.14.173.249/sendtx?to='
 

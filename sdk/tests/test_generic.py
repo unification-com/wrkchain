@@ -92,7 +92,7 @@ test_config = {
 
 
 def examples():
-    from workchain_sdk.utils import repo_root
+    from workchain.utils import repo_root
     examples_path = repo_root() / 'examples'
     query = os.path.join(str(examples_path), "*.json")
     config_files = glob.glob(query)
@@ -100,7 +100,7 @@ def examples():
 
 
 def test_parse_config():
-    from workchain_sdk.config import parse_config
+    from workchain.config import parse_config
 
     config_files = examples()
     assert len(config_files) > 0
@@ -111,13 +111,13 @@ def test_parse_config():
 
 
 def test_composer():
-    from workchain_sdk.composer import generate
-    from workchain_sdk.genesis import DEFAULT_NETWORK_ID
+    from workchain.composer import generate
+    from workchain.genesis import DEFAULT_NETWORK_ID
     generate(test_config, 'BOOTNODE_ADDRESS', DEFAULT_NETWORK_ID)
 
 
 def test_generate_documentation():
-    from workchain_sdk.config import generate_documentation
+    from workchain.config import generate_documentation
     documentation = generate_documentation(test_config, test_genesis)
     print(documentation)
     assert len(documentation['md']) > 0
@@ -125,7 +125,7 @@ def test_generate_documentation():
 
 
 def test_generate_documentation_no_bootnode():
-    from workchain_sdk.config import generate_documentation
+    from workchain.config import generate_documentation
     test_config['workchain']['bootnode']['use'] = False
     documentation = generate_documentation(test_config, test_genesis)
     print(documentation)
@@ -134,7 +134,7 @@ def test_generate_documentation_no_bootnode():
 
 
 def test_generate_genesis():
-    from workchain_sdk.config import generate_genesis
+    from workchain.config import generate_genesis
 
     genesis_json, workchain_id = generate_genesis(test_config)
     print(genesis_json)

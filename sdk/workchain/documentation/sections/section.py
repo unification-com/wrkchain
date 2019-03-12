@@ -1,17 +1,17 @@
-from workchain_sdk.documentation.sections.section_factory import SectionFactory
-from workchain_sdk.documentation.sections.section_bootnode \
+from workchain.documentation.sections.section_factory import SectionFactory
+from workchain.documentation.sections.section_bootnode \
     import SectionBootNodesBuilder
-from workchain_sdk.documentation.sections.section_installation \
+from workchain.documentation.sections.section_installation \
     import SectionInstallationBuilder
-from workchain_sdk.documentation.sections.section_network \
+from workchain.documentation.sections.section_network \
     import SectionNetworkBuilder
-from workchain_sdk.documentation.sections.section_oracle \
+from workchain.documentation.sections.section_oracle \
     import SectionOracleBuilder
-from workchain_sdk.documentation.sections.section_rpc_nodes \
+from workchain.documentation.sections.section_rpc_nodes \
     import SectionRpcNodesBuilder
-from workchain_sdk.documentation.sections.section_setup \
+from workchain.documentation.sections.section_setup \
     import SectionSetupBuilder
-from workchain_sdk.documentation.sections.section_validators \
+from workchain.documentation.sections.section_validators \
     import SectionValidatorsBuilder
 
 factory = SectionFactory()
