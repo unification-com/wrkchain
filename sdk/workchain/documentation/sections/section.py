@@ -14,14 +14,14 @@ from workchain.documentation.sections.section_setup \
 from workchain.documentation.sections.section_validators \
     import SectionValidatorsBuilder
 
-factory = SectionFactory()
-factory.register_builder('__SECTION_VALIDATORS__',
-                         SectionValidatorsBuilder())
-factory.register_builder('__SECTION_JSON_RPC_NODES__',
-                         SectionRpcNodesBuilder())
-factory.register_builder('__SECTION_BOOTNODE__', SectionBootNodesBuilder())
-factory.register_builder('__SECTION_INSTALLATION__',
-                         SectionInstallationBuilder())
-factory.register_builder('__SECTION_NETWORK__', SectionNetworkBuilder())
-factory.register_builder('__SECTION_ORACLE__', SectionOracleBuilder())
-factory.register_builder('__SECTION_SETUP__', SectionSetupBuilder())
+section_factory = SectionFactory()
+section_factory.register_builder('__SECTION_VALIDATORS__',
+                                 SectionValidatorsBuilder())
+section_factory.register_builder('__SECTION_JSON_RPC_NODES__',
+                                 SectionRpcNodesBuilder())
+section_factory.register_builder('__SECTION_BOOTNODE__', SectionBootNodesBuilder())
+section_factory.register_builder('__SECTION_INSTALLATION__',
+                                 SectionInstallationBuilder())
+section_factory.register_builder('__SECTION_NETWORK__', SectionNetworkBuilder())
+section_factory.register_builder('__SECTION_ORACLE__', SectionOracleBuilder())
+section_factory.register_builder('__SECTION_SETUP__', SectionSetupBuilder())

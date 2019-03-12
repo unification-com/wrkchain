@@ -2,7 +2,7 @@ import re
 from string import Template
 
 import pypandoc
-from workchain.documentation.sections.section import factory
+from workchain.documentation.sections.section import section_factory
 from workchain.utils import repo_root, get_oracle_addresses
 
 
@@ -63,7 +63,8 @@ class WorkchainDocumentation:
         for key, data in self.__documentation_sections.items():
             self.__doc_params['section_number'] = section_number
             self.__doc_params['title'] = data['title']
-            section_generator = factory.create(key, **self.__doc_params)
+            section_generator = section_factory.create(key,
+                                                       **self.__doc_params)
             section_contents = section_generator.generate()
             if len(section_contents) > 0:
                 self.__documentation_sections[key]['content'] = \
