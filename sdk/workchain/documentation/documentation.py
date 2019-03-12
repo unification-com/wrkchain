@@ -1,3 +1,4 @@
+import re
 from string import Template
 
 import pypandoc
@@ -8,7 +9,7 @@ from workchain.utils import repo_root, get_oracle_addresses
 class WorkchainDocumentation:
     def __init__(self, config, workchain_id, bootnode_address=None):
         self.__doc_params = {
-            'title': config['workchain']['title'],
+            'workchain_name': config['workchain']['title'],
             'workchain_id': workchain_id,
             'bootnode_address': bootnode_address,
             'validators': config['workchain']['validators'],
@@ -104,10 +105,36 @@ class WorkchainDocumentation:
 
     def __generate_readme(self):
         template = Template(self.__documentation['template'])
-        d = {'__WORKCHAIN_NAME__': self.__doc_params['title']}
+        d = {}
 
         for section_key, section_data in \
                 self.__documentation_sections.items():
             d[section_key] = section_data['content']
 
+        d['__CONTENTS__'] = self.__generate_contents(d)
+        d['__DOCUMENTATION_TITLE__'] = f'# "' \
+            f'{self.__doc_params["workchain_name"]}" Documentation'
+
         self.__documentation['content'] = template.substitute(d)
+
+    def __generate_contents(self, d):
+        RE = re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
+        contents = ''
+        for section_key, section_content in d.items():
+            section_titles = RE.findall(section_content)
+            for section_title in section_titles:
+                leading_spaces = ''
+                if section_title[1] == '###':
+                    leading_spaces = '  '
+                elif section_title[1] == '####':
+                    leading_spaces = '    '
+
+                title_words = section_title[2].lstrip().split(' ')
+                section_number = title_words.pop(0)  # get rid of leading #.#
+                title = ' '.join(title_words)
+                uri = '-'.join(title_words).lower()
+                contents += f'{leading_spaces}{section_number} [{title}]' \
+                    f'(#{uri})  \n'
+
+        return contents
+

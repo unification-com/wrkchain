@@ -17,12 +17,15 @@ class DocSection:
         self.set_title(section_number, title)
 
     def generate(self): pass
+    
+    def get_title(self):
+        return self.title
 
     def get_contents(self):
-        return self.title + self.contents
+        return f'{self.title}\n\n{self.contents}'
 
     def set_title(self, section_number, title):
-        self.title = f'## {section_number}. {title}\n\n'
+        self.title = f'## {section_number}. {title}'
 
     def add_content(self, d, append=True):
         # inject section number
