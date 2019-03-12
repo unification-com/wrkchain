@@ -37,7 +37,7 @@
               "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
               "write_to_oracle": false,
               "ip": "127.0.0.1",
-              "listen_port": 30303,
+              "listen_port": 30301,
               "rpc_port": 8545
           }
       ],
