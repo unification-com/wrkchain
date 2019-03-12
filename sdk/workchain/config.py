@@ -67,6 +67,10 @@ def write_composition(build_dir, composition):
     write_build_file(build_dir + '/docker-compose.yml', composition)
 
 
+def write_static_nodes(build_dir, static_nodes):
+    write_build_file(build_dir + '/static-nodes.json', static_nodes)
+
+
 def check_oracle_address_funds(config):
     oracle_addresses = get_oracle_addresses(config)
     network = config['mainchain']['network']
@@ -83,6 +87,44 @@ def check_oracle_address_funds(config):
                        f'Workchain Root smart contract')
 
 
+def configure_bootnode(build_dir, config):
+    bootnode_config = {}
+    if config['workchain']['bootnode']['use']:
+        ip = config['workchain']['bootnode']['ip']
+        port = config['workchain']['bootnode']['port']
+        bootnode_key = BootnodeKey(build_dir, ip, port)
+        bootnode_address = bootnode_key.get_bootnode_address()
+
+        bootnode_config['type'] = 'dedicated'
+        bootnode_config['addresses'] = bootnode_address
+        bootnode_config['enodes'] = bootnode_key.get_enode()
+    else:
+        validators = config['workchain']['validators']
+        bootnode_addresses = {}
+        static_addresses_dict = {}
+        static_addresses_list = []
+        for validator in validators:
+            public_address = validator['address']
+            ip = validator['ip']
+            port = validator['listen_port']
+            bootnode_key = BootnodeKey(build_dir, ip, port,
+                                       f'{public_address}_')
+            bootnode_address = bootnode_key.get_bootnode_address()
+            bootnode_addresses[public_address] = bootnode_address
+            enode = bootnode_key.get_enode()
+            static_addresses_dict[public_address] = enode
+            static_addresses_list.append(enode)
+
+        bootnode_config['type'] = 'static'
+        bootnode_config['addresses'] = bootnode_addresses
+        bootnode_config['enodes'] = static_addresses_dict
+        rendered = json.dumps(static_addresses_list,
+                              indent=2, separators=(',', ':'))
+        write_static_nodes(build_dir, rendered)
+
+    return bootnode_config
+
+
 @click.group()
 def main():
     pass
@@ -97,9 +139,12 @@ def generate_workchain(config_file, build_dir):
 
     genesis_json, workchain_id = generate_genesis(config)
     bootnode_address = None
+    bootnode_config = configure_bootnode(build_dir, config)
 
     if config['workchain']['bootnode']['use']:
-        bootnode_key = BootnodeKey(build_dir)
+        ip = config['workchain']['bootnode']['ip']
+        port = config['workchain']['bootnode']['port']
+        bootnode_key = BootnodeKey(build_dir, ip, port)
         bootnode_address = bootnode_key.get_bootnode_address()
         click.echo(f'Bootnode Address: {bootnode_address}')
 
@@ -116,6 +161,7 @@ def generate_workchain(config_file, build_dir):
     click.echo(documentation['md'])
     click.echo(rendered)
     click.echo(composition)
+    click.echo(bootnode_config)
 
 
 if __name__ == "__main__":
