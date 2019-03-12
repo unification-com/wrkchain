@@ -118,7 +118,8 @@ class WorkchainDocumentation:
 
         self.__documentation['content'] = template.substitute(d)
 
-    def __generate_contents(self, d):
+    @staticmethod
+    def __generate_contents(d):
         header_regex = \
             re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
         contents = ''
