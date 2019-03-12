@@ -92,7 +92,9 @@ test_config = {
      "network_id": 50005,
      "web3_provider": {
        "type": "http",
-       "uri": "http://52.14.173.249:8101"
+       "uri": "http://52.14.173.249:8101",
+       "host": "52.14.173.249",
+       "port": "8101"
      }
    }
 }
