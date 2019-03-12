@@ -1,3 +1,4 @@
+import json
 import re
 from string import Template
 
@@ -7,7 +8,8 @@ from workchain.utils import repo_root, get_oracle_addresses
 
 
 class WorkchainDocumentation:
-    def __init__(self, config, workchain_id, bootnode_config):
+    def __init__(self, config, workchain_id, bootnode_config, genesis_json):
+
         self.__doc_params = {
             'workchain_name': config['workchain']['title'],
             'workchain_id': workchain_id,
@@ -16,7 +18,13 @@ class WorkchainDocumentation:
             'rpc_nodes':  config['workchain']['rpc_nodes'],
             'network': config["mainchain"]["network"],
             'base': config["workchain"]["ledger"]["base"],
-            'oracle_addresses': get_oracle_addresses(config)
+            'oracle_addresses': get_oracle_addresses(config),
+            'mainchain_rpc_host': config['mainchain']['web3_provider']['host'],
+            'mainchain_rpc_port': config['mainchain']['web3_provider']['port'],
+            'mainchain_rpc_type': config['mainchain']['web3_provider']['type'],
+            'mainchain_rpc_uri': config['mainchain']['web3_provider']['uri'],
+            'mainchain_network_id': config['mainchain']['network_id'],
+            'genesis_json': json.dumps(genesis_json, separators=(',', ':'))
         }
 
         self.__documentation_sections = {

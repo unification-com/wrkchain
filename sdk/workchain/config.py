@@ -23,7 +23,7 @@ def parse_config(config_file):
 def generate_documentation(config, genesis_json, bootnode_config):
     doc_gen = WorkchainDocumentation(config,
                                      genesis_json['config']['chainId'],
-                                     bootnode_config)
+                                     bootnode_config, genesis_json)
     doc_gen.generate()
 
     documentation = {
