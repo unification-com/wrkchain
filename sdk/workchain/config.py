@@ -87,45 +87,54 @@ def check_oracle_address_funds(config):
                        f'Workchain Root smart contract')
 
 
+def generate_bootnode_info(build_dir, ip, port, public_address=''):
+    node_info = {}
+    bootnode_key = BootnodeKey(build_dir, ip, port, public_address)
+    bootnode_address = bootnode_key.get_bootnode_address()
+
+    node_info['address'] = bootnode_address
+    node_info['enode'] = bootnode_key.get_enode()
+    node_info['ip'] = ip
+    node_info['port'] = port
+
+    return node_info
+
+
 def configure_bootnode(build_dir, config):
     bootnode_config = {}
     if config['workchain']['bootnode']['use']:
-        node_info = {}
         ip = config['workchain']['bootnode']['ip']
         port = config['workchain']['bootnode']['port']
-        bootnode_key = BootnodeKey(build_dir, ip, port)
-        bootnode_address = bootnode_key.get_bootnode_address()
-
-        node_info['address'] = bootnode_address
-        node_info['enode'] = bootnode_key.get_enode()
-        node_info['ip'] = ip
-        node_info['port'] = port
-
+        node_info = generate_bootnode_info(build_dir, ip, port)
         bootnode_config['type'] = 'dedicated'
         bootnode_config['nodes'] = node_info
     else:
         validators = config['workchain']['validators']
+        rpc_nodes = config['workchain']['rpc_nodes']
         nodes = {}
         static_addresses_list = []
 
         for validator in validators:
-            node_info = {}
             public_address = validator['address']
             ip = validator['ip']
             port = validator['listen_port']
-            bootnode_key = BootnodeKey(build_dir, ip, port,
-                                       f'{public_address}_')
-            bootnode_address = bootnode_key.get_bootnode_address()
-            enode = bootnode_key.get_enode()
 
-            node_info['address'] = bootnode_address
-            node_info['enode'] = enode
-            node_info['ip'] = ip
-            node_info['port'] = port
+            node_info = generate_bootnode_info(build_dir, ip, port,
+                                               public_address)
 
             nodes[public_address] = node_info
+            static_addresses_list.append(node_info['enode'])
 
-            static_addresses_list.append(enode)
+        for rpc_node in rpc_nodes:
+            public_address = rpc_node['address']
+            ip = rpc_node['ip']
+            port = rpc_node['listen_port']
+
+            node_info = generate_bootnode_info(build_dir, ip, port,
+                                               public_address)
+
+            nodes[public_address] = node_info
+            static_addresses_list.append(node_info['enode'])
 
         bootnode_config['type'] = 'static'
         bootnode_config['nodes'] = nodes
@@ -153,6 +162,7 @@ def generate_workchain(config_file, build_dir):
     bootnode_address = None
     bootnode_config = configure_bootnode(build_dir, config)
 
+    # Todo: remove after bootnode_config plugged in to composition
     if config['workchain']['bootnode']['use']:
         ip = config['workchain']['bootnode']['ip']
         port = config['workchain']['bootnode']['port']
@@ -164,6 +174,8 @@ def generate_workchain(config_file, build_dir):
                                            bootnode_config)
 
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
+
+    # Todo: plug in bootnode_config to composition
     composition = generate(config, bootnode_address, workchain_id)
 
     write_genesis(build_dir, rendered)
@@ -173,7 +185,6 @@ def generate_workchain(config_file, build_dir):
     click.echo(documentation['md'])
     click.echo(rendered)
     click.echo(composition)
-    click.echo(bootnode_config)
 
 
 if __name__ == "__main__":
