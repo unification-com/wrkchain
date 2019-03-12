@@ -19,12 +19,6 @@ class WorkchainDocumentation:
             'oracle_addresses': get_oracle_addresses(config)
         }
 
-        if config['workchain']['bootnode']['use']:
-            self.__doc_params['bootnode_ip'] = \
-                config['workchain']['bootnode']['ip']
-            self.__doc_params['bootnode_port'] = \
-                config['workchain']['bootnode']['port']
-
         self.__documentation_sections = {
             '__SECTION_SETUP__': {
                 'content': '',
