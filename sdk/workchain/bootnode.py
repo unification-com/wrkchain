@@ -6,7 +6,7 @@ BIN_BOOTNODE = shutil.which("bootnode")
 
 
 class BootnodeKey:
-    def __init__(self, build_dir, ip, port, key_prefix=None):
+    def __init__(self, build_dir, ip, port, key_prefix=''):
         # Todo - throw exception if BIN_BOOTNODE not found/empty
         self.__bootnode_key_path = build_dir + f'/{key_prefix}bootnode.key'
         self.__ip = ip
@@ -40,6 +40,9 @@ class BootnodeKey:
         return bootnode_address
 
     def get_enode(self):
+        if not self.have_key():
+            self.generate_bootnode_key()
+
         return f'enode://{self.get_bootnode_address()}@{self.__ip}' \
             f':{self.__port}'
 

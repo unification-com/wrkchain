@@ -1,24 +1,20 @@
 from workchain.documentation.sections.doc_section import DocSection
-from workchain.documentation.sections.section_utils import SectionUtils
 
 
 class SectionValidators(DocSection):
     def __init__(self, section_number, title, validators, workchain_id,
-                 bootnode_address=None, bootnode_ip=None, bootnode_port=None):
+                 bootnode_config):
         path_to_md = 'sections/validators.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__validators = validators
         self.__workchain_id = workchain_id
-        self.__bootnode_address = bootnode_address
-        self.__bootnode_ip = bootnode_ip
-        self.__bootnode_port = bootnode_port
+        self.__bootnode_config = bootnode_config
 
     def generate(self):
-        if self.__bootnode_address:
-            bootnode_enode, bootnode_flag = SectionUtils.set_geth_bootnode_flag(
-                self.__bootnode_address, self.__bootnode_ip,
-                self.__bootnode_port)
+        if self.__bootnode_config['type'] == 'dedicated':
+            bootnode_flag = f'--bootnodes "' \
+                f'{self.__bootnode_config["nodes"]["enode"]}" '
         else:
             bootnode_flag = ''
 
@@ -38,11 +34,9 @@ class SectionValidatorsBuilder:
         self.__instance = None
 
     def __call__(self, section_number, title, validators, workchain_id,
-                 bootnode_address=None, bootnode_ip=None, bootnode_port=None,
-                 **_ignored):
+                 bootnode_config, **_ignored):
         if not self.__instance:
             self.__instance = SectionValidators(section_number, title,
                                                 validators, workchain_id,
-                                                bootnode_address, bootnode_ip,
-                                                bootnode_port)
+                                                bootnode_config)
         return self.__instance

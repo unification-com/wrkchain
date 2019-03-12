@@ -1,26 +1,19 @@
 from workchain.documentation.sections.doc_section import DocSection
-from workchain.documentation.sections.section_utils import SectionUtils
 
 
 class SectionBootNodes(DocSection):
-    def __init__(self, section_number, title, bootnode_address=None,
-                 bootnode_port=None,
-                 bootnode_ip=None):
+    def __init__(self, section_number, title, bootnode_config):
         path_to_md = 'sections/bootnode.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
-        self.__bootnode_address = bootnode_address
-        self.__bootnode_port = bootnode_port
-        self.__bootnode_ip = bootnode_ip
+        self.__bootnode_config = bootnode_config
 
     def generate(self):
-        if self.__bootnode_address:
-            bootnode_enode, bootnode_flag = SectionUtils.set_geth_bootnode_flag(
-                self.__bootnode_address, self.__bootnode_ip,
-                self.__bootnode_port)
+        if self.__bootnode_config['type'] == 'dedicated':
+            bootnode = self.__bootnode_config['nodes']
 
-            d = {'__BOOTNODE_ENODE': bootnode_enode,
-                 '__BOOTNODE_PORT': self.__bootnode_port
+            d = {'__BOOTNODE_ENODE': bootnode['enode'],
+                 '__BOOTNODE_PORT': bootnode['port']
                  }
 
             self.add_content(d, append=False)
@@ -33,11 +26,9 @@ class SectionBootNodesBuilder:
     def __init__(self):
         self.__instance = None
 
-    def __call__(self, section_number, title, bootnode_address=None,
-                 bootnode_port=None, bootnode_ip=None, **_ignored):
+    def __call__(self, section_number, title, bootnode_config, **_ignored):
 
         if not self.__instance:
             self.__instance = SectionBootNodes(section_number, title,
-                                               bootnode_address,
-                                               bootnode_port, bootnode_ip)
+                                               bootnode_config)
         return self.__instance

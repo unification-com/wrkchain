@@ -20,10 +20,10 @@ def parse_config(config_file):
     return d
 
 
-def generate_documentation(config, genesis_json, bootnode_address=None):
+def generate_documentation(config, genesis_json, bootnode_config):
     doc_gen = WorkchainDocumentation(config,
                                      genesis_json['config']['chainId'],
-                                     bootnode_address=bootnode_address)
+                                     bootnode_config)
     doc_gen.generate()
 
     documentation = {
@@ -90,37 +90,49 @@ def check_oracle_address_funds(config):
 def configure_bootnode(build_dir, config):
     bootnode_config = {}
     if config['workchain']['bootnode']['use']:
+        node_info = {}
         ip = config['workchain']['bootnode']['ip']
         port = config['workchain']['bootnode']['port']
         bootnode_key = BootnodeKey(build_dir, ip, port)
         bootnode_address = bootnode_key.get_bootnode_address()
 
+        node_info['address'] = bootnode_address
+        node_info['enode'] = bootnode_key.get_enode()
+        node_info['ip'] = ip
+        node_info['port'] = port
+
         bootnode_config['type'] = 'dedicated'
-        bootnode_config['addresses'] = bootnode_address
-        bootnode_config['enodes'] = bootnode_key.get_enode()
+        bootnode_config['nodes'] = node_info
     else:
         validators = config['workchain']['validators']
-        bootnode_addresses = {}
-        static_addresses_dict = {}
+        nodes = {}
         static_addresses_list = []
+
         for validator in validators:
+            node_info = {}
             public_address = validator['address']
             ip = validator['ip']
             port = validator['listen_port']
             bootnode_key = BootnodeKey(build_dir, ip, port,
                                        f'{public_address}_')
             bootnode_address = bootnode_key.get_bootnode_address()
-            bootnode_addresses[public_address] = bootnode_address
             enode = bootnode_key.get_enode()
-            static_addresses_dict[public_address] = enode
+
+            node_info['address'] = bootnode_address
+            node_info['enode'] = enode
+            node_info['ip'] = ip
+            node_info['port'] = port
+
+            nodes[public_address] = node_info
+
             static_addresses_list.append(enode)
 
         bootnode_config['type'] = 'static'
-        bootnode_config['addresses'] = bootnode_addresses
-        bootnode_config['enodes'] = static_addresses_dict
-        rendered = json.dumps(static_addresses_list,
-                              indent=2, separators=(',', ':'))
-        write_static_nodes(build_dir, rendered)
+        bootnode_config['nodes'] = nodes
+
+        rendered_static_nodes = json.dumps(static_addresses_list,
+                                           indent=2, separators=(',', ':'))
+        write_static_nodes(build_dir, rendered_static_nodes)
 
     return bootnode_config
 
@@ -149,7 +161,7 @@ def generate_workchain(config_file, build_dir):
         click.echo(f'Bootnode Address: {bootnode_address}')
 
     documentation = generate_documentation(config, genesis_json,
-                                           bootnode_address)
+                                           bootnode_config)
 
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
     composition = generate(config, bootnode_address, workchain_id)

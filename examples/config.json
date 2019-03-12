@@ -11,7 +11,7 @@
           "permission": "public"
       },
       "bootnode": {
-        "use": false,
+        "use": true,
         "ip": "127.0.0.1",
         "port": 30304
       },

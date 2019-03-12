@@ -7,11 +7,11 @@ from workchain.utils import repo_root, get_oracle_addresses
 
 
 class WorkchainDocumentation:
-    def __init__(self, config, workchain_id, bootnode_address=None):
+    def __init__(self, config, workchain_id, bootnode_config):
         self.__doc_params = {
             'workchain_name': config['workchain']['title'],
             'workchain_id': workchain_id,
-            'bootnode_address': bootnode_address,
+            'bootnode_config': bootnode_config,
             'validators': config['workchain']['validators'],
             'rpc_nodes':  config['workchain']['rpc_nodes'],
             'network': config["mainchain"]["network"],
