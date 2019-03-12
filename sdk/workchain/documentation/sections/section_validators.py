@@ -12,17 +12,25 @@ class SectionValidators(DocSection):
         self.__bootnode_config = bootnode_config
 
     def generate(self):
-        if self.__bootnode_config['type'] == 'dedicated':
-            bootnode_flag = f'--bootnodes "' \
-                f'{self.__bootnode_config["nodes"]["enode"]}" '
-        else:
-            bootnode_flag = ''
-
         for i in range(len(self.__validators)):
+
+            public_address = self.__validators[i]['address']
+
+            if self.__bootnode_config['type'] == 'dedicated':
+                bootnode_flag = f'--bootnodes "' \
+                    f'{self.__bootnode_config["nodes"]["enode"]}" '
+            else:
+                listen_port = \
+                    self.__bootnode_config["nodes"][public_address]['port']
+                bootnode_flag = f'--nodekey="path/to/{public_address}' \
+                    f'_bootnode.key" --port {listen_port}'
+
+                # Todo - plug in copying static-nodes.json
+
             d = {'__VALIDATOR_NUM__': str(i + 1),
                  '__WORKCHAIN_NETWORK_ID__': str(self.__workchain_id),
                  '__BOOTNODE__': bootnode_flag,
-                 '__EV_PUBLIC_ADDRESS__': self.__validators[i]['address']
+                 '__EV_PUBLIC_ADDRESS__': public_address
                  }
             self.add_content(d, append=True)
 
