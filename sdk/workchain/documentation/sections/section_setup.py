@@ -1,5 +1,6 @@
 from string import Template
 
+from web3 import Web3
 from workchain.documentation.sections.doc_section import DocSection
 
 TESTNET_FAUCET_URL = 'http://52.14.173.249/sendtx?to='
@@ -78,6 +79,11 @@ class SectionSetup(DocSection):
         return deploy_content
 
     def __deply_contract_testnet(self, t):
+
+        genesis_sha3_bytes = \
+            Web3.sha3(text=f'{self.__genesis_json.encode("utf-8")}')
+        genesis_sha3 = genesis_sha3_bytes.hex()
+
         d = {
             '__SECTION_NUMBER__': self.__section_number,
             '__MAINCHAIN_RPC_HOST__': self.__mainchain_rpc_host,
@@ -87,7 +93,8 @@ class SectionSetup(DocSection):
             '__WORKCHAIN_GENESIS__': self.__genesis_json,
             '__WORKCHAIN_NETWORK_ID__': self.__workchain_id,
             '__WORKCHAIN_EVS__': (', '.join('"' + item + '"' for item in
-                                            self.__oracle_addresses))
+                                            self.__oracle_addresses)),
+            '__GENESIS_SHA3__': genesis_sha3
         }
 
         deploy_content = t.substitute(d)
