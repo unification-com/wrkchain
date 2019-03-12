@@ -36,15 +36,15 @@ def generate_validators(validators, bootnode, bootnode_id, workchain_id):
         enode = f'enode://{bootnode_id}@{bootnode["ip"]}:{bootnode["port"]}'
         cmd = f'/usr/bin/geth ' \
               f'--bootnodes {enode} ' \
-              f'--networkid {workchain_id} ' \
-              f'--verbosity=4 ' \
-              f'--syncmode=full ' \
-              f'--mine ' \
-              f'--gasprice "0" ' \
               f'--etherbase {validator["address"]} ' \
-              f'--unlock {validator["address"]} ' \
+              f'--gasprice "0" ' \
               f'--password /root/.walletpassword ' \
-              f'--port {geth_port}'
+              f'--port {geth_port} ' \
+              f'--mine ' \
+              f'--networkid {workchain_id} ' \
+              f'--syncmode=full ' \
+              f'--unlock {validator["address"]} ' \
+              f'--verbosity=4 '
         build_d = {
             'context': '..',
             'dockerfile': 'Docker/validator/Dockerfile',
