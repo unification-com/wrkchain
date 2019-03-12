@@ -15,6 +15,7 @@ class SectionRpcNodes(DocSection):
 
         for i in range(len(self.__rpc_nodes)):
             public_address = self.__rpc_nodes[i]['address']
+            rpc_port = self.__rpc_nodes[i]['rpc_port']
 
             if self.__bootnode_config['type'] == 'dedicated':
                 bootnode_flag = f'--bootnodes "' \
@@ -29,7 +30,8 @@ class SectionRpcNodes(DocSection):
 
             d = {'__NODE_NUM__': str(i + 1),
                  '__WORKCHAIN_NETWORK_ID__': str(self.__workchain_id),
-                 '__BOOTNODE__': bootnode_flag
+                 '__BOOTNODE__': bootnode_flag,
+                 '__WORKCHAIN_RPC_PORT__': rpc_port
                  }
 
             self.add_content(d, append=True)
