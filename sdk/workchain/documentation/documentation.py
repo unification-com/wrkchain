@@ -118,10 +118,10 @@ class WorkchainDocumentation:
         self.__documentation['content'] = template.substitute(d)
 
     def __generate_contents(self, d):
-        RE = re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
+        header_regex = re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
         contents = ''
         for section_key, section_content in d.items():
-            section_titles = RE.findall(section_content)
+            section_titles = header_regex.findall(section_content)
             for section_title in section_titles:
                 leading_spaces = ''
                 if section_title[1] == '###':
