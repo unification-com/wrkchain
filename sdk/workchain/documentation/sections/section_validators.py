@@ -3,10 +3,10 @@ from workchain.documentation.sections.section_utils import SectionUtils
 
 
 class SectionValidators(DocSection):
-    def __init__(self, validators, workchain_id, bootnode_address=None,
-                 bootnode_ip=None, bootnode_port=None):
+    def __init__(self, section_number, title, validators, workchain_id,
+                 bootnode_address=None, bootnode_ip=None, bootnode_port=None):
         path_to_md = 'sections/validators.md'
-        DocSection.__init__(self, path_to_md)
+        DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__validators = validators
         self.__workchain_id = workchain_id
@@ -37,11 +37,12 @@ class SectionValidatorsBuilder:
     def __init__(self):
         self.__instance = None
 
-    def __call__(self, validators, workchain_id,
+    def __call__(self, section_number, title, validators, workchain_id,
                  bootnode_address=None, bootnode_ip=None, bootnode_port=None,
                  **_ignored):
         if not self.__instance:
-            self.__instance = SectionValidators(validators, workchain_id,
-                                               bootnode_address, bootnode_ip,
-                                               bootnode_port)
+            self.__instance = SectionValidators(section_number, title,
+                                                validators, workchain_id,
+                                                bootnode_address, bootnode_ip,
+                                                bootnode_port)
         return self.__instance

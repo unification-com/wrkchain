@@ -1,7 +1,4 @@
-
-## 3. Running your Validators
-
-### 3.$__VALIDATOR_NUM__ Validator $__VALIDATOR_NUM__
+### $__SECTION_NUMBER__.$__VALIDATOR_NUM__ Validator $__VALIDATOR_NUM__
 
 Copy the generated `genesis.json` to the computer you will be running Validator $__VALIDATOR_NUM__
 

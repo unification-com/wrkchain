@@ -6,9 +6,9 @@ TESTNET_FAUCET_URL = 'http://52.14.173.249/sendtx?to='
 
 
 class SectionSetup(DocSection):
-    def __init__(self, network, oracle_addresses):
+    def __init__(self, section_number, title, network, oracle_addresses):
         path_to_md = 'sections/setup.md'
-        DocSection.__init__(self, path_to_md)
+        DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__network = network
         self.__oracle_addresses = oracle_addresses
@@ -45,8 +45,10 @@ class SectionSetupBuilder:
     def __init__(self):
         self.__instance = None
 
-    def __call__(self, network, oracle_addresses, **_ignored):
+    def __call__(self, section_number, title, network, oracle_addresses,
+                 **_ignored):
 
         if not self.__instance:
-            self.__instance = SectionSetup(network, oracle_addresses)
+            self.__instance = SectionSetup(section_number, title, network,
+                                           oracle_addresses)
         return self.__instance

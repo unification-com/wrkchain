@@ -1,4 +1,3 @@
-### 2.3 Bootnode
 
 Copy the generated `/PATH/TO/GENERATED/bootnode.key` to the computer assigned to run the `bootnode`
 

@@ -19,36 +19,64 @@ class WorkchainDocumentation:
         }
 
         self.__documentation_sections = {
-            '__SECTION_VALIDATORS__':  '',
-            '__SECTION_JSON_RPC_NODES__':  '',
-            '__SECTION_BOOTNODE__': '',
-            '__SECTION_INSTALLATION__': '',
-            '__SECTION_ORACLE__': '',
-            '__SECTION_NETWORK__': '',
-            '__SECTION_SETUP__': ''
+            '__SECTION_SETUP__': {
+                'content': '',
+                'title': 'Setup'
+            },
+            '__SECTION_INSTALLATION__': {
+                'content': '',
+                'title': 'Installation'
+            },
+            '__SECTION_BOOTNODE__': {
+                'content': '',
+                'title': 'Bootnode'
+            },
+            '__SECTION_VALIDATORS__':  {
+                'content': '',
+                'title': 'Running your Validators'
+            },
+            '__SECTION_JSON_RPC_NODES__':  {
+                'content': '',
+                'title': 'Running your JSON RPC Nodes'
+            },
+            '__SECTION_ORACLE__': {
+                'content': '',
+                'title': 'Running your Workchain Oracle'
+            },
+            '__SECTION_NETWORK__': {
+                'content': '',
+                'title': 'Connecting to your Network'
+            },
         }
 
         self.__documentation = {
             'path': 'templates/docs/md/README.md',
-            'contents': '',
+            'content': '',
             'template': None
         }
 
         self.__load_template()
 
     def generate(self):
+        section_number = 1
         for key, data in self.__documentation_sections.items():
+            self.__doc_params['section_number'] = section_number
+            self.__doc_params['title'] = data['title']
             section_generator = factory.create(key, **self.__doc_params)
-            self.__documentation_sections[key] = section_generator.generate()
+            section_contents = section_generator.generate()
+            if len(section_contents) > 0:
+                self.__documentation_sections[key]['content'] = \
+                    section_contents
+                section_number += 1
 
         self.__generate_readme()
 
     def get_md(self):
-        return self.__documentation['contents']
+        return self.__documentation['content']
 
     def get_html(self):
         html = ''
-        if self.__documentation['contents']:
+        if self.__documentation['content']:
             root = repo_root()
             html_template_path = root / 'templates/docs/html/index.html'
             html_template = html_template_path.read_text()
@@ -56,7 +84,7 @@ class WorkchainDocumentation:
             css_template_path = root / 'templates/docs/html/bare.min.css'
 
             html_body = pypandoc.convert_text(
-                self.__documentation['contents'],
+                self.__documentation['content'],
                 'html', format='md')
             t = Template(html_template)
 
@@ -80,6 +108,6 @@ class WorkchainDocumentation:
 
         for section_key, section_data in \
                 self.__documentation_sections.items():
-            d[section_key] = section_data
+            d[section_key] = section_data['content']
 
-        self.__documentation['contents'] = template.substitute(d)
+        self.__documentation['content'] = template.substitute(d)

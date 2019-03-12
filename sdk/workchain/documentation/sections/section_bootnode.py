@@ -3,10 +3,11 @@ from workchain.documentation.sections.section_utils import SectionUtils
 
 
 class SectionBootNodes(DocSection):
-    def __init__(self, bootnode_address=None, bootnode_port=None,
+    def __init__(self, section_number, title, bootnode_address=None,
+                 bootnode_port=None,
                  bootnode_ip=None):
         path_to_md = 'sections/bootnode.md'
-        DocSection.__init__(self, path_to_md)
+        DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__bootnode_address = bootnode_address
         self.__bootnode_port = bootnode_port
@@ -32,10 +33,11 @@ class SectionBootNodesBuilder:
     def __init__(self):
         self.__instance = None
 
-    def __call__(self, bootnode_address=None, bootnode_port=None,
-                 bootnode_ip=None, **_ignored):
+    def __call__(self, section_number, title, bootnode_address=None,
+                 bootnode_port=None, bootnode_ip=None, **_ignored):
 
         if not self.__instance:
-            self.__instance = SectionBootNodes(bootnode_address,
+            self.__instance = SectionBootNodes(section_number, title,
+                                               bootnode_address,
                                                bootnode_port, bootnode_ip)
         return self.__instance

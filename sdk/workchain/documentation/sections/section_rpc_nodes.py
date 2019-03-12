@@ -3,10 +3,10 @@ from workchain.documentation.sections.section_utils import SectionUtils
 
 
 class SectionRpcNodes(DocSection):
-    def __init__(self, rpc_nodes, workchain_id, bootnode_address=None,
-                 bootnode_ip=None, bootnode_port=None):
+    def __init__(self, section_number, title, rpc_nodes, workchain_id,
+                 bootnode_address=None, bootnode_ip=None, bootnode_port=None):
         path_to_md = 'sections/rpc_nodes.md'
-        DocSection.__init__(self, path_to_md)
+        DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__rpc_nodes = rpc_nodes
         self.__workchain_id = workchain_id
@@ -37,12 +37,12 @@ class SectionRpcNodesBuilder:
     def __init__(self):
         self.__instance = None
 
-    def __call__(self, rpc_nodes, workchain_id,
+    def __call__(self, section_number, title, rpc_nodes, workchain_id,
                  bootnode_address=None, bootnode_ip=None, bootnode_port=None,
                  **_ignored):
 
         if not self.__instance:
-            self.__instance = SectionRpcNodes(rpc_nodes, workchain_id,
-                                             bootnode_address, bootnode_ip,
-                                             bootnode_port)
+            self.__instance = SectionRpcNodes(section_number, title, rpc_nodes,
+                                              workchain_id, bootnode_address,
+                                              bootnode_ip, bootnode_port)
         return self.__instance
