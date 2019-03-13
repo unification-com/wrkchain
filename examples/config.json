@@ -47,7 +47,6 @@
           "prefund": [
               {
                   "address": "0xfBf151E90436beC94DA59D0D4f434C9Ea6CC40Cd",
-                  "private_key": "5ad1aafaac60d4fd387a986c5807df43315ca6e589ac1c391fe00ec12ebfdc8c",
                   "balance": "1000000000"
               }
           ]
