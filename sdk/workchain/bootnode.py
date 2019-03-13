@@ -10,6 +10,8 @@ class BootnodeKey:
         # Todo - throw exception if BIN_BOOTNODE not found/empty
         if len(key_prefix) > 0:
             key_prefix = f'{key_prefix}'
+        else:
+            key_prefix = 'bootnode'
 
         node_dir = build_dir + '/node_keys'
         if not os.path.exists(node_dir):
