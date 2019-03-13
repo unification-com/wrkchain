@@ -53,9 +53,11 @@ def chaintest():
 
 
 def generate_validators(
-        validators, bootnode, bootnode_id, workchain_id, with_rpc=False):
+        validators, bootnode_config, workchain_id, with_rpc=False):
     d = []
     n = 0
+
+    node = bootnode_config['nodes']
 
     for validator in validators:
         n = n + 1
@@ -65,7 +67,7 @@ def generate_validators(
             name = f'workchain-validator-{n}'
 
         geth_port = port_list.pop(0)
-        enode = f'enode://{bootnode_id}@{bootnode["ip"]}:{bootnode["port"]}'
+
         cmd = f'/usr/bin/geth ' \
               f'--etherbase {validator["address"]} ' \
               f'--gasprice "0" ' \
@@ -77,10 +79,12 @@ def generate_validators(
               f'--unlock {validator["address"]} ' \
               f'--verbosity=4 '
 
-        if bootnode['use']:
+        if bootnode_config['type'] == 'dedicated':
+            enode = f'enode://{node["address"]}@{node["ip"]}:{node["port"]}'
             cmd = cmd + f'--bootnodes {enode} '
         else:
-            cmd = cmd + f'--nodekey="/root/node_keys/{validator["address"]}.key" '
+            cmd = cmd + f'--nodekey="/root/node_keys/' \
+                        f'{validator["address"]}.key" '
 
         if with_rpc:
             cmd = cmd + \
@@ -125,22 +129,21 @@ def generate_validators(
     return d
 
 
-def generate(config, bootnode_address, workchain_id):
+def generate(config, bootnode_config, workchain_id):
     workchain = config['workchain']
     validators = workchain['validators']
     rpc_nodes = workchain['rpc_nodes']
-    bootnode_cfg = workchain['bootnode']
 
     services = []
-    if bootnode_cfg['use']:
-        services.append(bootnode(bootnode_cfg))
+    if bootnode_config['type'] == 'dedicated':
+        services.append(bootnode(bootnode_config['nodes']))
 
     rpc_nodes = generate_validators(
-        rpc_nodes, bootnode_cfg, bootnode_address, workchain_id, with_rpc=True)
+        rpc_nodes, bootnode_config, workchain_id, with_rpc=True)
     services = services + rpc_nodes
 
     evs = generate_validators(
-        validators, bootnode_cfg, bootnode_address, workchain_id)
+        validators, bootnode_config, workchain_id)
     services = services + evs
 
     if config['workchain']['chaintest']:

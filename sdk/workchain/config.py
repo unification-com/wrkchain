@@ -159,24 +159,14 @@ def generate_workchain(config_file, build_dir):
     config = parse_config(config_file)
 
     genesis_json, workchain_id = generate_genesis(config)
-    bootnode_address = None
     bootnode_config = configure_bootnode(build_dir, config)
-
-    # Todo: remove after bootnode_config plugged in to composition
-    if config['workchain']['bootnode']['use']:
-        ip = config['workchain']['bootnode']['ip']
-        port = config['workchain']['bootnode']['port']
-        bootnode_key = BootnodeKey(build_dir, ip, port)
-        bootnode_address = bootnode_key.get_bootnode_address()
-        click.echo(f'Bootnode Address: {bootnode_address}')
 
     documentation = generate_documentation(config, genesis_json,
                                            bootnode_config)
 
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
 
-    # Todo: plug in bootnode_config to composition
-    composition = generate(config, bootnode_address, workchain_id)
+    composition = generate(config, bootnode_config, workchain_id)
 
     write_genesis(build_dir, rendered)
     write_documentation(build_dir, documentation)

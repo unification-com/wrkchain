@@ -126,7 +126,10 @@ def test_parse_config():
 def test_composer():
     from workchain.composer import generate
     from workchain.genesis import DEFAULT_NETWORK_ID
-    generate(test_config, 'BOOTNODE_ADDRESS', DEFAULT_NETWORK_ID)
+    from workchain.config import configure_bootnode
+    build_dir = '/tmp'
+    bootnode_cfg = configure_bootnode(build_dir, test_config)
+    generate(test_config, bootnode_cfg, DEFAULT_NETWORK_ID)
 
 
 def test_generate_documentation():
