@@ -16,6 +16,8 @@ ARG PRIVATE_KEY
 ARG GETH_LISTEN_PORT
 
 ADD build/genesis.json /root/assets/genesis.json
+COPY build/node_keys /root/node_keys
+COPY build/static-nodes.json /root/static-nodes.json
 
 RUN echo $WALLET_PASS > /root/.walletpassword
 RUN echo $PRIVATE_KEY > /root/.privatekey
