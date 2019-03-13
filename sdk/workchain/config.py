@@ -2,12 +2,12 @@ import click
 import json
 import logging
 
-from workchain_sdk.bootnode import BootnodeKey
-from workchain_sdk.composer import generate
-from workchain_sdk.documentation.documentation import WorkchainDocumentation
-from workchain_sdk.genesis import build_genesis, generate_workchain_id
-from workchain_sdk.mainchain import UndMainchain
-from workchain_sdk.utils import write_build_file, get_oracle_addresses
+from workchain.bootnode import BootnodeKey
+from workchain.composer import generate
+from workchain.documentation.documentation import WorkchainDocumentation
+from workchain.genesis import build_genesis, generate_workchain_id
+from workchain.mainchain import UndMainchain
+from workchain.utils import write_build_file, get_oracle_addresses
 
 log = logging.getLogger(__name__)
 
@@ -20,10 +20,10 @@ def parse_config(config_file):
     return d
 
 
-def generate_documentation(config, genesis_json, bootnode_address=None):
+def generate_documentation(config, genesis_json, bootnode_config):
     doc_gen = WorkchainDocumentation(config,
                                      genesis_json['config']['chainId'],
-                                     bootnode_address=bootnode_address)
+                                     bootnode_config, genesis_json)
     doc_gen.generate()
 
     documentation = {
@@ -67,6 +67,10 @@ def write_composition(build_dir, composition):
     write_build_file(build_dir + '/docker-compose.yml', composition)
 
 
+def write_static_nodes(build_dir, static_nodes):
+    write_build_file(build_dir + '/static-nodes.json', static_nodes)
+
+
 def check_oracle_address_funds(config):
     oracle_addresses = get_oracle_addresses(config)
     network = config['mainchain']['network']
@@ -83,6 +87,65 @@ def check_oracle_address_funds(config):
                        f'Workchain Root smart contract')
 
 
+def generate_bootnode_info(build_dir, ip, port, public_address=''):
+    node_info = {}
+    bootnode_key = BootnodeKey(build_dir, ip, port, public_address)
+    bootnode_address = bootnode_key.get_bootnode_address()
+
+    node_info['address'] = bootnode_address
+    node_info['enode'] = bootnode_key.get_enode()
+    node_info['ip'] = ip
+    node_info['port'] = port
+
+    return node_info
+
+
+def configure_bootnode(build_dir, config):
+    bootnode_config = {}
+    if config['workchain']['bootnode']['use']:
+        ip = config['workchain']['bootnode']['ip']
+        port = config['workchain']['bootnode']['port']
+        node_info = generate_bootnode_info(build_dir, ip, port)
+        bootnode_config['type'] = 'dedicated'
+        bootnode_config['nodes'] = node_info
+    else:
+        validators = config['workchain']['validators']
+        rpc_nodes = config['workchain']['rpc_nodes']
+        nodes = {}
+        static_addresses_list = []
+
+        for validator in validators:
+            public_address = validator['address']
+            ip = validator['ip']
+            port = validator['listen_port']
+
+            node_info = generate_bootnode_info(build_dir, ip, port,
+                                               public_address)
+
+            nodes[public_address] = node_info
+            static_addresses_list.append(node_info['enode'])
+
+        for rpc_node in rpc_nodes:
+            public_address = rpc_node['address']
+            ip = rpc_node['ip']
+            port = rpc_node['listen_port']
+
+            node_info = generate_bootnode_info(build_dir, ip, port,
+                                               public_address)
+
+            nodes[public_address] = node_info
+            static_addresses_list.append(node_info['enode'])
+
+        bootnode_config['type'] = 'static'
+        bootnode_config['nodes'] = nodes
+
+        rendered_static_nodes = json.dumps(static_addresses_list,
+                                           indent=2, separators=(',', ':'))
+        write_static_nodes(build_dir, rendered_static_nodes)
+
+    return bootnode_config
+
+
 @click.group()
 def main():
     pass
@@ -97,16 +160,22 @@ def generate_workchain(config_file, build_dir):
 
     genesis_json, workchain_id = generate_genesis(config)
     bootnode_address = None
+    bootnode_config = configure_bootnode(build_dir, config)
 
+    # Todo: remove after bootnode_config plugged in to composition
     if config['workchain']['bootnode']['use']:
-        bootnode_key = BootnodeKey(build_dir)
+        ip = config['workchain']['bootnode']['ip']
+        port = config['workchain']['bootnode']['port']
+        bootnode_key = BootnodeKey(build_dir, ip, port)
         bootnode_address = bootnode_key.get_bootnode_address()
         click.echo(f'Bootnode Address: {bootnode_address}')
 
     documentation = generate_documentation(config, genesis_json,
-                                           bootnode_address)
+                                           bootnode_config)
 
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
+
+    # Todo: plug in bootnode_config to composition
     composition = generate(config, bootnode_address, workchain_id)
 
     write_genesis(build_dir, rendered)

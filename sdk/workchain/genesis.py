@@ -5,7 +5,7 @@ from random import SystemRandom
 
 from web3.auto import w3
 
-from workchain_sdk.utils import repo_root
+from workchain.utils import repo_root
 
 DEFAULT_NETWORK_ID = 50050
 
