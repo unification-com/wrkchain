@@ -15,7 +15,7 @@
         "ip": "172.25.0.2",
         "port": 30304
       },
-      "chaintest": true,
+      "chaintest": false,
       "validators":[
           {
               "address": "0xA6ac533Bd51cc4c8BB0c72612669c62B35521578",
