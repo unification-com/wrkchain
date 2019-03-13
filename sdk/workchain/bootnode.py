@@ -14,6 +14,7 @@ class BootnodeKey:
         node_dir = build_dir + '/node_keys'
         if not os.path.exists(node_dir):
             os.makedirs(node_dir)
+            os.chmod(node_dir, 0o777)
 
         self.__bootnode_key_path = node_dir + f'/{key_prefix}.key'
         self.__ip = ip
