@@ -7,12 +7,6 @@ GETH_BASE_PORT = 30305
 MAX_EVS = 256
 
 port_list = [GETH_BASE_PORT + x for x in range(MAX_EVS)]
-ip_list = [x + 2 for x in range(16)]
-
-
-def get_ip():
-    index = ip_list.pop(0)
-    return f'172.25.0.{index}'
 
 
 def bootnode(config):
@@ -27,7 +21,7 @@ def bootnode(config):
         ],
         'networks': {
             'chainnet': {
-                'ipv4_address': get_ip()
+                'ipv4_address': config['ip']
             }
         },
         'build': {
@@ -122,7 +116,7 @@ def generate_validators(
             'ports': ports,
             'networks': {
                 'chainnet': {
-                    'ipv4_address': get_ip()
+                    'ipv4_address': validator['ip']
                 }
             },
             'build': build_d,
