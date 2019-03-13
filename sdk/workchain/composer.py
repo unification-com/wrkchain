@@ -12,7 +12,7 @@ ip_list = [x + 2 for x in range(16)]
 
 def get_ip():
     index = ip_list.pop(0)
-    return f'192.168.43.{index}'
+    return f'172.25.0.{index}'
 
 
 def bootnode(config):
@@ -149,7 +149,7 @@ def generate(config, bootnode_address, workchain_id):
 
     networks = {'chainnet':
                     {'driver': 'bridge', 'ipam':
-                        {'config': [{'subnet': '192.168.43.0/24'}]}}}
+                        {'config': [{'subnet': '172.25.0.0/24'}]}}}
 
     config = Config(version=COMPOSE_VERSION, services=services, volumes=[],
                     networks=networks, secrets=[], configs=[])
