@@ -57,6 +57,7 @@ def chaintest():
         }
     }
 
+
 def generate_validators(
         validators, bootnode, bootnode_id, workchain_id, with_rpc=False):
     d = []
@@ -148,12 +149,13 @@ def generate(config, bootnode_address, workchain_id):
         validators, bootnode_cfg, bootnode_address, workchain_id)
     services = services + evs
 
-    if config['workchain']['chaintest'] == True:
+    if config['workchain']['chaintest']:
         services = services + [chaintest()]
 
-    networks = {'chainnet':
-                    {'driver': 'bridge', 'ipam':
-                        {'config': [{'subnet': '172.25.0.0/24'}]}}}
+    networks = {
+        'chainnet': {
+            'driver': 'bridge', 'ipam': {
+                'config': [{'subnet': '172.25.0.0/24'}]}}}
 
     config = Config(version=COMPOSE_VERSION, services=services, volumes=[],
                     networks=networks, secrets=[], configs=[])
