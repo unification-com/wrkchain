@@ -35,16 +35,21 @@ def generate_documentation(config, genesis_json, bootnode_config):
     # from genesis.json
     workchain_id = genesis_json['config']['chainId']
 
-    doc_gen = WorkchainDocumentation(workchain_name, validators, rpc_nodes,
-                                     mainchain_netork, ledger_base_type,
-                                     oracle_addresses, mainchain_web3_provider,
-                                     mainchain_network_id, workchain_id,
-                                     bootnode_config, genesis_json)
-    doc_gen.generate()
+    workchain_documentation = WorkchainDocumentation(workchain_name,
+                                                     validators, rpc_nodes,
+                                                     mainchain_netork,
+                                                     ledger_base_type,
+                                                     oracle_addresses,
+                                                     mainchain_web3_provider,
+                                                     mainchain_network_id,
+                                                     workchain_id,
+                                                     bootnode_config,
+                                                     genesis_json)
+    workchain_documentation.generate()
 
     documentation = {
-        'md': doc_gen.get_md(),
-        'html': doc_gen.get_html()
+        'md': workchain_documentation.get_md(),
+        'html': workchain_documentation.get_html()
     }
 
     return documentation
