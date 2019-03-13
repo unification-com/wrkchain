@@ -4,4 +4,6 @@ RUN apt-get install -y gcc
 
 RUN pip install --upgrade --index-url https://pypi.org/simple/ workchain
 
-CMD python -m workchain.config --help
+COPY examples /examples
+
+CMD python -m workchain.config generate-workchain /examples/config.json /build
