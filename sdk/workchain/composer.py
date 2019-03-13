@@ -7,6 +7,13 @@ GETH_BASE_PORT = 30305
 MAX_EVS = 256
 
 port_list = [GETH_BASE_PORT + x for x in range(MAX_EVS)]
+ip_list = [x + 2 for x in range(16)]
+
+
+def get_ip():
+    index = ip_list.pop(0)
+    return f'192.168.43.{index}'
+
 
 def bootnode(config):
     name = 'workchain_bootnode'
@@ -15,9 +22,14 @@ def bootnode(config):
         'hostname': name,
         'container_name': name,
         'ports': [ServicePort(
-            published=config['port'], target=config['port'], protocol=None,
+            published=config['port'], target=config['port'], protocol='udp',
             mode=None, external_ip=None),
         ],
+        'networks': {
+            'chainnet': {
+                'ipv4_address': get_ip()
+            }
+        },
         'build': {
             'context': '..',
             'dockerfile': 'Docker/bootnode/Dockerfile',
@@ -27,12 +39,18 @@ def bootnode(config):
         }
     }
 
+
 def chaintest():
     name = 'chaintest'
     return {
         'name': name,
         'hostname': name,
         'container_name': name,
+        'networks': {
+            'chainnet': {
+                'ipv4_address': get_ip()
+            }
+        },
         'build': {
             'context': '..',
             'dockerfile': 'Docker/chaintest/Dockerfile',
@@ -83,10 +101,25 @@ def generate_validators(
             name = f'workchain-rpc-validator-{n}'
         else:
             name = f'workchain-validator-{n}'
+
+        if with_rpc:
+            ports = [ServicePort(
+                published=8101, target=8101, protocol=None,
+                mode=None, external_ip=None),
+            ]
+        else:
+            ports = []
+
         d.append({
             'name': name,
             'hostname': name,
             'container_name': name,
+            'ports': ports,
+            'networks': {
+                'chainnet': {
+                    'ipv4_address': get_ip()
+                }
+            },
             'build': build_d,
             'command': cmd
         })
@@ -114,6 +147,10 @@ def generate(config, bootnode_address, workchain_id):
     if config['workchain']['chaintest'] == True:
         services = services + [chaintest()]
 
+    networks = {'chainnet':
+                    {'driver': 'bridge', 'ipam':
+                        {'config': [{'subnet': '192.168.43.0/24'}]}}}
+
     config = Config(version=COMPOSE_VERSION, services=services, volumes=[],
-                    networks=[], secrets=[], configs=[])
+                    networks=networks, secrets=[], configs=[])
     return serialize_config(config, None)
