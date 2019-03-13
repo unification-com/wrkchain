@@ -64,10 +64,14 @@ def generate_validators(
 
     for validator in validators:
         n = n + 1
+        if with_rpc:
+            name = f'workchain-rpc-validator-{n}'
+        else:
+            name = f'workchain-validator-{n}'
+
         geth_port = port_list.pop(0)
         enode = f'enode://{bootnode_id}@{bootnode["ip"]}:{bootnode["port"]}'
         cmd = f'/usr/bin/geth ' \
-              f'--bootnodes {enode} ' \
               f'--etherbase {validator["address"]} ' \
               f'--gasprice "0" ' \
               f'--password /root/.walletpassword ' \
@@ -77,6 +81,11 @@ def generate_validators(
               f'--syncmode=full ' \
               f'--unlock {validator["address"]} ' \
               f'--verbosity=4 '
+
+        if bootnode['use']:
+            cmd = cmd + f'--bootnodes {enode} '
+        else:
+            cmd = cmd + f'--nodekey="/root/{validator["address"]}_bootnode.key"'
 
         if with_rpc:
             cmd = cmd + \
@@ -96,11 +105,6 @@ def generate_validators(
                 'GETH_LISTEN_PORT': geth_port,
             },
         }
-
-        if with_rpc:
-            name = f'workchain-rpc-validator-{n}'
-        else:
-            name = f'workchain-validator-{n}'
 
         if with_rpc:
             ports = [ServicePort(
