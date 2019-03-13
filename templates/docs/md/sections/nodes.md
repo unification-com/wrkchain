@@ -4,6 +4,8 @@ Node Type: ($__NODE_TYPE__)
 
 Copy the generated `genesis.json` to the computer you will be running Node $__NODE_NUM__
 
+$__COPY_STATIC_NODES_JSON__
+
 The first time you run the node, you will need to initialise it by running
 the following
 

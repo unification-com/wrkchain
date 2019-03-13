@@ -18,6 +18,7 @@ class SectionNodes(DocSection):
 
             public_address = node['address']
             listen_port = node['listen_port']
+            copy_static_nodes_json = ''
 
             # common flags
             listen_port_flag = f' --port {listen_port}'
@@ -30,8 +31,8 @@ class SectionNodes(DocSection):
                     f'{self.__bootnode_config["nodes"]["enode"]}" '
             else:
                 bootnode_flag = f' --nodekey="path/to/{public_address}.key"'
-
-                # Todo - plug in copying static-nodes.json
+                copy_static_nodes_json = 'Copy `build/static-nodes.json` to' \
+                                         '`~/.ethereum`'
 
             # Validator only
             if node['is_validator']:
@@ -69,7 +70,8 @@ class SectionNodes(DocSection):
                  '__EV_PUBLIC_ADDRESS__': public_address,
                  '__GETH_COMMAND__': geth_cmd,
                  '__NODE_TYPE__': ' & '.join(node_types),
-                 '__NODE_NAME__': node['id']
+                 '__NODE_NAME__': node['id'],
+                 '__COPY_STATIC_NODES_JSON__': copy_static_nodes_json
                  }
             self.add_content(d, append=True)
 
