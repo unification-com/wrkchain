@@ -51,6 +51,7 @@ test_config = {
         "ip": "127.0.0.1",
         "port": "30301"
       },
+      "chaintest": False,
       "validators":[
           {
               "address": "0xA6ac533Bd51cc4c8BB0c72612669c62B35521578",
