@@ -8,22 +8,25 @@ from workchain.utils import repo_root, get_oracle_addresses
 
 
 class WorkchainDocumentation:
-    def __init__(self, config, workchain_id, bootnode_config, genesis_json):
+    def __init__(self, workchain_name, validators, rpc_nodes, mainchain_netork,
+                 ledger_base_type, oracle_addresses, mainchain_web3_provider,
+                 mainchain_network_id, workchain_id, bootnode_config,
+                 genesis_json):
 
         self.__doc_params = {
-            'workchain_name': config['workchain']['title'],
+            'workchain_name': workchain_name,
             'workchain_id': workchain_id,
             'bootnode_config': bootnode_config,
-            'validators': config['workchain']['validators'],
-            'rpc_nodes':  config['workchain']['rpc_nodes'],
-            'network': config["mainchain"]["network"],
-            'base': config["workchain"]["ledger"]["base"],
-            'oracle_addresses': get_oracle_addresses(config),
-            'mainchain_rpc_host': config['mainchain']['web3_provider']['host'],
-            'mainchain_rpc_port': config['mainchain']['web3_provider']['port'],
-            'mainchain_rpc_type': config['mainchain']['web3_provider']['type'],
-            'mainchain_rpc_uri': config['mainchain']['web3_provider']['uri'],
-            'mainchain_network_id': config['mainchain']['network_id'],
+            'validators': validators,
+            'rpc_nodes':  rpc_nodes,
+            'network': mainchain_netork,
+            'base': ledger_base_type,
+            'oracle_addresses': oracle_addresses,
+            'mainchain_rpc_host': mainchain_web3_provider['host'],
+            'mainchain_rpc_port': mainchain_web3_provider['port'],
+            'mainchain_rpc_type': mainchain_web3_provider['type'],
+            'mainchain_rpc_uri': mainchain_web3_provider['uri'],
+            'mainchain_network_id': mainchain_network_id,
             'genesis_json': json.dumps(genesis_json, separators=(',', ':'))
         }
 

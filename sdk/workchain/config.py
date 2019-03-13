@@ -21,8 +21,24 @@ def parse_config(config_file):
 
 
 def generate_documentation(config, genesis_json, bootnode_config):
-    doc_gen = WorkchainDocumentation(config,
-                                     genesis_json['config']['chainId'],
+
+    # derived from config
+    workchain_name = config['workchain']['title']
+    validators = config['workchain']['validators']
+    rpc_nodes = config['workchain']['rpc_nodes']
+    mainchain_netork = config["mainchain"]["network"]
+    ledger_base_type = config["workchain"]["ledger"]["base"]
+    oracle_addresses = get_oracle_addresses(config)
+    mainchain_web3_provider = config['mainchain']['web3_provider']
+    mainchain_network_id = config['mainchain']['network_id']
+
+    # from genesis.json
+    workchain_id = genesis_json['config']['chainId']
+
+    doc_gen = WorkchainDocumentation(workchain_name, validators, rpc_nodes,
+                                     mainchain_netork, ledger_base_type,
+                                     oracle_addresses, mainchain_web3_provider,
+                                     mainchain_network_id, workchain_id,
                                      bootnode_config, genesis_json)
     doc_gen.generate()
 
