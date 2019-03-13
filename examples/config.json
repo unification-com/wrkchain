@@ -71,19 +71,7 @@
                 "listen_port": 30304,
                 "is_validator": false,
                 "write_to_oracle": false,
-                "rpc": {
-                    "port": 8545,
-                    "apis": {
-                        "eth": true,
-                        "web3": true,
-                        "net": true,
-                        "admin": true,
-                        "debug": true,
-                        "db": true,
-                        "personal": false,
-                        "miner": false
-                    }
-                }
+                "rpc": true
             }
         ],
         "coin": {

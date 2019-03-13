@@ -12,7 +12,11 @@ class SectionNetwork(DocSection):
         web3_urls = ''
         for node in self.__nodes:
             if node['rpc']:
-                web3_urls += f'<http://{node["ip"]}:{node["rpc"]["port"]}>\n'
+                if isinstance(node['rpc'], bool):
+                    rpc_port = '8545'
+                else:
+                    rpc_port = node["rpc"]["port"]
+                web3_urls += f'<http://{node["ip"]}:{rpc_port}>\n'
 
         d = {
             '__JSON_RPC_URLS__': web3_urls

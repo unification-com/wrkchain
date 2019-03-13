@@ -48,13 +48,18 @@ class SectionNodes(DocSection):
             # RPC only
             if node['rpc']:
                 apis = []
-                for api, use_api in node['rpc']['apis'].items():
-                    if use_api:
-                        apis.append(api)
+                if isinstance(node['rpc'], bool):
+                    apis = ['eth', 'web3', 'net', 'admin', 'debug', 'db']
+                    rpc_port = '8545'
+                else:
+                    for api, use_api in node['rpc']['apis'].items():
+                        if use_api:
+                            apis.append(api)
+                    rpc_port = node["rpc"]["port"]
 
                 rpc_flags = f' --rpc' \
                     f' --rpcaddr "0.0.0.0"' \
-                    f' --rpcport "{node["rpc"]["port"]}"' \
+                    f' --rpcport "{rpc_port}"' \
                     f' --rpcapi "{",".join(apis)}"' \
                     f' --rpccorsdomain "*"'
 
