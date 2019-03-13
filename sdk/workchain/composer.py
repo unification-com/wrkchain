@@ -27,6 +27,18 @@ def bootnode(config):
         }
     }
 
+def chaintest():
+    name = 'chaintest'
+    return {
+        'name': name,
+        'hostname': name,
+        'container_name': name,
+        'build': {
+            'context': '..',
+            'dockerfile': 'Docker/chaintest/Dockerfile',
+        }
+    }
+
 def generate_validators(
         validators, bootnode, bootnode_id, workchain_id, with_rpc=False):
     d = []
@@ -98,6 +110,9 @@ def generate(config, bootnode_address, workchain_id):
     evs = generate_validators(
         validators, bootnode_cfg, bootnode_address, workchain_id)
     services = services + evs
+
+    if config['workchain']['chaintest'] == True:
+        services = services + [chaintest()]
 
     config = Config(version=COMPOSE_VERSION, services=services, volumes=[],
                     networks=[], secrets=[], configs=[])
