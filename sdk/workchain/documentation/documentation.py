@@ -8,7 +8,7 @@ from workchain.utils import repo_root, get_oracle_addresses
 
 
 class WorkchainDocumentation:
-    def __init__(self, workchain_name, validators, rpc_nodes, mainchain_netork,
+    def __init__(self, workchain_name, nodes, mainchain_netork,
                  ledger_base_type, oracle_addresses, mainchain_web3_provider,
                  mainchain_network_id, workchain_id, bootnode_config,
                  genesis_json):
@@ -17,8 +17,7 @@ class WorkchainDocumentation:
             'workchain_name': workchain_name,
             'workchain_id': workchain_id,
             'bootnode_config': bootnode_config,
-            'validators': validators,
-            'rpc_nodes':  rpc_nodes,
+            'nodes': nodes,
             'network': mainchain_netork,
             'base': ledger_base_type,
             'oracle_addresses': oracle_addresses,
@@ -43,13 +42,9 @@ class WorkchainDocumentation:
                 'content': '',
                 'title': 'Bootnode'
             },
-            '__SECTION_VALIDATORS__':  {
+            '__SECTION_NODES__':  {
                 'content': '',
-                'title': 'Running your Validators'
-            },
-            '__SECTION_JSON_RPC_NODES__':  {
-                'content': '',
-                'title': 'Running your JSON RPC Nodes'
+                'title': 'Running your Nodes'
             },
             '__SECTION_ORACLE__': {
                 'content': '',
@@ -133,6 +128,8 @@ class WorkchainDocumentation:
     def __generate_contents(d):
         header_regex = \
             re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
+        uri_regex = re.compile('([^-\s\w]|_)+')
+
         contents = ''
         for section_key, section_content in d.items():
             section_titles = header_regex.findall(section_content)
@@ -146,9 +143,9 @@ class WorkchainDocumentation:
                 title_words = section_title[2].lstrip().split(' ')
                 section_number = title_words.pop(0)  # get rid of leading #.#
                 title = ' '.join(title_words)
-                uri = '-'.join(title_words).lower()
+                uri = '-'.join(
+                    [uri_regex.sub('', word) for word in title_words]).lower()
                 contents += f'{leading_spaces}{section_number} [{title}]' \
                     f'(#{uri})  \n'
 
         return contents
-

@@ -24,8 +24,7 @@ def generate_documentation(config, genesis_json, bootnode_config):
 
     # derived from config
     workchain_name = config['workchain']['title']
-    validators = config['workchain']['validators']
-    rpc_nodes = config['workchain']['rpc_nodes']
+    nodes = config['workchain']['nodes']
     mainchain_netork = config["mainchain"]["network"]
     ledger_base_type = config["workchain"]["ledger"]["base"]
     oracle_addresses = get_oracle_addresses(config)
@@ -35,8 +34,7 @@ def generate_documentation(config, genesis_json, bootnode_config):
     # from genesis.json
     workchain_id = genesis_json['config']['chainId']
 
-    workchain_documentation = WorkchainDocumentation(workchain_name,
-                                                     validators, rpc_nodes,
+    workchain_documentation = WorkchainDocumentation(workchain_name, nodes,
                                                      mainchain_netork,
                                                      ledger_base_type,
                                                      oracle_addresses,

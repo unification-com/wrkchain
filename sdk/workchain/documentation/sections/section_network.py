@@ -2,16 +2,17 @@ from workchain.documentation.sections.doc_section import DocSection
 
 
 class SectionNetwork(DocSection):
-    def __init__(self, section_number, title, rpc_nodes):
+    def __init__(self, section_number, title, nodes):
         path_to_md = 'sections/network.md'
         DocSection.__init__(self, path_to_md, section_number, title)
-        self.__rpc_nodes = rpc_nodes
+        self.__nodes = nodes
 
     def generate(self):
 
         web3_urls = ''
-        for rpc_node in self.__rpc_nodes:
-            web3_urls += f'<http://{rpc_node["ip"]}:{rpc_node["rpc_port"]}>\n'
+        for node in self.__nodes:
+            if node['rpc']:
+                web3_urls += f'<http://{node["ip"]}:{node["rpc"]["port"]}>\n'
 
         d = {
             '__JSON_RPC_URLS__': web3_urls
@@ -25,10 +26,10 @@ class SectionNetworkBuilder:
     def __init__(self):
         self.__instance = None
 
-    def __call__(self, section_number, title, rpc_nodes, **_ignored):
+    def __call__(self, section_number, title, nodes, **_ignored):
 
         if not self.__instance:
             self.__instance = SectionNetwork(section_number, title,
-                                             rpc_nodes)
+                                             nodes)
 
         return self.__instance
