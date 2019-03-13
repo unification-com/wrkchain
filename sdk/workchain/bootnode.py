@@ -9,8 +9,13 @@ class BootnodeKey:
     def __init__(self, build_dir, ip, port, key_prefix=''):
         # Todo - throw exception if BIN_BOOTNODE not found/empty
         if len(key_prefix) > 0:
-            key_prefix = f'{key_prefix}_'
-        self.__bootnode_key_path = build_dir + f'/{key_prefix}bootnode.key'
+            key_prefix = f'{key_prefix}'
+
+        node_dir = build_dir + '/node_keys'
+        if not os.path.exists(node_dir):
+            os.makedirs(node_dir)
+
+        self.__bootnode_key_path = node_dir + f'/{key_prefix}.key'
         self.__ip = ip
         self.__port = port
 

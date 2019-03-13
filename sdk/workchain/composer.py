@@ -85,7 +85,7 @@ def generate_validators(
         if bootnode['use']:
             cmd = cmd + f'--bootnodes {enode} '
         else:
-            cmd = cmd + f'--nodekey="/root/{validator["address"]}_bootnode.key"'
+            cmd = cmd + f'--nodekey="/root/node_keys/{validator["address"]}.key"'
 
         if with_rpc:
             cmd = cmd + \
