@@ -3,6 +3,7 @@ import pprint
 
 
 REQUIRED_WORKCHAIN_OVERRIDES = ['nodes']
+REQUIRED_WORKCHAIN_NODE_OVERRIDES = ['address']
 
 
 class MissingConfigOverrideException(Exception):
@@ -48,6 +49,13 @@ class WorkchainConfig:
                                                  f'{config_file}. You must'
                                                  f' define at least one '
                                                  f'node')
+
+        for i in range(len(self.__overrides['workchain']['nodes'])):
+            for k in REQUIRED_WORKCHAIN_NODE_OVERRIDES:
+                if k not in self.__overrides['workchain']['nodes'][i].keys():
+                    raise MissingConfigOverrideException(
+                        f'"{k}" not defined in workchain -> nodes -> Node {i} '
+                        f'section in {config_file}.')
 
     def __load_basic_defaults(self):
         basic_default = {
