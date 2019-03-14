@@ -2,8 +2,11 @@ import json
 import pprint
 
 
+REQUIRED_OVERRIDES = ['workchain', 'mainchain']
 REQUIRED_WORKCHAIN_OVERRIDES = ['nodes']
 REQUIRED_WORKCHAIN_NODE_OVERRIDES = ['address']
+REQUIRED_MAINCHAIN_OVERRIDES = ['network']
+VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet']
 
 
 class MissingConfigOverrideException(Exception):
@@ -39,6 +42,13 @@ class WorkchainConfig:
         pprint.pprint(self.__overrides)
 
     def __check_overrides(self, config_file):
+
+        for k in REQUIRED_OVERRIDES:
+            if k not in self.__overrides.keys():
+                raise MissingConfigOverrideException(f'"{k}" not defined in '
+                                                     f'{config_file}. Must '
+                                                     f'define {", ".join(REQUIRED_OVERRIDES)}')
+
         for k in REQUIRED_WORKCHAIN_OVERRIDES:
             if k not in self.__overrides['workchain'].keys():
                 raise MissingConfigOverrideException(f'"{k}" not defined in '
@@ -56,6 +66,19 @@ class WorkchainConfig:
                     raise MissingConfigOverrideException(
                         f'"{k}" not defined in workchain -> nodes -> Node {i} '
                         f'section in {config_file}.')
+
+        for k in REQUIRED_MAINCHAIN_OVERRIDES:
+            if k not in self.__overrides['mainchain'].keys():
+                raise MissingConfigOverrideException(f'"{k}" not defined in '
+                                                     f'{config_file}. Must '
+                                                     f'define {", ".join(REQUIRED_MAINCHAIN_OVERRIDES)}')
+
+        if self.__overrides['mainchain']['network'] \
+            not in VALID_MAINCHAIN_NETWORKS:
+            network = self.__overrides['mainchain']['network']
+            raise MissingConfigOverrideException(f'Invalid Mainchain Network '
+                                                 f'{network}. Must be one of: '
+                                                 f'{", ".join(VALID_MAINCHAIN_NETWORKS)}')
 
     def __load_basic_defaults(self):
         basic_default = {

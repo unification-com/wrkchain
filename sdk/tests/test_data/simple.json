@@ -10,5 +10,8 @@
         "coin": {
             "symbol": "SIMP"
         }
+    },
+    "mainchain": {
+        "network": "testnet"
     }
 }
