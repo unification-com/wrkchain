@@ -1,6 +1,7 @@
 import glob
 import os
 
+from pathlib import Path
 
 test_genesis = {
   "config":{
@@ -51,30 +52,49 @@ test_config = {
         "ip": "127.0.0.1",
         "port": "30301"
       },
-      "validators":[
+      "chaintest": False,
+      "nodes": [
           {
+              "id": "Validator UK",
               "address": "0xA6ac533Bd51cc4c8BB0c72612669c62B35521578",
               "private_key": "7deeb75a3bbaa57bc073380b77f47d701d7e2ef7551719f3767d4eee0a5fdffd",
+              "ip": "172.25.0.4",
+              "listen_port": 30302,
+              "is_validator": True,
               "write_to_oracle": True,
-              "ip": "127.0.0.1",
-              "listen_port": 30303
+              "rpc": False
           },
           {
+              "id": "Validator US",
               "address": "0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA",
               "private_key": "b7459e3be8b6825ac1b606d5f4ac61652e04086f0645d7f768b5e1a176afffcf",
+              "ip": "172.25.0.5",
+              "listen_port": 30303,
+              "is_validator": True,
               "write_to_oracle": True,
-              "ip": "127.0.0.1",
-              "listen_port": 30302
-          }
-      ],
-      "rpc_nodes": [
+              "rpc": False
+          },
           {
+              "id": "JSON-RPC Node",
               "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
               "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
+              "ip": "172.25.0.6",
+              "listen_port": 30304,
+              "is_validator": False,
               "write_to_oracle": False,
-              "ip": "127.0.0.1",
-              "listen_port": 30301,
-              "rpc_port": 8545
+              "rpc": {
+                  "port": 8545,
+                  "apis": {
+                      "eth": True,
+                      "web3": True,
+                      "net": True,
+                      "admin": True,
+                      "debug": True,
+                      "db": True,
+                      "personal": False,
+                      "miner": False
+                  }
+              }
           }
       ],
       "coin": {
@@ -104,8 +124,8 @@ bootnode_config = {'type': 'dedicated', 'nodes': {'address': 'c6a2c2dcdc7ba6e6a5
 
 
 def examples():
-    from workchain.utils import repo_root
-    examples_path = repo_root() / 'examples'
+    current_script = Path(os.path.abspath(__file__))
+    examples_path = current_script.parent / 'test_data'
     query = os.path.join(str(examples_path), "*.json")
     config_files = glob.glob(query)
     return config_files
@@ -125,7 +145,10 @@ def test_parse_config():
 def test_composer():
     from workchain.composer import generate
     from workchain.genesis import DEFAULT_NETWORK_ID
-    generate(test_config, 'BOOTNODE_ADDRESS', DEFAULT_NETWORK_ID)
+    from workchain.config import configure_bootnode
+    build_dir = '/tmp'
+    bootnode_cfg = configure_bootnode(build_dir, test_config)
+    generate(test_config, bootnode_cfg, DEFAULT_NETWORK_ID)
 
 
 def test_generate_documentation():

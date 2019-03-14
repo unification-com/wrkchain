@@ -8,22 +8,24 @@ from workchain.utils import repo_root, get_oracle_addresses
 
 
 class WorkchainDocumentation:
-    def __init__(self, config, workchain_id, bootnode_config, genesis_json):
+    def __init__(self, workchain_name, nodes, mainchain_netork,
+                 ledger_base_type, oracle_addresses, mainchain_web3_provider,
+                 mainchain_network_id, workchain_id, bootnode_config,
+                 genesis_json):
 
         self.__doc_params = {
-            'workchain_name': config['workchain']['title'],
+            'workchain_name': workchain_name,
             'workchain_id': workchain_id,
             'bootnode_config': bootnode_config,
-            'validators': config['workchain']['validators'],
-            'rpc_nodes':  config['workchain']['rpc_nodes'],
-            'network': config["mainchain"]["network"],
-            'base': config["workchain"]["ledger"]["base"],
-            'oracle_addresses': get_oracle_addresses(config),
-            'mainchain_rpc_host': config['mainchain']['web3_provider']['host'],
-            'mainchain_rpc_port': config['mainchain']['web3_provider']['port'],
-            'mainchain_rpc_type': config['mainchain']['web3_provider']['type'],
-            'mainchain_rpc_uri': config['mainchain']['web3_provider']['uri'],
-            'mainchain_network_id': config['mainchain']['network_id'],
+            'nodes': nodes,
+            'network': mainchain_netork,
+            'base': ledger_base_type,
+            'oracle_addresses': oracle_addresses,
+            'mainchain_rpc_host': mainchain_web3_provider['host'],
+            'mainchain_rpc_port': mainchain_web3_provider['port'],
+            'mainchain_rpc_type': mainchain_web3_provider['type'],
+            'mainchain_rpc_uri': mainchain_web3_provider['uri'],
+            'mainchain_network_id': mainchain_network_id,
             'genesis_json': json.dumps(genesis_json, separators=(',', ':'))
         }
 
@@ -40,13 +42,9 @@ class WorkchainDocumentation:
                 'content': '',
                 'title': 'Bootnode'
             },
-            '__SECTION_VALIDATORS__':  {
+            '__SECTION_NODES__':  {
                 'content': '',
-                'title': 'Running your Validators'
-            },
-            '__SECTION_JSON_RPC_NODES__':  {
-                'content': '',
-                'title': 'Running your JSON RPC Nodes'
+                'title': 'Running your Nodes'
             },
             '__SECTION_ORACLE__': {
                 'content': '',
@@ -130,6 +128,8 @@ class WorkchainDocumentation:
     def __generate_contents(d):
         header_regex = \
             re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
+        uri_regex = re.compile('([^-\s\w]|_)+')
+
         contents = ''
         for section_key, section_content in d.items():
             section_titles = header_regex.findall(section_content)
@@ -143,9 +143,9 @@ class WorkchainDocumentation:
                 title_words = section_title[2].lstrip().split(' ')
                 section_number = title_words.pop(0)  # get rid of leading #.#
                 title = ' '.join(title_words)
-                uri = '-'.join(title_words).lower()
+                uri = '-'.join(
+                    [uri_regex.sub('', word) for word in title_words]).lower()
                 contents += f'{leading_spaces}{section_number} [{title}]' \
                     f'(#{uri})  \n'
 
         return contents
-

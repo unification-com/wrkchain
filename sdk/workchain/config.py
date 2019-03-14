@@ -21,14 +21,33 @@ def parse_config(config_file):
 
 
 def generate_documentation(config, genesis_json, bootnode_config):
-    doc_gen = WorkchainDocumentation(config,
-                                     genesis_json['config']['chainId'],
-                                     bootnode_config, genesis_json)
-    doc_gen.generate()
+
+    # derived from config
+    workchain_name = config['workchain']['title']
+    nodes = config['workchain']['nodes']
+    mainchain_netork = config["mainchain"]["network"]
+    ledger_base_type = config["workchain"]["ledger"]["base"]
+    oracle_addresses = get_oracle_addresses(config)
+    mainchain_web3_provider = config['mainchain']['web3_provider']
+    mainchain_network_id = config['mainchain']['network_id']
+
+    # from genesis.json
+    workchain_id = genesis_json['config']['chainId']
+
+    workchain_documentation = WorkchainDocumentation(workchain_name, nodes,
+                                                     mainchain_netork,
+                                                     ledger_base_type,
+                                                     oracle_addresses,
+                                                     mainchain_web3_provider,
+                                                     mainchain_network_id,
+                                                     workchain_id,
+                                                     bootnode_config,
+                                                     genesis_json)
+    workchain_documentation.generate()
 
     documentation = {
-        'md': doc_gen.get_md(),
-        'html': doc_gen.get_html()
+        'md': workchain_documentation.get_md(),
+        'html': workchain_documentation.get_html()
     }
 
     return documentation
@@ -36,7 +55,7 @@ def generate_documentation(config, genesis_json, bootnode_config):
 
 def generate_genesis(config):
     block_period = config['workchain']['ledger']['consensus']['period']
-    validators = config['workchain']['validators']
+    nodes = config['workchain']['nodes']
     pre_funded_accounts = config['workchain']['coin']['prefund']
 
     workchain_base = config['workchain']['ledger']['base']
@@ -44,7 +63,7 @@ def generate_genesis(config):
     workchain_id = generate_workchain_id()
 
     genesis_json = build_genesis(
-        block_period=block_period,  validators=validators,
+        block_period=block_period,  validators=nodes,
         workchain_base=workchain_base,
         workchain_consensus=workchain_consensus,
         workchain_id=workchain_id,
@@ -109,26 +128,13 @@ def configure_bootnode(build_dir, config):
         bootnode_config['type'] = 'dedicated'
         bootnode_config['nodes'] = node_info
     else:
-        validators = config['workchain']['validators']
-        rpc_nodes = config['workchain']['rpc_nodes']
         nodes = {}
         static_addresses_list = []
 
-        for validator in validators:
-            public_address = validator['address']
-            ip = validator['ip']
-            port = validator['listen_port']
-
-            node_info = generate_bootnode_info(build_dir, ip, port,
-                                               public_address)
-
-            nodes[public_address] = node_info
-            static_addresses_list.append(node_info['enode'])
-
-        for rpc_node in rpc_nodes:
-            public_address = rpc_node['address']
-            ip = rpc_node['ip']
-            port = rpc_node['listen_port']
+        for item in config['workchain']['nodes']:
+            public_address = item['address']
+            ip = item['ip']
+            port = item['listen_port']
 
             node_info = generate_bootnode_info(build_dir, ip, port,
                                                public_address)
@@ -159,24 +165,14 @@ def generate_workchain(config_file, build_dir):
     config = parse_config(config_file)
 
     genesis_json, workchain_id = generate_genesis(config)
-    bootnode_address = None
     bootnode_config = configure_bootnode(build_dir, config)
-
-    # Todo: remove after bootnode_config plugged in to composition
-    if config['workchain']['bootnode']['use']:
-        ip = config['workchain']['bootnode']['ip']
-        port = config['workchain']['bootnode']['port']
-        bootnode_key = BootnodeKey(build_dir, ip, port)
-        bootnode_address = bootnode_key.get_bootnode_address()
-        click.echo(f'Bootnode Address: {bootnode_address}')
 
     documentation = generate_documentation(config, genesis_json,
                                            bootnode_config)
 
     rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
 
-    # Todo: plug in bootnode_config to composition
-    composition = generate(config, bootnode_address, workchain_id)
+    composition = generate(config, bootnode_config, workchain_id)
 
     write_genesis(build_dir, rendered)
     write_documentation(build_dir, documentation)
