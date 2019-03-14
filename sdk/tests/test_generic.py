@@ -140,6 +140,23 @@ def fail_examples(prefix):
     return config_files
 
 
+def check_overrides_in_config(overrides, config):
+    for key, data in overrides.items():
+        if isinstance(data, dict):
+            check_overrides_in_config(data, config[key])
+        elif isinstance(data, list):
+            for i in range(len(data)):
+                ov = data[i]
+                co = config[key][i]
+                if isinstance(ov, dict):
+                    check_overrides_in_config(ov, co)
+        else:
+            if key == 'rpc' and isinstance(data, bool):
+                continue
+            else:
+                assert data == config[key]
+
+
 def test_parse_config():
     from workchain.config import WorkchainConfig
 
@@ -163,6 +180,19 @@ def test_parse_config_missing_nodes():
         with pytest.raises(MissingConfigOverrideException):
             # should fail - missing nodes
             WorkchainConfig(f)
+
+
+def test_successful_override():
+    from workchain.config import WorkchainConfig
+
+    config_files = examples()
+    assert len(config_files) > 0
+
+    for f in config_files:
+        workchain_config = WorkchainConfig(f)
+        config = workchain_config.get()
+        override = workchain_config.get_overrides()
+        check_overrides_in_config(override, config)
 
 
 def test_composer():
