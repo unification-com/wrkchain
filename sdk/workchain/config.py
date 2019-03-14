@@ -115,8 +115,9 @@ class WorkchainConfig:
 
     def __override_nodes(self, nodes):
         defined_nodes = []
+        node_num = 1
         for node in nodes:
-            new_node = self.__load_default_node()
+            new_node = self.__load_default_node(node_num)
 
             for key, data in node.items():
                 if key == 'rpc':
@@ -129,6 +130,8 @@ class WorkchainConfig:
                             new_node[key][k] = d
                 else:
                     new_node[key] = data
+
+            node_num += 1
 
             defined_nodes.append(new_node)
 
@@ -190,9 +193,9 @@ class WorkchainConfig:
         return bootnode
 
     @staticmethod
-    def __load_default_node():
+    def __load_default_node(node_num):
         node = {
-            "id": "JSON-RPC Node",
+            "id": f'Validator & JSON RPC {node_num}',
             "address": "",
             "private_key": "",
             "ip": "172.25.0.2",
