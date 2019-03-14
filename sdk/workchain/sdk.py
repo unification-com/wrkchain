@@ -4,7 +4,7 @@ import logging
 
 from workchain.bootnode import BootnodeKey
 from workchain.composer import generate
-from workchain.config import WorkchainConfig
+from workchain.config import WorkchainConfig, MissingConfigOverrideException
 from workchain.documentation.documentation import WorkchainDocumentation
 from workchain.genesis import build_genesis, generate_workchain_id
 from workchain.mainchain import UndMainchain
@@ -155,9 +155,15 @@ def main():
 @click.argument('build_dir')
 def generate_workchain(config_file, build_dir):
     log.info(f'Generating environment from: {config_file}')
-    workchain_config = WorkchainConfig(config_file)
-    config = workchain_config.get()
-    workchain_config.print()
+
+    try:
+        workchain_config = WorkchainConfig(config_file)
+        config = workchain_config.get()
+        workchain_config.print()
+    except MissingConfigOverrideException as e:
+        click.echo("SDK ERROR:")
+        click.echo(e)
+        exit()
 
     genesis_json, workchain_id = generate_genesis(config)
     bootnode_config = configure_bootnode(build_dir, config)

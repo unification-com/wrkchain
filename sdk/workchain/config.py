@@ -2,6 +2,14 @@ import json
 import pprint
 
 
+REQUIRED_WORKCHAIN_OVERRIDES = ['nodes']
+
+
+class MissingConfigOverrideException(Exception):
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
+
+
 class WorkchainConfig:
     def __init__(self, config_file):
         self.__overrides = {}
@@ -11,7 +19,7 @@ class WorkchainConfig:
             contents = f.read()
             self.__overrides = json.loads(contents)
 
-        # Todo - define required elements, and throw exception if not present
+        self.__check_overrides(config_file)
         self.__load_basic_defaults()
         self.__load_overrides()
 
@@ -25,6 +33,20 @@ class WorkchainConfig:
     def print_overrides(self):
         pprint.sorted = lambda x, key=None: x
         pprint.pprint(self.__overrides)
+
+    def __check_overrides(self, config_file):
+        for k in REQUIRED_WORKCHAIN_OVERRIDES:
+            if k not in self.__overrides['workchain'].keys():
+                raise MissingConfigOverrideException(f'No nodes defined in '
+                                                     f'{config_file}. You must'
+                                                     f' define at least one '
+                                                     f'node')
+
+        if len(self.__overrides['workchain']['nodes']) == 0:
+            raise MissingConfigOverrideException(f'No nodes defined in '
+                                                 f'{config_file}. You must'
+                                                 f' define at least one '
+                                                 f'node')
 
     def __load_basic_defaults(self):
         basic_default = {
