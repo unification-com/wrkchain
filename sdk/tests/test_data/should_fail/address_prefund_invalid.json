@@ -1,0 +1,23 @@
+{
+    "workchain": {
+        "title": "Simple Single Node Workchain",
+        "nodes": [
+            {
+                "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
+                "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5"
+            }
+        ],
+        "coin": {
+            "symbol": "SIMP",
+            "prefund": [
+                {
+                    "address": "0xinvalid_address",
+                    "balance": "1000000000"
+                }
+            ]
+        }
+    },
+    "mainchain": {
+        "network": "testnet"
+    }
+}

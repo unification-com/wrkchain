@@ -167,6 +167,12 @@ class WorkchainConfig:
                         for k, d in data.items():
                             # Todo - check RPC APIs
                             new_node[key][k] = d
+                elif key == 'address':
+                    if not Web3.isAddress(data):
+                        err = f'workchain -> nodes -> {node_num - 1} -> ' \
+                            f'address "{data}"" is not a valid address'
+                        raise InvalidOverrideException(err)
+                    new_node[key] = Web3.toChecksumAddress(data)
                 else:
                     new_node[key] = data
 
@@ -183,8 +189,9 @@ class WorkchainConfig:
             prefund = []
             for account in self.__overrides['workchain']['coin']['prefund']:
                 if not Web3.isAddress(account['address']):
-                    raise InvalidOverrideException(f'{account["address"]} '
-                                                   'is not a valid address')
+                    err = f'coin -> prefund -> {account["address"]} is not ' \
+                        f'a valid address'
+                    raise InvalidOverrideException(err)
 
                 prefund_account = {
                     'address': Web3.toChecksumAddress(account["address"]),
