@@ -26,6 +26,9 @@ class WorkchainConfig:
     def get(self):
         return self.__config
 
+    def get_overrides(self):
+        return self.__overrides
+
     def print(self):
         pprint.sorted = lambda x, key=None: x
         pprint.pprint(self.__config)
@@ -37,10 +40,8 @@ class WorkchainConfig:
     def __check_overrides(self, config_file):
         for k in REQUIRED_WORKCHAIN_OVERRIDES:
             if k not in self.__overrides['workchain'].keys():
-                raise MissingConfigOverrideException(f'No nodes defined in '
-                                                     f'{config_file}. You must'
-                                                     f' define at least one '
-                                                     f'node')
+                raise MissingConfigOverrideException(f'"{k}" not defined in '
+                                                     f'{config_file}.')
 
         if len(self.__overrides['workchain']['nodes']) == 0:
             raise MissingConfigOverrideException(f'No nodes defined in '
