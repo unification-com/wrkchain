@@ -4,20 +4,13 @@ import logging
 
 from workchain.bootnode import BootnodeKey
 from workchain.composer import generate
+from workchain.config import parse_config
 from workchain.documentation.documentation import WorkchainDocumentation
 from workchain.genesis import build_genesis, generate_workchain_id
 from workchain.mainchain import UndMainchain
 from workchain.utils import write_build_file, get_oracle_addresses
 
 log = logging.getLogger(__name__)
-
-
-def parse_config(config_file):
-    with open(config_file, 'r') as f:
-        contents = f.read()
-        d = json.loads(contents)
-
-    return d
 
 
 def generate_documentation(config, genesis_json, bootnode_config):

@@ -132,7 +132,7 @@ def examples():
 
 
 def test_parse_config():
-    from workchain.sdk import parse_config
+    from workchain.config import parse_config
 
     config_files = examples()
     assert len(config_files) > 0
