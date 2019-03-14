@@ -132,7 +132,7 @@ def examples():
 
 
 def test_parse_config():
-    from workchain.config import parse_config
+    from workchain.sdk import parse_config
 
     config_files = examples()
     assert len(config_files) > 0
@@ -145,14 +145,14 @@ def test_parse_config():
 def test_composer():
     from workchain.composer import generate
     from workchain.genesis import DEFAULT_NETWORK_ID
-    from workchain.config import configure_bootnode
+    from workchain.sdk import configure_bootnode
     build_dir = '/tmp'
     bootnode_cfg = configure_bootnode(build_dir, test_config)
     generate(test_config, bootnode_cfg, DEFAULT_NETWORK_ID)
 
 
 def test_generate_documentation():
-    from workchain.config import generate_documentation
+    from workchain.sdk import generate_documentation
     documentation = generate_documentation(test_config, test_genesis,
                                            bootnode_config)
     print(documentation)
@@ -161,7 +161,7 @@ def test_generate_documentation():
 
 
 def test_generate_documentation_no_bootnode():
-    from workchain.config import generate_documentation
+    from workchain.sdk import generate_documentation
     test_config['workchain']['bootnode']['use'] = False
     documentation = generate_documentation(test_config, test_genesis,
                                            static_bootnode_config)
@@ -171,7 +171,7 @@ def test_generate_documentation_no_bootnode():
 
 
 def test_generate_genesis():
-    from workchain.config import generate_genesis
+    from workchain.sdk import generate_genesis
 
     genesis_json, workchain_id = generate_genesis(test_config)
     print(genesis_json)
