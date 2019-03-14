@@ -1,6 +1,7 @@
 import json
 import pprint
 
+from web3 import Web3
 
 REQUIRED_OVERRIDES = ['workchain', 'mainchain']
 REQUIRED_WORKCHAIN_OVERRIDES = ['nodes']
@@ -13,6 +14,10 @@ class MissingConfigOverrideException(Exception):
     def __init__(self, *args, **kwargs):
         Exception.__init__(self, *args, **kwargs)
 
+
+class InvalidOverrideException(Exception):
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
 
 class WorkchainConfig:
     def __init__(self, config_file):
@@ -175,8 +180,19 @@ class WorkchainConfig:
         if 'symbol' in coin:
             self.__config['workchain']['coin']['symbol'] = coin['symbol']
         if 'prefund' in coin:
-            # Todo - check and clean input
-            self.__config['workchain']['coin']['prefund'] = coin['prefund']
+            prefund = []
+            for account in self.__overrides['workchain']['coin']['prefund']:
+                if not Web3.isAddress(account['address']):
+                    raise InvalidOverrideException(f'{account["address"]} '
+                                                   'is not a valid address')
+
+                prefund_account = {
+                    'address': Web3.toChecksumAddress(account["address"]),
+                    'balance': account["balance"]
+                }
+                prefund.append(prefund_account)
+
+            self.__config['workchain']['coin']['prefund'] = prefund
         else:
             # use address from nodes
             prefund_accounts = []

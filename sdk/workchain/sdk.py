@@ -4,7 +4,8 @@ import logging
 
 from workchain.bootnode import BootnodeKey
 from workchain.composer import generate
-from workchain.config import WorkchainConfig, MissingConfigOverrideException
+from workchain.config import WorkchainConfig, MissingConfigOverrideException,\
+    InvalidOverrideException
 from workchain.documentation.documentation import WorkchainDocumentation
 from workchain.genesis import build_genesis, generate_workchain_id
 from workchain.mainchain import UndMainchain
@@ -164,6 +165,11 @@ def generate_workchain(config_file, build_dir):
         click.echo("SDK ERROR:")
         click.echo(e)
         exit()
+    except InvalidOverrideException as e:
+        click.echo("SDK ERROR:")
+        click.echo(e)
+        exit()
+
 
     genesis_json, workchain_id = generate_genesis(config)
     bootnode_config = configure_bootnode(build_dir, config)
