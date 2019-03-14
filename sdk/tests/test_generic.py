@@ -1,6 +1,7 @@
 import glob
 import os
 
+from pathlib import Path
 
 test_genesis = {
   "config":{
@@ -123,8 +124,8 @@ bootnode_config = {'type': 'dedicated', 'nodes': {'address': 'c6a2c2dcdc7ba6e6a5
 
 
 def examples():
-    from workchain.utils import repo_root
-    examples_path = repo_root() / 'examples'
+    current_script = Path(os.path.abspath(__file__))
+    examples_path = current_script.parent / 'test_data'
     query = os.path.join(str(examples_path), "*.json")
     config_files = glob.glob(query)
     return config_files

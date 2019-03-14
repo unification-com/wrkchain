@@ -38,7 +38,7 @@ RUN echo "py.test /src/tests" >> /root/.bash_history && \
 COPY sdk/workchain /src/workchain
 COPY sdk/tests /src/tests
 COPY sdk/systemtests /src/systemtests
-COPY examples /examples
+COPY sdk/tests/test_data /examples
 COPY templates /templates
 
 RUN py.test /src/tests
