@@ -2,7 +2,7 @@ from compose.config.config import Config
 from compose.config.serialize import serialize_config
 from compose.config.types import ServicePort
 
-COMPOSE_VERSION = '3.2'
+COMPOSE_VERSION = '3.3'
 GETH_BASE_PORT = 30305
 MAX_EVS = 256
 
