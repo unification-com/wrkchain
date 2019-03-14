@@ -182,6 +182,19 @@ def test_parse_config_missing_nodes():
             WorkchainConfig(f)
 
 
+def test_parse_config_missing_mainchain():
+    from workchain.config import WorkchainConfig, \
+        MissingConfigOverrideException
+
+    config_files = fail_examples('mainchain_')
+    assert len(config_files) > 0
+
+    for f in config_files:
+        with pytest.raises(MissingConfigOverrideException):
+            # should fail - invalid mainchain config
+            WorkchainConfig(f)
+
+
 def test_successful_override():
     from workchain.config import WorkchainConfig
 
