@@ -157,6 +157,7 @@ def generate_workchain(config_file, build_dir):
     log.info(f'Generating environment from: {config_file}')
     workchain_config = WorkchainConfig(config_file)
     config = workchain_config.get()
+    workchain_config.print()
 
     genesis_json, workchain_id = generate_genesis(config)
     bootnode_config = configure_bootnode(build_dir, config)
