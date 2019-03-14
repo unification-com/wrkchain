@@ -8,6 +8,9 @@ REQUIRED_WORKCHAIN_OVERRIDES = ['nodes']
 REQUIRED_WORKCHAIN_NODE_OVERRIDES = ['address']
 REQUIRED_MAINCHAIN_OVERRIDES = ['network']
 VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet']
+VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
+                  'shh', 'txpool', 'web3']
+
 
 
 class MissingConfigOverrideException(Exception):
@@ -166,8 +169,16 @@ class WorkchainConfig:
                             continue
                     else:
                         for k, d in data.items():
-                            # Todo - check RPC APIs
-                            new_node[key][k] = d
+                            if k == 'apis':
+                                apis = {}
+                                for api in VALID_RPC_APIS:
+                                    if api in data[k]:
+                                        apis[api] = data[k][api]
+                                    else:
+                                        apis[api] = False
+                                new_node[key][k] = apis
+                            else:
+                                new_node[key][k] = d
                 elif key == 'address':
                     if not Web3.isAddress(data):
                         err = f'workchain -> nodes -> {node_num - 1} -> ' \
@@ -270,11 +281,12 @@ class WorkchainConfig:
                     "debug": True,
                     "db": True,
                     "personal": False,
-                    "miner": False
+                    "miner": False,
+                    "ssh": False,
+                    "txpool": False
                 }
             }
         }
-
         return node
 
     @staticmethod
