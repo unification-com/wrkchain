@@ -311,7 +311,7 @@ class WorkchainConfig:
 
     @staticmethod
     def __get_default_mainchain_id(network=None):
-        if network == 'mainchain':
+        if network == 'mainnet':
             return 50000
         elif network == 'testnet':
             return 50005
@@ -322,7 +322,7 @@ class WorkchainConfig:
     @staticmethod
     def __get_default_web3_provider(network=None):
         # Todo - mainnet config
-        if network == 'mainchain':
+        if network == 'mainnet':
             web3_provider = {
                 "type": "http",
                 "uri": "http://52.14.173.249:8101",
