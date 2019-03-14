@@ -12,7 +12,6 @@ VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
                   'shh', 'txpool', 'web3']
 
 
-
 class MissingConfigOverrideException(Exception):
     def __init__(self, *args, **kwargs):
         Exception.__init__(self, *args, **kwargs)
@@ -54,40 +53,40 @@ class WorkchainConfig:
 
         for k in REQUIRED_OVERRIDES:
             if k not in self.__overrides.keys():
-                raise MissingConfigOverrideException(f'"{k}" not defined in '
-                                                     f'{config_file}. Must '
-                                                     f'define {", ".join(REQUIRED_OVERRIDES)}')
+                err = f'"{k}" not defined in {config_file}. Must ' \
+                    f'define {", ".join(REQUIRED_OVERRIDES)}'
+
+                raise MissingConfigOverrideException(err)
 
         for k in REQUIRED_WORKCHAIN_OVERRIDES:
             if k not in self.__overrides['workchain'].keys():
-                raise MissingConfigOverrideException(f'"{k}" not defined in '
-                                                     f'{config_file}.')
+                err = f'"{k}" not defined in {config_file}.'
+                raise MissingConfigOverrideException(err)
 
         if len(self.__overrides['workchain']['nodes']) == 0:
-            raise MissingConfigOverrideException(f'No nodes defined in '
-                                                 f'{config_file}. You must'
-                                                 f' define at least one '
-                                                 f'node')
+            err = f'No nodes defined in {config_file}. You must define ' \
+                f'at least one node'
+            raise MissingConfigOverrideException(err)
 
         for i in range(len(self.__overrides['workchain']['nodes'])):
             for k in REQUIRED_WORKCHAIN_NODE_OVERRIDES:
                 if k not in self.__overrides['workchain']['nodes'][i].keys():
-                    raise MissingConfigOverrideException(
-                        f'"{k}" not defined in workchain -> nodes -> Node {i} '
-                        f'section in {config_file}.')
+                    err = f'"{k}" not defined in workchain -> nodes -> Node ' \
+                        f'{i} section in {config_file}.'
+                    raise MissingConfigOverrideException(err)
 
         for k in REQUIRED_MAINCHAIN_OVERRIDES:
             if k not in self.__overrides['mainchain'].keys():
-                raise MissingConfigOverrideException(f'"{k}" not defined in '
-                                                     f'{config_file}. Must '
-                                                     f'define {", ".join(REQUIRED_MAINCHAIN_OVERRIDES)}')
+                err = f'"{k}" not defined in {config_file}. Must ' \
+                    f'define {", ".join(REQUIRED_MAINCHAIN_OVERRIDES)}'
+                raise MissingConfigOverrideException(err)
 
         if self.__overrides['mainchain']['network'] \
             not in VALID_MAINCHAIN_NETWORKS:
             network = self.__overrides['mainchain']['network']
-            raise MissingConfigOverrideException(f'Invalid Mainchain Network '
-                                                 f'{network}. Must be one of: '
-                                                 f'{", ".join(VALID_MAINCHAIN_NETWORKS)}')
+            err = f'Invalid Mainchain Network {network}. Must be one of: ' \
+                f'{", ".join(VALID_MAINCHAIN_NETWORKS)}'
+            raise MissingConfigOverrideException(err)
 
     def __load_basic_defaults(self):
         basic_default = {
