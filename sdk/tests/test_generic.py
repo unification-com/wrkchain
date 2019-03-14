@@ -195,6 +195,19 @@ def test_parse_config_missing_mainchain():
             WorkchainConfig(f)
 
 
+def test_parse_config_invalid_addresses():
+    from workchain.config import WorkchainConfig, \
+        InvalidOverrideException
+
+    config_files = fail_examples('address_')
+    assert len(config_files) > 0
+
+    for f in config_files:
+        with pytest.raises(InvalidOverrideException):
+            # should fail - invalid mainchain config
+            WorkchainConfig(f)
+
+
 def test_successful_override():
     from workchain.config import WorkchainConfig
 
