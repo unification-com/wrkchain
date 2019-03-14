@@ -19,7 +19,8 @@ def get_oracle_addresses(config):
     oracle_addresses = []
     nodes = config['workchain']['nodes']
     for i in range(len(nodes)):
-        if nodes[i]['write_to_oracle'] and nodes[i]['address'] not in oracle_addresses:
+        if nodes[i]['write_to_oracle'] and nodes[i]['address'] not in \
+                oracle_addresses:
             oracle_addresses.append(nodes[i]['address'])
 
     return oracle_addresses
