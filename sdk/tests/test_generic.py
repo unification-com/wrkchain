@@ -1,5 +1,6 @@
 import glob
 import os
+import pytest
 
 from pathlib import Path
 
@@ -131,6 +132,14 @@ def examples():
     return config_files
 
 
+def fail_examples(prefix):
+    current_script = Path(os.path.abspath(__file__))
+    examples_path = current_script.parent / 'test_data' / 'should_fail'
+    query = os.path.join(str(examples_path), prefix + "*.json")
+    config_files = glob.glob(query)
+    return config_files
+
+
 def test_parse_config():
     from workchain.config import WorkchainConfig
 
@@ -141,6 +150,19 @@ def test_parse_config():
         workchain_config = WorkchainConfig(f)
         config = workchain_config.get()
         print(config)
+
+
+def test_parse_config_missing_nodes():
+    from workchain.config import WorkchainConfig, \
+        MissingConfigOverrideException
+
+    config_files = fail_examples('nodes_')
+    assert len(config_files) > 0
+
+    for f in config_files:
+        with pytest.raises(MissingConfigOverrideException):
+            # should fail - missing nodes
+            WorkchainConfig(f)
 
 
 def test_composer():
