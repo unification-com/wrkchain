@@ -170,7 +170,6 @@ def generate_workchain(config_file, build_dir):
         click.echo(e)
         exit()
 
-
     genesis_json, workchain_id = generate_genesis(config)
     bootnode_config = configure_bootnode(build_dir, config)
 

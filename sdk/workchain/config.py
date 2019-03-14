@@ -159,6 +159,7 @@ class WorkchainConfig:
         for node in nodes:
             new_node = self.__load_default_node(node_num)
 
+            # Todo - WAAAY too many levels...
             for key, data in node.items():
                 if key == 'rpc':
                     if isinstance(data, bool):
