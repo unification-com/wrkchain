@@ -128,6 +128,7 @@ class WorkchainDocumentation:
     def __generate_contents(d):
         header_regex = \
             re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
+        
         uri_regex = re.compile('([^-\s\w]|_)+')
 
         contents = ''
