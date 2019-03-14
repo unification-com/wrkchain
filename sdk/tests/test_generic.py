@@ -52,32 +52,6 @@ test_config = {
         "port": "30301"
       },
       "chaintest": False,
-      "validators":[
-          {
-              "address": "0xA6ac533Bd51cc4c8BB0c72612669c62B35521578",
-              "private_key": "7deeb75a3bbaa57bc073380b77f47d701d7e2ef7551719f3767d4eee0a5fdffd",
-              "write_to_oracle": True,
-              "ip": "127.0.0.1",
-              "listen_port": 30303
-          },
-          {
-              "address": "0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA",
-              "private_key": "b7459e3be8b6825ac1b606d5f4ac61652e04086f0645d7f768b5e1a176afffcf",
-              "write_to_oracle": True,
-              "ip": "127.0.0.1",
-              "listen_port": 30302
-          }
-      ],
-      "rpc_nodes": [
-          {
-              "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
-              "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
-              "write_to_oracle": False,
-              "ip": "127.0.0.1",
-              "listen_port": 30301,
-              "rpc_port": 8545
-          }
-      ],
       "nodes": [
           {
               "id": "Validator UK",
