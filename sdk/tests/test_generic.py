@@ -132,13 +132,14 @@ def examples():
 
 
 def test_parse_config():
-    from workchain.config import parse_config
+    from workchain.config import WorkchainConfig
 
     config_files = examples()
     assert len(config_files) > 0
 
     for f in config_files:
-        config = parse_config(f)
+        workchain_config = WorkchainConfig(f)
+        config = workchain_config.get()
         print(config)
 
 

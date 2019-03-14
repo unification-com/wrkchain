@@ -1,9 +1,19 @@
 import json
 
 
-def parse_config(config_file):
-    with open(config_file, 'r') as f:
-        contents = f.read()
-        d = json.loads(contents)
+class WorkchainConfig:
+    def __init__(self, config_file):
+        self.__overrides = {}
+        self.__config = {}
 
-    return d
+        with open(config_file, 'r') as f:
+            contents = f.read()
+            self.__overrides = json.loads(contents)
+
+        self.__load_overrides()
+
+    def __load_overrides(self):
+        self.__config = self.__overrides
+
+    def get(self):
+        return self.__config
