@@ -19,6 +19,7 @@ class InvalidOverrideException(Exception):
     def __init__(self, *args, **kwargs):
         Exception.__init__(self, *args, **kwargs)
 
+
 class WorkchainConfig:
     def __init__(self, config_file):
         self.__overrides = {}
