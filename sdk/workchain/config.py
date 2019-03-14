@@ -55,7 +55,7 @@ def generate_documentation(config, genesis_json, bootnode_config):
 
 def generate_genesis(config):
     block_period = config['workchain']['ledger']['consensus']['period']
-    validators = config['workchain']['validators']
+    nodes = config['workchain']['nodes']
     pre_funded_accounts = config['workchain']['coin']['prefund']
 
     workchain_base = config['workchain']['ledger']['base']
@@ -63,7 +63,7 @@ def generate_genesis(config):
     workchain_id = generate_workchain_id()
 
     genesis_json = build_genesis(
-        block_period=block_period,  validators=validators,
+        block_period=block_period,  validators=nodes,
         workchain_base=workchain_base,
         workchain_consensus=workchain_consensus,
         workchain_id=workchain_id,
@@ -128,26 +128,13 @@ def configure_bootnode(build_dir, config):
         bootnode_config['type'] = 'dedicated'
         bootnode_config['nodes'] = node_info
     else:
-        validators = config['workchain']['validators']
-        rpc_nodes = config['workchain']['rpc_nodes']
         nodes = {}
         static_addresses_list = []
 
-        for validator in validators:
-            public_address = validator['address']
-            ip = validator['ip']
-            port = validator['listen_port']
-
-            node_info = generate_bootnode_info(build_dir, ip, port,
-                                               public_address)
-
-            nodes[public_address] = node_info
-            static_addresses_list.append(node_info['enode'])
-
-        for rpc_node in rpc_nodes:
-            public_address = rpc_node['address']
-            ip = rpc_node['ip']
-            port = rpc_node['listen_port']
+        for item in config['workchain']['nodes']:
+            public_address = item['address']
+            ip = item['ip']
+            port = item['listen_port']
 
             node_info = generate_bootnode_info(build_dir, ip, port,
                                                public_address)
