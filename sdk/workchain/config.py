@@ -153,8 +153,11 @@ class WorkchainConfig:
             for key, data in node.items():
                 if key == 'rpc':
                     if isinstance(data, bool):
-                        # defaults already loaded
-                        continue
+                        if not data:
+                            new_node[key] = False
+                        else:
+                            # defaults already loaded
+                            continue
                     else:
                         for k, d in data.items():
                             # Todo - check RPC APIs
