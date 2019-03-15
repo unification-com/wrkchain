@@ -11,6 +11,8 @@ from workchain.documentation.sections.section_setup \
     import SectionSetupBuilder
 from workchain.documentation.sections.section_nodes \
     import SectionNodesBuilder
+from workchain.documentation.sections.section_introduction \
+    import SectionIntroductionBuilder
 
 section_factory = SectionFactory()
 section_factory.register_builder(
@@ -21,3 +23,5 @@ section_factory.register_builder('__SECTION_NETWORK__', SectionNetworkBuilder())
 section_factory.register_builder('__SECTION_ORACLE__', SectionOracleBuilder())
 section_factory.register_builder('__SECTION_SETUP__', SectionSetupBuilder())
 section_factory.register_builder('__SECTION_NODES__', SectionNodesBuilder())
+section_factory.register_builder('__SECTION_INTRODUCTION__',
+                                 SectionIntroductionBuilder())

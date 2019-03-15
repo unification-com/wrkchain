@@ -30,7 +30,12 @@ class WorkchainDocumentation:
             'genesis_json': json.dumps(genesis_json, separators=(',', ':'))
         }
 
+        # Section order is also defined here, by order of the elements in dict
         self.__documentation_sections = {
+            '__SECTION_INTRODUCTION__': {
+                'content': '',
+                'title': 'Introduction'
+            },
             '__SECTION_SETUP__': {
                 'content': '',
                 'title': 'Setup'
@@ -54,7 +59,7 @@ class WorkchainDocumentation:
             '__SECTION_NETWORK__': {
                 'content': '',
                 'title': 'Connecting to your Network'
-            },
+            }
         }
 
         self.__documentation = {
