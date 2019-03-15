@@ -14,7 +14,7 @@ requires = [
 
 setuptools.setup(
     name="workchain",
-    version="0.0.3",
+    version="0.0.4",
     author="Unification Foundation",
     author_email="hello@unification.com",
     description="Toolchain for bringing up a Workchain",
@@ -22,6 +22,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/unification-com/workchain",
     packages=setuptools.find_packages(),
+    include_package_data=True,
     install_requires=requires,
     classifiers=[
         "Programming Language :: Python :: 3",
