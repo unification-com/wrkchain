@@ -47,3 +47,44 @@ def check_overrides_in_config(overrides, config):
                 print(f'{key}: NO MATCH:')
                 print(f'Override: {data}')
                 print(f'Config: {config[key]}')
+
+
+def generate_geth_cmd(node, bootnode_config, workchain_id, listen_port):
+    flags = []
+
+    if bootnode_config['type'] == 'dedicated':
+        flags.append(f'--bootnodes {bootnode_config["nodes"]["enode"]}"')
+    else:
+        flags.append(f'--nodekey="/root/node_keys/{node["address"]}.key"')
+
+    flags = flags + [
+        f'--port {listen_port}',
+        f'--networkid {workchain_id}',
+        f'--syncmode=full',
+        f'--verbosity=4'
+    ]
+
+    if node['is_validator']:
+        flags = flags + [
+            f'--gasprice "0"',
+            f'--etherbase {node["address"]}',
+            f'--password /root/.walletpassword',
+            f'--mine',
+            f'--unlock {node["address"]}',
+        ]
+
+    if node['rpc']:
+        apis = []
+        for api, use_api in node['rpc']['apis'].items():
+            if use_api:
+                apis.append(api)
+        rpc_port = node["rpc"]["port"]
+        flags = flags + [
+            f'--rpc',
+            f'--rpcaddr "0.0.0.0"',
+            f'--rpcport "{rpc_port}"',
+            f'--rpcapi "{",".join(apis)}"',
+            f'--rpccorsdomain "*"',
+            f'--rpcvhosts "*"']
+
+    return f"{'/usr/bin/geth'} {' '.join(sorted(flags))}"
