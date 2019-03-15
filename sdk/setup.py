@@ -14,10 +14,10 @@ requires = [
 
 setuptools.setup(
     name="workchain",
-    version="0.0.2",
+    version="0.0.3",
     author="Unification Foundation",
     author_email="hello@unification.com",
-    description="Bring up a Workchain",
+    description="Toolchain for bringing up a Workchain",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/unification-com/workchain",
