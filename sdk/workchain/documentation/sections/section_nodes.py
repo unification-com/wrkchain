@@ -26,7 +26,8 @@ class SectionNodes(DocSection):
                                          '`~/.ethereum`'
 
             geth_cmd = generate_geth_cmd(
-                node, self.__bootnode_config, self.__workchain_id, listen_port)
+                node, self.__bootnode_config, self.__workchain_id, listen_port,
+                linebreak=True)
 
             if node['is_validator']:
                 node_types.append('Validator')

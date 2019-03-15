@@ -49,7 +49,9 @@ def check_overrides_in_config(overrides, config):
                 print(f'Config: {config[key]}')
 
 
-def generate_geth_cmd(node, bootnode_config, workchain_id, listen_port):
+def generate_geth_cmd(
+        node, bootnode_config, workchain_id, listen_port, linebreak=False):
+
     flags = []
 
     if bootnode_config['type'] == 'dedicated':
@@ -87,4 +89,10 @@ def generate_geth_cmd(node, bootnode_config, workchain_id, listen_port):
             f'--rpccorsdomain "*"',
             f'--rpcvhosts "*"']
 
-    return f"{'/usr/bin/geth'} {' '.join(sorted(flags))}"
+    flags = sorted(flags)
+    if linebreak:
+        options = ' \\\n\t'.join(flags)
+    else:
+        options = ' '.join(flags)
+
+    return f"{'/usr/bin/geth'} {options}"
