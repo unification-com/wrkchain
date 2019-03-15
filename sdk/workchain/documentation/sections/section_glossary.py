@@ -16,7 +16,7 @@ class SectionGlossaryBuilder:
     def __init__(self):
         self.__instance = None
 
-    def __call__(self, section_number, title, oracle_addresses, **_ignored):
+    def __call__(self, section_number, title, **_ignored):
 
         if not self.__instance:
             self.__instance = SectionGlossary(section_number, title)
