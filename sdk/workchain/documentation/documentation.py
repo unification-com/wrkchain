@@ -59,6 +59,10 @@ class WorkchainDocumentation:
             '__SECTION_NETWORK__': {
                 'content': '',
                 'title': 'Connecting to your Network'
+            },
+            '__SECTION_GLOSSARY__': {
+                'content': '',
+                'title': 'Glossary'
             }
         }
 
