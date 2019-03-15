@@ -3,8 +3,9 @@ import re
 from string import Template
 
 import pypandoc
+
 from workchain.documentation.sections.section import section_factory
-from workchain.utils import repo_root, get_oracle_addresses
+from workchain.utils import repo_root
 
 
 class WorkchainDocumentation:
