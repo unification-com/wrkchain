@@ -11,8 +11,8 @@ DEFAULT_NETWORK_ID = 50050
 
 
 def load_genesis_template(workchain_base, workchain_consensus):
-    template_file = repo_root() / 'templates' / 'genesis' / workchain_base / \
-                    f'{workchain_consensus}.json'
+    template_file = repo_root() / 'sdk' / 'templates' / 'genesis' / \
+                    workchain_base / f'{workchain_consensus}.json'
 
     with open(template_file, 'r') as f:
         contents = f.read()

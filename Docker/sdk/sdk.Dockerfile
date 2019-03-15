@@ -25,22 +25,20 @@ ENV PATH="/root/.pyenv/versions/3.7.2/bin:${PATH}"
 
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
-ENV PYTHONPATH /src
+ENV PYTHONPATH /src/sdk
 
 RUN pip install -r requirements.txt && \
     git clone https://github.com/unification-com/workchain-root-contract.git --depth 1
 
-RUN echo "py.test /src/tests" >> /root/.bash_history && \
+RUN echo "py.test /src/sdk/tests" >> /root/.bash_history && \
     echo "python -m workchain.sdk generate_workchain /examples/config.json /build" >> /root/.bash_history && \
-    echo "py.test /src/systemtests" >> /root/.bash_history && \
+    echo "py.test /src/sdk/systemtests" >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
 
-COPY sdk/workchain /src/workchain
-COPY sdk/tests /src/tests
-COPY sdk/systemtests /src/systemtests
-COPY sdk/tests/test_data /examples
-COPY templates /templates
+COPY sdk /src/sdk
 
-RUN py.test /src/tests
+COPY sdk/tests/test_data /examples
+
+RUN py.test /src/sdk/tests
 
 CMD ["python", "-m", "workchain.sdk", "generate_workchain", "/examples/config.json", "/build"]

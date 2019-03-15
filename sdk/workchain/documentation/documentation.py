@@ -87,10 +87,10 @@ class WorkchainDocumentation:
         html = ''
         if self.__documentation['content']:
             root = repo_root()
-            html_template_path = root / 'templates/docs/html/index.html'
+            html_template_path = root / 'sdk' / 'templates/docs/html/index.html'
             html_template = html_template_path.read_text()
 
-            css_template_path = root / 'templates/docs/html/bare.min.css'
+            css_template_path = root / 'sdk' / 'templates/docs/html/bare.min.css'
 
             html_body = pypandoc.convert_text(
                 self.__documentation['content'],
@@ -107,7 +107,7 @@ class WorkchainDocumentation:
         return html
 
     def __load_template(self):
-        template_path = repo_root() / self.__documentation['path']
+        template_path = repo_root() / 'sdk' / self.__documentation['path']
         self.__documentation['template'] = \
             template_path.read_text()
 

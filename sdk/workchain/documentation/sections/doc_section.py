@@ -8,7 +8,8 @@ class DocSection:
         base_md_template_dir = 'templates/docs/md'
         self.root_dir = repo_root()
 
-        self.template_path = self.root_dir / base_md_template_dir / md_path
+        self.template_path = self.root_dir / 'sdk' / base_md_template_dir \
+                             / md_path
 
         self.template = self.template_path.read_text()
         self.contents = ''
