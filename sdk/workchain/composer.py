@@ -2,7 +2,7 @@ from compose.config.config import Config
 from compose.config.serialize import serialize_config
 from compose.config.types import ServicePort
 
-from workchain.utils import generate_geth_cmd
+from workchain.architectures.debian import generate_geth_cmd
 
 COMPOSE_VERSION = '3.3'
 GETH_BASE_PORT = 30305
