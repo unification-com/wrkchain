@@ -1,0 +1,17 @@
+{
+    "workchain": {
+        "title": "Simple Single Node Workchain",
+        "nodes": [
+            {
+                "address": "0xnot_a_valid_address",
+                "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5"
+            }
+        ],
+        "coin": {
+            "symbol": "SIMP"
+        }
+    },
+    "mainchain": {
+        "network": "testnet"
+    }
+}

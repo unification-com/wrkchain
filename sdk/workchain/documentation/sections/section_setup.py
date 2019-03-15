@@ -34,7 +34,7 @@ class SectionSetup(DocSection):
 
     def __fund(self):
         fund_md = f'templates/docs/md/sections/fund_{self.__network}.md'
-        fund_template_path = self.root_dir / fund_md
+        fund_template_path = self.root_dir / 'sdk' / fund_md
         fund_template = fund_template_path.read_text()
         t = Template(fund_template)
 
@@ -65,7 +65,7 @@ class SectionSetup(DocSection):
 
     def __deply_contract(self):
         deploy_md = f'templates/docs/md/sections/deploy_root_contract_{self.__network}.md'
-        deploy_template_path = self.root_dir / deploy_md
+        deploy_template_path = self.root_dir / 'sdk' / deploy_md
         deploy_template = deploy_template_path.read_text()
         t = Template(deploy_template)
 

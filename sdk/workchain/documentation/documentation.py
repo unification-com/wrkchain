@@ -3,8 +3,9 @@ import re
 from string import Template
 
 import pypandoc
+
 from workchain.documentation.sections.section import section_factory
-from workchain.utils import repo_root, get_oracle_addresses
+from workchain.utils import repo_root
 
 
 class WorkchainDocumentation:
@@ -86,10 +87,10 @@ class WorkchainDocumentation:
         html = ''
         if self.__documentation['content']:
             root = repo_root()
-            html_template_path = root / 'templates/docs/html/index.html'
+            html_template_path = root / 'sdk' / 'templates/docs/html/index.html'
             html_template = html_template_path.read_text()
 
-            css_template_path = root / 'templates/docs/html/bare.min.css'
+            css_template_path = root / 'sdk' / 'templates/docs/html/bare.min.css'
 
             html_body = pypandoc.convert_text(
                 self.__documentation['content'],
@@ -106,7 +107,7 @@ class WorkchainDocumentation:
         return html
 
     def __load_template(self):
-        template_path = repo_root() / self.__documentation['path']
+        template_path = repo_root() / 'sdk' / self.__documentation['path']
         self.__documentation['template'] = \
             template_path.read_text()
 
@@ -128,6 +129,7 @@ class WorkchainDocumentation:
     def __generate_contents(d):
         header_regex = \
             re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
+
         uri_regex = re.compile('([^-\s\w]|_)+')
 
         contents = ''

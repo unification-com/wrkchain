@@ -1,0 +1,9 @@
+{
+    "workchain": {
+        "title": "Empty Nodes - should break",
+        "nodes": [],
+        "coin": {
+            "symbol": "SIMP"
+        }
+    }
+}
