@@ -9,4 +9,5 @@ On each computer designated to run your network, you will need to install the re
 
 `git clone https://github.com/ethereum/go-ethereum`  
 
-etc.
+Up to date documentation regarding installing go-ethereum can be found here:
+https://geth.ethereum.org/install/
