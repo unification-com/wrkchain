@@ -26,7 +26,7 @@ class SectionSetup(DocSection):
     def generate(self):
         d = {
             '__FUND_ORACLE_ADDRESSES__': self.__fund(),
-            '__DEPLOY_WORKCHAIN_ROOT_CONTRACT__': self.__deply_contract(),
+            '__DEPLOY_WRKCHAIN_ROOT_CONTRACT__': self.__deply_contract(),
             '__MAINCHAIN_NETWORK__': self.__network
         }
         self.add_content(d, append=False)
@@ -90,9 +90,9 @@ class SectionSetup(DocSection):
             '__MAINCHAIN_RPC_PORT__': self.__mainchain_rpc_port,
             '__MAINCHAIN_NETWORK_ID__': self.__mainchain_network_id,
             '__MAINCHAIN_WEB3_PROVIDER_URL__': self.__mainchain_rpc_uri,
-            '__WORKCHAIN_GENESIS__': self.__genesis_json,
-            '__WORKCHAIN_NETWORK_ID__': self.__workchain_id,
-            '__WORKCHAIN_EVS__': (', '.join('"' + item + '"' for item in
+            '__WRKCHAIN_GENESIS__': self.__genesis_json,
+            '__WRKCHAIN_NETWORK_ID__': self.__workchain_id,
+            '__WRKCHAIN_EVS__': (', '.join('"' + item + '"' for item in
                                             self.__oracle_addresses)),
             '__GENESIS_SHA3__': genesis_sha3
         }

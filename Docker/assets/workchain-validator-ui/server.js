@@ -11,33 +11,33 @@ app.use('/',express.static(__dirname + '/public'));
 app.get('/', function(req, res) {
     res.render('pages/index',{
         MAINCHAIN_WEB3_PROVIDER_URL: process.env.MAINCHAIN_WEB3_PROVIDER_URL,
-        WORKCHAIN_ROOT_ABI: process.env.WORKCHAIN_ROOT_ABI,
-        WORKCHAIN_ROOT_CONTRACT_ADDRESS: process.env.WORKCHAIN_ROOT_CONTRACT_ADDRESS,
+        WRKCHAIN_ROOT_ABI: process.env.WRKCHAIN_ROOT_ABI,
+        WRKCHAIN_ROOT_CONTRACT_ADDRESS: process.env.WRKCHAIN_ROOT_CONTRACT_ADDRESS,
         MAINCHAIN_EXPLORER_URL: process.env.MAINCHAIN_EXPLORER_URL,
-        WORKCHAIN_ROOT_WRITE_TIMEOUT: process.env.WORKCHAIN_ROOT_WRITE_TIMEOUT,
-        WORKCHAIN_NAME: process.env.WORKCHAIN_NAME
+        WRKCHAIN_ROOT_WRITE_TIMEOUT: process.env.WRKCHAIN_ROOT_WRITE_TIMEOUT,
+        WRKCHAIN_NAME: process.env.WRKCHAIN_NAME
     });
 });
 
 // block validation page
 app.get('/validate', function(req, res) {
     res.render('pages/validate',{
-        WORKCHAIN_WEB3_PROVIDER_URL: process.env.WORKCHAIN_WEB3_PROVIDER_URL,
+        WRKCHAIN_WEB3_PROVIDER_URL: process.env.WRKCHAIN_WEB3_PROVIDER_URL,
         MAINCHAIN_WEB3_PROVIDER_URL: process.env.MAINCHAIN_WEB3_PROVIDER_URL,
-        WORKCHAIN_ROOT_CONTRACT_ADDRESS: process.env.WORKCHAIN_ROOT_CONTRACT_ADDRESS,
-        WORKCHAIN_ROOT_ABI: process.env.WORKCHAIN_ROOT_ABI,
+        WRKCHAIN_ROOT_CONTRACT_ADDRESS: process.env.WRKCHAIN_ROOT_CONTRACT_ADDRESS,
+        WRKCHAIN_ROOT_ABI: process.env.WRKCHAIN_ROOT_ABI,
         BLOCK_NUM: req.query.block,
-        WORKCHAIN_NAME: process.env.WORKCHAIN_NAME
+        WRKCHAIN_NAME: process.env.WRKCHAIN_NAME
     });
 });
 
-app.listen(process.env.WORKCHAIN_VALIDATOR_SERVICE_PORT);
+app.listen(process.env.WRKCHAIN_VALIDATOR_SERVICE_PORT);
 
 console.log( "=====================================");
-console.log( "= WORKCHAIN VALIDATOR SERVICE READY =");
+console.log( "= WRKCHAIN VALIDATOR SERVICE READY =");
 console.log( "= ------------------------          =");
 console.log( "=                                   =");
 console.log( "= open:                             =");
-console.log( "= http://localhost:" + process.env.WORKCHAIN_VALIDATOR_SERVICE_PORT + "             =");
+console.log( "= http://localhost:" + process.env.WRKCHAIN_VALIDATOR_SERVICE_PORT + "             =");
 console.log( "=                                   =");
 console.log( "=====================================");

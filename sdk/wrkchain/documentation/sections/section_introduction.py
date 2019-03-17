@@ -10,7 +10,7 @@ class SectionIntroduction(DocSection):
 
     def generate(self):
         d = {
-            '__WORKCHAIN_NETWORK_ID__': self.__workchain_id
+            '__WRKCHAIN_NETWORK_ID__': self.__workchain_id
         }
         self.add_content(d, append=False)
         return self.get_contents()

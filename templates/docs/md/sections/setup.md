@@ -13,4 +13,4 @@ Clone the Workchain Root smart contract repo into a suitable directory:
 
 Once cloned, you have several options for deploying the smart contract on $__MAINCHAIN_NETWORK__
 
-$__DEPLOY_WORKCHAIN_ROOT_CONTRACT__
+$__DEPLOY_WRKCHAIN_ROOT_CONTRACT__

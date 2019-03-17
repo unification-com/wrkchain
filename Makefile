@@ -3,7 +3,7 @@
 
 # Set some variables
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-WORKCHAIN_ASSETS_DIR:=$(ROOT_DIR)/Docker/assets
+WRKCHAIN_ASSETS_DIR:=$(ROOT_DIR)/Docker/assets
 BUILD_ENVS:=dev test aws_testnet
 
 # Can be set before make init.
@@ -56,10 +56,10 @@ endif
 	$(MAKE) check-mainchain
 
 	$(MAKE) init-prepare
-	@mkdir -p $(WORKCHAIN_ASSETS_DIR)/build
+	@mkdir -p $(WRKCHAIN_ASSETS_DIR)/build
 
 	# Copy user configured workchain.$(BUILD).env to assets, so builders can modify
-	@cp $(ROOT_DIR)/envs/workchain.$(BUILD).env $(WORKCHAIN_ASSETS_DIR)/build/.env
+	@cp $(ROOT_DIR)/envs/workchain.$(BUILD).env $(WRKCHAIN_ASSETS_DIR)/build/.env
 
 	@echo "\n\nEdit ./Docker/assets/build/.env as required, then press RETURN to continue\n\n"; \
     read dummy_input;
@@ -79,7 +79,7 @@ else
 endif
 	# Copy the generated .env here, so docker-compose can access the variables
 	# during the build and run targets
-	@cp $(WORKCHAIN_ASSETS_DIR)/build/.env $(ROOT_DIR)/.env
+	@cp $(WRKCHAIN_ASSETS_DIR)/build/.env $(ROOT_DIR)/.env
 
 
 # Build deployment Docker environment, based on the initialised variables.
@@ -94,7 +94,7 @@ else
 	docker-compose -f docker-compose.yml -f docker-compose.override.yml build --no-cache
 endif
 	# set flag that indicates build has been run
-	@echo "TRUE" >> $(WORKCHAIN_ASSETS_DIR)/build/.is_built
+	@echo "TRUE" >> $(WRKCHAIN_ASSETS_DIR)/build/.is_built
 	@echo "\nDone. Now run:\n\n  make run\n"
 
 
@@ -103,7 +103,7 @@ run:
 	# Check that make init has been run first
 	@test -s $(ROOT_DIR)/.env || { echo "\nBUILD ERROR!\n\n.env does not exist.\n\nRun:\n\n  make init\n  make build\n\nfirst. Exiting...\n"; exit 1; }
 	# Check that make build has been run first
-	@test -s $(WORKCHAIN_ASSETS_DIR)/build/.is_built || { echo "\nBUILD ERROR!\n\nDocker not built yet.\n\nRun:\n\n  make build\n\nfirst. Exiting...\n"; exit 1; }
+	@test -s $(WRKCHAIN_ASSETS_DIR)/build/.is_built || { echo "\nBUILD ERROR!\n\nDocker not built yet.\n\nRun:\n\n  make build\n\nfirst. Exiting...\n"; exit 1; }
 	$(MAKE) check-mainchain
 	docker-compose down --remove-orphans
 ifeq ($(RUN_LOG),TRUE)
@@ -126,7 +126,7 @@ init-prepare:
 # Output some useful info
 info:
 	@echo "ROOT_DIR                      : $(ROOT_DIR)"
-	@echo "WORKCHAIN_ASSETS_DIR          : $(WORKCHAIN_ASSETS_DIR)"
+	@echo "WRKCHAIN_ASSETS_DIR          : $(WRKCHAIN_ASSETS_DIR)"
 	@echo "BUILD                         : $(BUILD)"
 	@echo "DOCKER_CACHE                  : $(DOCKER_CACHE)"
 	@echo "RUN_LOG                       : $(RUN_LOG)"
@@ -134,7 +134,7 @@ info:
 # Remove generated files and build env
 clean:
 	@rm -f $(ROOT_DIR)/.env
-	@rm -rf $(WORKCHAIN_ASSETS_DIR)/build
+	@rm -rf $(WRKCHAIN_ASSETS_DIR)/build
 	@rm -f $(ROOT_DIR)/docker-compose.override.yml
 	@rm -rf $(ROOT_DIR)/build
 

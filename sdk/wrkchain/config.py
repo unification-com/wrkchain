@@ -4,8 +4,8 @@ import pprint
 from web3 import Web3
 
 REQUIRED_OVERRIDES = ['workchain', 'mainchain']
-REQUIRED_WORKCHAIN_OVERRIDES = ['nodes']
-REQUIRED_WORKCHAIN_NODE_OVERRIDES = ['address']
+REQUIRED_WRKCHAIN_OVERRIDES = ['nodes']
+REQUIRED_WRKCHAIN_NODE_OVERRIDES = ['address']
 REQUIRED_MAINCHAIN_OVERRIDES = ['network']
 VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet']
 VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
@@ -58,7 +58,7 @@ class WorkchainConfig:
 
                 raise MissingConfigOverrideException(err)
 
-        for k in REQUIRED_WORKCHAIN_OVERRIDES:
+        for k in REQUIRED_WRKCHAIN_OVERRIDES:
             if k not in self.__overrides['workchain'].keys():
                 err = f'"{k}" not defined in {config_file}.'
                 raise MissingConfigOverrideException(err)
@@ -69,7 +69,7 @@ class WorkchainConfig:
             raise MissingConfigOverrideException(err)
 
         for i in range(len(self.__overrides['workchain']['nodes'])):
-            for k in REQUIRED_WORKCHAIN_NODE_OVERRIDES:
+            for k in REQUIRED_WRKCHAIN_NODE_OVERRIDES:
                 if k not in self.__overrides['workchain']['nodes'][i].keys():
                     err = f'"{k}" not defined in workchain -> nodes -> Node ' \
                         f'{i} section in {config_file}.'

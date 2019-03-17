@@ -15,9 +15,9 @@ MAINCHAIN_RPC_HOST=$__MAINCHAIN_RPC_HOST__
 MAINCHAIN_RPC_PORT=$__MAINCHAIN_RPC_PORT__
 MAINCHAIN_NETWORK_ID=$__MAINCHAIN_NETWORK_ID__
 MAINCHAIN_WEB3_PROVIDER_URL=$__MAINCHAIN_WEB3_PROVIDER_URL__
-WORKCHAIN_GENESIS=$__WORKCHAIN_GENESIS__
-WORKCHAIN_NETWORK_ID=$__WORKCHAIN_NETWORK_ID__
-WORKCHAIN_EVS=[$__WORKCHAIN_EVS__]
+WRKCHAIN_GENESIS=$__WRKCHAIN_GENESIS__
+WRKCHAIN_NETWORK_ID=$__WRKCHAIN_NETWORK_ID__
+WRKCHAIN_EVS=[$__WRKCHAIN_EVS__]
 ```
 
 **Configuring HDWalletProvider**
@@ -73,6 +73,6 @@ Using your preferred method for Smart Contract compilation, compile
 When deploying, the `WorkchainRoot` constructor requires three arguments:
 
 `genesis_block` is the web3.SHA3 result from the minified `genesis.json` content: `$__GENESIS_SHA3__`  
-`chain_id` is your Workchain ID: `$__WORKCHAIN_NETWORK_ID__`  
-`current_evs` is an array of the initial EVs' public addresses: `[$__WORKCHAIN_EVS__]`
+`chain_id` is your Workchain ID: `$__WRKCHAIN_NETWORK_ID__`  
+`current_evs` is an array of the initial EVs' public addresses: `[$__WRKCHAIN_EVS__]`
 
