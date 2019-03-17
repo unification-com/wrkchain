@@ -3,8 +3,9 @@ import re
 from string import Template
 
 import pypandoc
+
 from workchain.documentation.sections.section import section_factory
-from workchain.utils import repo_root, get_oracle_addresses
+from workchain.utils import repo_root
 
 
 class WorkchainDocumentation:
@@ -29,7 +30,12 @@ class WorkchainDocumentation:
             'genesis_json': json.dumps(genesis_json, separators=(',', ':'))
         }
 
+        # Section order is also defined here, by order of the elements in dict
         self.__documentation_sections = {
+            '__SECTION_INTRODUCTION__': {
+                'content': '',
+                'title': 'Introduction'
+            },
             '__SECTION_SETUP__': {
                 'content': '',
                 'title': 'Setup'
@@ -54,6 +60,10 @@ class WorkchainDocumentation:
                 'content': '',
                 'title': 'Connecting to your Network'
             },
+            '__SECTION_GLOSSARY__': {
+                'content': '',
+                'title': 'Glossary'
+            }
         }
 
         self.__documentation = {
@@ -128,6 +138,7 @@ class WorkchainDocumentation:
     def __generate_contents(d):
         header_regex = \
             re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
+
         uri_regex = re.compile('([^-\s\w]|_)+')
 
         contents = ''

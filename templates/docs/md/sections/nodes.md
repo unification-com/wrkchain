@@ -1,6 +1,6 @@
 ### $__SECTION_NUMBER__.$__NODE_NUM__ Node $__NODE_NUM__: $__NODE_NAME__
 
-Node Type: ($__NODE_TYPE__)
+Node Type: $__NODE_TYPE__
 
 Copy the generated `genesis.json` to the computer you will be running Node $__NODE_NUM__
 

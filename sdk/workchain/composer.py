@@ -2,6 +2,8 @@ from compose.config.config import Config
 from compose.config.serialize import serialize_config
 from compose.config.types import ServicePort
 
+from workchain.architectures.debian import generate_geth_cmd
+
 COMPOSE_VERSION = '3.3'
 GETH_BASE_PORT = 30305
 MAX_EVS = 256
@@ -56,8 +58,6 @@ def generate_nodes(nodes, bootnode_config, workchain_id):
     d = []
     n = 0
 
-    b_node = bootnode_config['nodes']
-
     for validator in nodes:
         n = n + 1
         if validator['rpc']:
@@ -67,33 +67,9 @@ def generate_nodes(nodes, bootnode_config, workchain_id):
 
         geth_port = port_list.pop(0)
 
-        cmd = f'/usr/bin/geth ' \
-              f'--etherbase {validator["address"]} ' \
-              f'--gasprice "0" ' \
-              f'--password /root/.walletpassword ' \
-              f'--port {geth_port} ' \
-              f'--mine ' \
-              f'--networkid {workchain_id} ' \
-              f'--syncmode=full ' \
-              f'--unlock {validator["address"]} ' \
-              f'--verbosity=4 '
-
-        if bootnode_config['type'] == 'dedicated':
-            enode = f'enode://{b_node["address"]}@{b_node["ip"]}:' \
-                    f'{b_node["port"]}'
-            cmd = cmd + f'--bootnodes {enode} '
-        else:
-            cmd = cmd + f'--nodekey="/root/node_keys/' \
-                        f'{validator["address"]}.key" '
-
-        if validator['rpc']:
-            cmd = cmd + \
-                  f'--rpcport 8101 ' \
-                  f'--rpc ' \
-                  f'--rpcaddr "0.0.0.0" ' \
-                  f'--rpcapi "eth,web3,net,admin,debug,db,personal,miner" ' \
-                  f'--rpccorsdomain "*" ' \
-                  f'--rpcvhosts "*" '
+        #TODO: Consolidate listen ports
+        cmd = generate_geth_cmd(
+            validator, bootnode_config, workchain_id, port_list.pop(0))
 
         build_d = {
             'context': '..',

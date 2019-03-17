@@ -1,4 +1,4 @@
-### $__SECTION_NUMBER__.1 Funding your addresses with UND on $__MAINCHAIN_NETWORK__
+### $__SECTION_NUMBER__.1 Funding your addresses with UND on the $__MAINCHAIN_NETWORK__
 
 Each of the addresses configured for interacting with the Workchain Oracle, and therefore
 writing to the WorkchainRoot smart contract will require UND.
