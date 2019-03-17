@@ -29,7 +29,7 @@ def get_conf(config_file):
 
 
 def test_check_und_funds():
-    from workchain.mainchain import UndMainchain
+    from wrkchain.mainchain import UndMainchain
 
     addresses = example_addresses()
     assert len(addresses) > 0
@@ -51,7 +51,7 @@ def test_check_und_funds():
 
 
 def test_generate_bootnode_key():
-    from workchain.bootnode import BootnodeKey
+    from wrkchain.bootnode import BootnodeKey
 
     bootnode_key = BootnodeKey('/tmp')
     bootnode_key.generate_bootnode_key()

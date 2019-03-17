@@ -1,5 +1,5 @@
-from workchain.documentation.sections.doc_section import DocSection
-from workchain.architectures.debian import generate_geth_cmd
+from wrkchain.documentation.sections.doc_section import DocSection
+from wrkchain.architectures.debian import generate_geth_cmd
 
 
 class SectionNodes(DocSection):

@@ -1,7 +1,7 @@
 from string import Template
 
 from web3 import Web3
-from workchain.documentation.sections.doc_section import DocSection
+from wrkchain.documentation.sections.doc_section import DocSection
 
 TESTNET_FAUCET_URL = 'http://52.14.173.249/sendtx?to='
 

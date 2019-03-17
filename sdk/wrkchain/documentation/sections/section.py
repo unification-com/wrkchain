@@ -1,19 +1,19 @@
-from workchain.documentation.sections.section_factory import SectionFactory
-from workchain.documentation.sections.section_bootnode \
+from wrkchain.documentation.sections.section_factory import SectionFactory
+from wrkchain.documentation.sections.section_bootnode \
     import SectionBootNodesBuilder
-from workchain.documentation.sections.section_installation \
+from wrkchain.documentation.sections.section_installation \
     import SectionInstallationBuilder
-from workchain.documentation.sections.section_network \
+from wrkchain.documentation.sections.section_network \
     import SectionNetworkBuilder
-from workchain.documentation.sections.section_oracle \
+from wrkchain.documentation.sections.section_oracle \
     import SectionOracleBuilder
-from workchain.documentation.sections.section_setup \
+from wrkchain.documentation.sections.section_setup \
     import SectionSetupBuilder
-from workchain.documentation.sections.section_nodes \
+from wrkchain.documentation.sections.section_nodes \
     import SectionNodesBuilder
-from workchain.documentation.sections.section_introduction \
+from wrkchain.documentation.sections.section_introduction \
     import SectionIntroductionBuilder
-from workchain.documentation.sections.section_glossary \
+from wrkchain.documentation.sections.section_glossary \
     import SectionGlossaryBuilder
 
 section_factory = SectionFactory()

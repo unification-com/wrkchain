@@ -158,7 +158,7 @@ def check_overrides_in_config(overrides, config):
 
 
 def test_parse_config():
-    from workchain.config import WorkchainConfig
+    from wrkchain.config import WorkchainConfig
 
     config_files = examples()
     assert len(config_files) > 0
@@ -170,7 +170,7 @@ def test_parse_config():
 
 
 def test_parse_config_missing_nodes():
-    from workchain.config import WorkchainConfig, \
+    from wrkchain.config import WorkchainConfig, \
         MissingConfigOverrideException
 
     config_files = fail_examples('nodes_')
@@ -183,7 +183,7 @@ def test_parse_config_missing_nodes():
 
 
 def test_parse_config_missing_mainchain():
-    from workchain.config import WorkchainConfig, \
+    from wrkchain.config import WorkchainConfig, \
         MissingConfigOverrideException
 
     config_files = fail_examples('mainchain_')
@@ -196,7 +196,7 @@ def test_parse_config_missing_mainchain():
 
 
 def test_parse_config_invalid_addresses():
-    from workchain.config import WorkchainConfig, \
+    from wrkchain.config import WorkchainConfig, \
         InvalidOverrideException
 
     config_files = fail_examples('address_')
@@ -209,7 +209,7 @@ def test_parse_config_invalid_addresses():
 
 
 def test_successful_override():
-    from workchain.config import WorkchainConfig
+    from wrkchain.config import WorkchainConfig
 
     config_files = examples()
     assert len(config_files) > 0
@@ -222,16 +222,16 @@ def test_successful_override():
 
 
 def test_composer():
-    from workchain.composer import generate
-    from workchain.genesis import DEFAULT_NETWORK_ID
-    from workchain.sdk import configure_bootnode
+    from wrkchain.composer import generate
+    from wrkchain.genesis import DEFAULT_NETWORK_ID
+    from wrkchain.sdk import configure_bootnode
     build_dir = '/tmp'
     bootnode_cfg = configure_bootnode(build_dir, test_config)
     generate(test_config, bootnode_cfg, DEFAULT_NETWORK_ID)
 
 
 def test_generate_documentation():
-    from workchain.sdk import generate_documentation
+    from wrkchain.sdk import generate_documentation
     documentation = generate_documentation(test_config, test_genesis,
                                            bootnode_config)
     print(documentation)
@@ -240,7 +240,7 @@ def test_generate_documentation():
 
 
 def test_generate_documentation_no_bootnode():
-    from workchain.sdk import generate_documentation
+    from wrkchain.sdk import generate_documentation
     test_config['workchain']['bootnode']['use'] = False
     documentation = generate_documentation(test_config, test_genesis,
                                            static_bootnode_config)
@@ -250,7 +250,7 @@ def test_generate_documentation_no_bootnode():
 
 
 def test_generate_genesis():
-    from workchain.sdk import generate_genesis
+    from wrkchain.sdk import generate_genesis
 
     genesis_json, workchain_id = generate_genesis(test_config)
     print(genesis_json)

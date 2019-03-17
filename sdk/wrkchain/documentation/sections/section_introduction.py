@@ -1,4 +1,4 @@
-from workchain.documentation.sections.doc_section import DocSection
+from wrkchain.documentation.sections.doc_section import DocSection
 
 
 class SectionIntroduction(DocSection):

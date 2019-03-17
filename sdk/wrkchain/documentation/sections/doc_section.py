@@ -1,6 +1,6 @@
 from string import Template
 
-from workchain.utils import repo_root
+from wrkchain.utils import repo_root
 
 
 class DocSection:
