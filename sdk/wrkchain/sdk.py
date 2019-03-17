@@ -154,7 +154,7 @@ def main():
 @main.command()
 @click.argument('config_file')
 @click.argument('build_dir')
-def generate_workchain(config_file, build_dir):
+def generate_wrkchain(config_file, build_dir):
     log.info(f'Generating environment from: {config_file}')
 
     try:
