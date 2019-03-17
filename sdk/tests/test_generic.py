@@ -158,19 +158,19 @@ def check_overrides_in_config(overrides, config):
 
 
 def test_parse_config():
-    from wrkchain.config import WorkchainConfig
+    from wrkchain.config import WRKChainConfig
 
     config_files = examples()
     assert len(config_files) > 0
 
     for f in config_files:
-        workchain_config = WorkchainConfig(f)
-        config = workchain_config.get()
+        wrkchain_config = WRKChainConfig(f)
+        config = wrkchain_config.get()
         print(config)
 
 
 def test_parse_config_missing_nodes():
-    from wrkchain.config import WorkchainConfig, \
+    from wrkchain.config import WRKChainConfig, \
         MissingConfigOverrideException
 
     config_files = fail_examples('nodes_')
@@ -179,11 +179,11 @@ def test_parse_config_missing_nodes():
     for f in config_files:
         with pytest.raises(MissingConfigOverrideException):
             # should fail - missing nodes
-            WorkchainConfig(f)
+            WRKChainConfig(f)
 
 
 def test_parse_config_missing_mainchain():
-    from wrkchain.config import WorkchainConfig, \
+    from wrkchain.config import WRKChainConfig, \
         MissingConfigOverrideException
 
     config_files = fail_examples('mainchain_')
@@ -192,11 +192,11 @@ def test_parse_config_missing_mainchain():
     for f in config_files:
         with pytest.raises(MissingConfigOverrideException):
             # should fail - invalid mainchain config
-            WorkchainConfig(f)
+            WRKChainConfig(f)
 
 
 def test_parse_config_invalid_addresses():
-    from wrkchain.config import WorkchainConfig, \
+    from wrkchain.config import WRKChainConfig, \
         InvalidOverrideException
 
     config_files = fail_examples('address_')
@@ -205,19 +205,19 @@ def test_parse_config_invalid_addresses():
     for f in config_files:
         with pytest.raises(InvalidOverrideException):
             # should fail - invalid mainchain config
-            WorkchainConfig(f)
+            WRKChainConfig(f)
 
 
 def test_successful_override():
-    from wrkchain.config import WorkchainConfig
+    from wrkchain.config import WRKChainConfig
 
     config_files = examples()
     assert len(config_files) > 0
 
     for f in config_files:
-        workchain_config = WorkchainConfig(f)
-        config = workchain_config.get()
-        override = workchain_config.get_overrides()
+        wrkchain_config = WRKChainConfig(f)
+        config = wrkchain_config.get()
+        override = wrkchain_config.get_overrides()
         check_overrides_in_config(override, config)
 
 
@@ -241,7 +241,7 @@ def test_generate_documentation():
 
 def test_generate_documentation_no_bootnode():
     from wrkchain.sdk import generate_documentation
-    test_config['workchain']['bootnode']['use'] = False
+    test_config['wrkchain']['bootnode']['use'] = False
     documentation = generate_documentation(test_config, test_genesis,
                                            static_bootnode_config)
     print(documentation)
@@ -252,7 +252,7 @@ def test_generate_documentation_no_bootnode():
 def test_generate_genesis():
     from wrkchain.sdk import generate_genesis
 
-    genesis_json, workchain_id = generate_genesis(test_config)
+    genesis_json, wrkchain_id = generate_genesis(test_config)
     print(genesis_json)
     assert len(genesis_json) > 0
-    assert workchain_id > 0
+    assert wrkchain_id > 0

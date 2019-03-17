@@ -22,7 +22,7 @@ class InvalidOverrideException(Exception):
         Exception.__init__(self, *args, **kwargs)
 
 
-class WorkchainConfig:
+class WRKChainConfig:
     def __init__(self, config_file):
         self.__overrides = {}
         self.__config = {}
@@ -104,32 +104,32 @@ class WorkchainConfig:
         self.__config = basic_default
 
     def __load_overrides(self):
-        workchain_overrides = self.__overrides['wrkchain']
+        wrkchain_overrides = self.__overrides['wrkchain']
 
         # Title
-        if 'title' in workchain_overrides:
-            self.__config['wrkchain']['title'] = workchain_overrides['title']
+        if 'title' in wrkchain_overrides:
+            self.__config['wrkchain']['title'] = wrkchain_overrides['title']
 
         # Ledger
-        if 'ledger' in workchain_overrides:
-            self.__override_ledger(workchain_overrides['ledger'])
+        if 'ledger' in wrkchain_overrides:
+            self.__override_ledger(wrkchain_overrides['ledger'])
 
         # Bootnode
-        if 'bootnode' in workchain_overrides:
-            self.__override_bootnode(workchain_overrides['bootnode'])
+        if 'bootnode' in wrkchain_overrides:
+            self.__override_bootnode(wrkchain_overrides['bootnode'])
 
         # Chaintest
-        if 'chaintest' in workchain_overrides:
+        if 'chaintest' in wrkchain_overrides:
             self.__config['wrkchain']['chaintest'] = \
-                workchain_overrides['chaintest']
+                wrkchain_overrides['chaintest']
 
         # Nodes
-        if 'nodes' in workchain_overrides:
-            self.__override_nodes(workchain_overrides['nodes'])
+        if 'nodes' in wrkchain_overrides:
+            self.__override_nodes(wrkchain_overrides['nodes'])
 
         # Coin
-        if 'coin' in workchain_overrides:
-            self.__override_coin(workchain_overrides['coin'])
+        if 'coin' in wrkchain_overrides:
+            self.__override_coin(wrkchain_overrides['coin'])
 
         # Mainchain
         if 'mainchain' in self.__overrides:

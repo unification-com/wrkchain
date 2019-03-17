@@ -12,7 +12,7 @@ port_list = [GETH_BASE_PORT + x for x in range(MAX_EVS)]
 
 
 def bootnode(config):
-    name = 'workchain_bootnode'
+    name = 'wrkchain_bootnode'
     return {
         'name': name,
         'hostname': name,
@@ -54,22 +54,22 @@ def chaintest():
     }
 
 
-def generate_nodes(nodes, bootnode_config, workchain_id):
+def generate_nodes(nodes, bootnode_config, wrkchain_id):
     d = []
     n = 0
 
     for validator in nodes:
         n = n + 1
         if validator['rpc']:
-            name = f'workchain-rpc-validator-{n}'
+            name = f'wrkchain-rpc-validator-{n}'
         else:
-            name = f'workchain-validator-{n}'
+            name = f'wrkchain-validator-{n}'
 
         geth_port = port_list.pop(0)
 
         #TODO: Consolidate listen ports
         cmd = generate_geth_cmd(
-            validator, bootnode_config, workchain_id, port_list.pop(0))
+            validator, bootnode_config, wrkchain_id, port_list.pop(0))
 
         build_d = {
             'context': '..',
@@ -105,15 +105,15 @@ def generate_nodes(nodes, bootnode_config, workchain_id):
     return d
 
 
-def generate(config, bootnode_config, workchain_id):
-    workchain = config['wrkchain']
+def generate(config, bootnode_config, wrkchain_id):
+    wrkchain = config['wrkchain']
 
     services = []
     if bootnode_config['type'] == 'dedicated':
         services.append(bootnode(bootnode_config['nodes']))
 
     nodes = generate_nodes(
-        workchain['nodes'], bootnode_config, workchain_id)
+        wrkchain['nodes'], bootnode_config, wrkchain_id)
     services = services + nodes
 
     if config['wrkchain']['chaintest']:
