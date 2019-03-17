@@ -1,5 +1,5 @@
 {
-    "workchain": {
+    "wrkchain": {
         "title": "Example Workchain",
         "ledger": {
             "base": "geth",

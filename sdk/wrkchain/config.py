@@ -3,7 +3,7 @@ import pprint
 
 from web3 import Web3
 
-REQUIRED_OVERRIDES = ['workchain', 'mainchain']
+REQUIRED_OVERRIDES = ['wrkchain', 'mainchain']
 REQUIRED_WRKCHAIN_OVERRIDES = ['nodes']
 REQUIRED_WRKCHAIN_NODE_OVERRIDES = ['address']
 REQUIRED_MAINCHAIN_OVERRIDES = ['network']
@@ -59,19 +59,19 @@ class WorkchainConfig:
                 raise MissingConfigOverrideException(err)
 
         for k in REQUIRED_WRKCHAIN_OVERRIDES:
-            if k not in self.__overrides['workchain'].keys():
+            if k not in self.__overrides['wrkchain'].keys():
                 err = f'"{k}" not defined in {config_file}.'
                 raise MissingConfigOverrideException(err)
 
-        if len(self.__overrides['workchain']['nodes']) == 0:
+        if len(self.__overrides['wrkchain']['nodes']) == 0:
             err = f'No nodes defined in {config_file}. You must define ' \
                 f'at least one node'
             raise MissingConfigOverrideException(err)
 
-        for i in range(len(self.__overrides['workchain']['nodes'])):
+        for i in range(len(self.__overrides['wrkchain']['nodes'])):
             for k in REQUIRED_WRKCHAIN_NODE_OVERRIDES:
-                if k not in self.__overrides['workchain']['nodes'][i].keys():
-                    err = f'"{k}" not defined in workchain -> nodes -> Node ' \
+                if k not in self.__overrides['wrkchain']['nodes'][i].keys():
+                    err = f'"{k}" not defined in wrkchain -> nodes -> Node ' \
                         f'{i} section in {config_file}.'
                     raise MissingConfigOverrideException(err)
 
@@ -90,7 +90,7 @@ class WorkchainConfig:
 
     def __load_basic_defaults(self):
         basic_default = {
-            'workchain': {
+            'wrkchain': {
                 'title': 'My Workchain',
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
@@ -104,11 +104,11 @@ class WorkchainConfig:
         self.__config = basic_default
 
     def __load_overrides(self):
-        workchain_overrides = self.__overrides['workchain']
+        workchain_overrides = self.__overrides['wrkchain']
 
         # Title
         if 'title' in workchain_overrides:
-            self.__config['workchain']['title'] = workchain_overrides['title']
+            self.__config['wrkchain']['title'] = workchain_overrides['title']
 
         # Ledger
         if 'ledger' in workchain_overrides:
@@ -120,7 +120,7 @@ class WorkchainConfig:
 
         # Chaintest
         if 'chaintest' in workchain_overrides:
-            self.__config['workchain']['chaintest'] = \
+            self.__config['wrkchain']['chaintest'] = \
                 workchain_overrides['chaintest']
 
         # Nodes
@@ -142,7 +142,7 @@ class WorkchainConfig:
         for key, data in ledger.items():
             # Todo - check and clean consensus
             new_conf[key] = data
-        self.__config['workchain']['ledger'] = new_conf
+        self.__config['wrkchain']['ledger'] = new_conf
 
     def __override_bootnode(self, bootnode_conf):
 
@@ -150,7 +150,7 @@ class WorkchainConfig:
 
         for key, data in bootnode_conf.items():
             new_conf[key] = data
-        self.__config['workchain']['bootnode'] = new_conf
+        self.__config['wrkchain']['bootnode'] = new_conf
 
     def __override_nodes(self, nodes):
         defined_nodes = []
@@ -181,7 +181,7 @@ class WorkchainConfig:
                                 new_node[key][k] = d
                 elif key == 'address':
                     if not Web3.isAddress(data):
-                        err = f'workchain -> nodes -> {node_num - 1} -> ' \
+                        err = f'wrkchain -> nodes -> {node_num - 1} -> ' \
                             f'address "{data}"" is not a valid address'
                         raise InvalidOverrideException(err)
                     new_node[key] = Web3.toChecksumAddress(data)
@@ -192,14 +192,14 @@ class WorkchainConfig:
 
             defined_nodes.append(new_node)
 
-        self.__config['workchain']['nodes'] = defined_nodes
+        self.__config['wrkchain']['nodes'] = defined_nodes
 
     def __override_coin(self, coin):
         if 'symbol' in coin:
-            self.__config['workchain']['coin']['symbol'] = coin['symbol']
+            self.__config['wrkchain']['coin']['symbol'] = coin['symbol']
         if 'prefund' in coin:
             prefund = []
-            for account in self.__overrides['workchain']['coin']['prefund']:
+            for account in self.__overrides['wrkchain']['coin']['prefund']:
                 if not Web3.isAddress(account['address']):
                     err = f'coin -> prefund -> {account["address"]} is not ' \
                         f'a valid address'
@@ -211,17 +211,17 @@ class WorkchainConfig:
                 }
                 prefund.append(prefund_account)
 
-            self.__config['workchain']['coin']['prefund'] = prefund
+            self.__config['wrkchain']['coin']['prefund'] = prefund
         else:
             # use address from nodes
             prefund_accounts = []
-            for node in self.__config['workchain']['nodes']:
+            for node in self.__config['wrkchain']['nodes']:
                 account = {
                     'address': node['address'],
                     'balance': "1000000000"
                 }
                 prefund_accounts.append(account)
-            self.__config['workchain']['coin']['prefund'] = prefund_accounts
+            self.__config['wrkchain']['coin']['prefund'] = prefund_accounts
 
     def __override_mainchain(self, mainchain):
         if 'network' in mainchain:

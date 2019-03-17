@@ -106,7 +106,7 @@ def generate_nodes(nodes, bootnode_config, workchain_id):
 
 
 def generate(config, bootnode_config, workchain_id):
-    workchain = config['workchain']
+    workchain = config['wrkchain']
 
     services = []
     if bootnode_config['type'] == 'dedicated':
@@ -116,7 +116,7 @@ def generate(config, bootnode_config, workchain_id):
         workchain['nodes'], bootnode_config, workchain_id)
     services = services + nodes
 
-    if config['workchain']['chaintest']:
+    if config['wrkchain']['chaintest']:
         services = services + [chaintest()]
 
     networks = {

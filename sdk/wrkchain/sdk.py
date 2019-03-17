@@ -17,10 +17,10 @@ log = logging.getLogger(__name__)
 def generate_documentation(config, genesis_json, bootnode_config):
 
     # derived from config
-    workchain_name = config['workchain']['title']
-    nodes = config['workchain']['nodes']
+    workchain_name = config['wrkchain']['title']
+    nodes = config['wrkchain']['nodes']
     mainchain_netork = config["mainchain"]["network"]
-    ledger_base_type = config["workchain"]["ledger"]["base"]
+    ledger_base_type = config["wrkchain"]["ledger"]["base"]
     oracle_addresses = get_oracle_addresses(config)
     mainchain_web3_provider = config['mainchain']['web3_provider']
     mainchain_network_id = config['mainchain']['network_id']
@@ -48,12 +48,12 @@ def generate_documentation(config, genesis_json, bootnode_config):
 
 
 def generate_genesis(config):
-    block_period = config['workchain']['ledger']['consensus']['period']
-    nodes = config['workchain']['nodes']
-    pre_funded_accounts = config['workchain']['coin']['prefund']
+    block_period = config['wrkchain']['ledger']['consensus']['period']
+    nodes = config['wrkchain']['nodes']
+    pre_funded_accounts = config['wrkchain']['coin']['prefund']
 
-    workchain_base = config['workchain']['ledger']['base']
-    workchain_consensus = config['workchain']['ledger']['consensus']['type']
+    workchain_base = config['wrkchain']['ledger']['base']
+    workchain_consensus = config['wrkchain']['ledger']['consensus']['type']
     workchain_id = generate_workchain_id()
 
     genesis_json = build_genesis(
@@ -115,9 +115,9 @@ def generate_bootnode_info(build_dir, ip, port, public_address=''):
 
 def configure_bootnode(build_dir, config):
     bootnode_config = {}
-    if config['workchain']['bootnode']['use']:
-        ip = config['workchain']['bootnode']['ip']
-        port = config['workchain']['bootnode']['port']
+    if config['wrkchain']['bootnode']['use']:
+        ip = config['wrkchain']['bootnode']['ip']
+        port = config['wrkchain']['bootnode']['port']
         node_info = generate_bootnode_info(build_dir, ip, port)
         bootnode_config['type'] = 'dedicated'
         bootnode_config['nodes'] = node_info
@@ -125,7 +125,7 @@ def configure_bootnode(build_dir, config):
         nodes = {}
         static_addresses_list = []
 
-        for item in config['workchain']['nodes']:
+        for item in config['wrkchain']['nodes']:
             public_address = item['address']
             ip = item['ip']
             port = item['listen_port']
