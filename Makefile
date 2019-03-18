@@ -58,8 +58,8 @@ endif
 	$(MAKE) init-prepare
 	@mkdir -p $(WRKCHAIN_ASSETS_DIR)/build
 
-	# Copy user configured workchain.$(BUILD).env to assets, so builders can modify
-	@cp $(ROOT_DIR)/envs/workchain.$(BUILD).env $(WRKCHAIN_ASSETS_DIR)/build/.env
+	# Copy user configured wrkchain.$(BUILD).env to assets, so builders can modify
+	@cp $(ROOT_DIR)/envs/wrkchain.$(BUILD).env $(WRKCHAIN_ASSETS_DIR)/build/.env
 
 	@echo "\n\nEdit ./Docker/assets/build/.env as required, then press RETURN to continue\n\n"; \
     read dummy_input;
@@ -68,14 +68,14 @@ endif
 	@cp $(ROOT_DIR)/envs/compose_overrides/docker-compose.$(BUILD).yml $(ROOT_DIR)/docker-compose.override.yml
 
 	# Build the init Docker container
-	@cd $(ROOT_DIR)/Docker && docker build -f init_environment/Dockerfile -t init_workchain_environment .
+	@cd $(ROOT_DIR)/Docker && docker build -f init_environment/Dockerfile -t init_wrkchain_environment .
 
 ifeq ($(BUILD),aws_testnet)
 	@echo "Initialising environment for AWS Testnet"
-	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets init_workchain_environment
+	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets init_wrkchain_environment
 else
 	@echo "Initialising environment something else: $(BUILD)\n\nCheck Mainchain running locally:"
-	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet init_workchain_environment
+	@docker run -v $(ROOT_DIR)/Docker/assets:/root/assets --ip 192.168.43.124 --network mainchain_chainnet init_wrkchain_environment
 endif
 	# Copy the generated .env here, so docker-compose can access the variables
 	# during the build and run targets

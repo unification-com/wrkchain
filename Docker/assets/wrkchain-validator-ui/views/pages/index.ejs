@@ -45,7 +45,7 @@
         <br>
 
         <h3>Mainchain Info</h3>
-        <strong><%= WRKCHAIN_NAME%>'s Workchain Root Contract on Mainchain:</strong> <a href="<%= MAINCHAIN_EXPLORER_URL%>/address/<%= WRKCHAIN_ROOT_CONTRACT_ADDRESS%>" target="_blank"><%= WRKCHAIN_ROOT_CONTRACT_ADDRESS%></a><br>
+        <strong><%= WRKCHAIN_NAME%>'s WRKChain Root Contract on Mainchain:</strong> <a href="<%= MAINCHAIN_EXPLORER_URL%>/address/<%= WRKCHAIN_ROOT_CONTRACT_ADDRESS%>" target="_blank"><%= WRKCHAIN_ROOT_CONTRACT_ADDRESS%></a><br>
         <strong>Submitted in Mainchain Tx:</strong> <a target="_blank" id="tx"></a><br>
         <strong>Next check:</strong> <span id="next_block"><%= WRKCHAIN_ROOT_WRITE_TIMEOUT%></span>
     </p>
@@ -68,7 +68,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="js/web3.min.js"></script>
-    <script type="text/javascript" src="js/WorkchainEventWatcher.proto.js"></script>
+    <script type="text/javascript" src="js/WRKChainEventWatcher.proto.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 
 
@@ -81,7 +81,7 @@
 
         $('body').css("background-image", "url('" + bg_img + "')");
 
-        let workchainEventWatcher = new WorkchainEventWatcher('<%= WRKCHAIN_ROOT_CONTRACT_ADDRESS%>',
+        let wrkChainEventWatcher = new WRKChainEventWatcher('<%= WRKCHAIN_ROOT_CONTRACT_ADDRESS%>',
                                 '<%= MAINCHAIN_WEB3_PROVIDER_URL%>',
                                 <%- JSON.stringify(WRKCHAIN_ROOT_ABI)%>);
         updateWatcher();
@@ -96,7 +96,7 @@
         function updateWatcher() {
             $('#status').text("Fetching data");
             $('#next_block').text(<%= WRKCHAIN_ROOT_WRITE_TIMEOUT%> + 1);
-            workchainEventWatcher.getLatestRecordedHeader(function(success, results) {
+            wrkChainEventWatcher.getLatestRecordedHeader(function(success, results) {
                 if(success && results.length > 0) {
                     let data = results[0];
                     console.log("data");

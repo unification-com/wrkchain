@@ -96,7 +96,7 @@ def check_oracle_address_funds(config):
         if current_balance == 0:
             click.echo(f'WARNING: address {address} has 0 UND on {network}.'
                        f'Funds required for deployment and running of'
-                       f'Workchain Root smart contract')
+                       f'WRKchain Root smart contract')
 
 
 def generate_bootnode_info(build_dir, ip, port, public_address=''):

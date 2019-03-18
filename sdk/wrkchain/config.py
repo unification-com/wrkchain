@@ -91,7 +91,7 @@ class WRKChainConfig:
     def __load_basic_defaults(self):
         basic_default = {
             'wrkchain': {
-                'title': 'My Workchain',
+                'title': 'My WRKChain',
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
                 'chaintest': False,

@@ -1,7 +1,7 @@
 {
-  "name": "workchain-validator-ui",
+  "name": "wrkchain-validator-ui",
   "version": "1.0.0",
-  "description": "Simple block validation interface for a Workchain",
+  "description": "Simple block validation interface for a WRKChain",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -27,15 +27,15 @@ COPY ./assets/ /root/
 
 WORKDIR /root
 
-RUN chmod +x /root/scripts/init_workchain.sh && \
+RUN chmod +x /root/scripts/init_wrkchain.sh && \
     cd /root && \
-    git clone https://github.com/unification-com/workchain-root-contract.git
+    git clone https://github.com/unification-com/wrkchain-root-contract.git
 
 WORKDIR /root/init
 
 RUN npm install
 
-WORKDIR /root/workchain-root-contract
+WORKDIR /root/wrkchain-root-contract
 RUN npm install -g truffle && npm install
 
-CMD cd /root && ./scripts/init_workchain.sh
+CMD cd /root && ./scripts/init_wrkchain.sh

@@ -4,7 +4,7 @@ cd /root/init
 
 cat /root/assets/templates/autogen.env >> /root/assets/build/.env
 
-# Generate a unique workchain ID
+# Generate a unique WRKChain ID
 CHAIN_ID=$(od -N 4 -t uL -An /dev/urandom | tr -d " ")
 
 # generate a unique wallet mnemonic
@@ -39,11 +39,11 @@ RPC_NODE_PRIVATE_KEY=$(node init.js private_key "$MNEMONIC" 2)
 sed -i "s/RPC_NODE_PRIVATE_KEY=/RPC_NODE_PRIVATE_KEY=$RPC_NODE_PRIVATE_KEY/g" /root/assets/build/.env
 
 # Write EV1 and EV2 public addresses to "WRKCHAIN_EVS" variable in .env
-# Used when the Workchain Root smart contract is deployed
+# Used when the WRKChain Root smart contract is deployed
 sed -i "s/WRKCHAIN_EV_2/$EV2_PUBLIC_ADDRESS/g" /root/assets/build/.env
 sed -i "s/WRKCHAIN_EV_1/$EV1_PUBLIC_ADDRESS/g" /root/assets/build/.env
 
-# Set the Workchain's CHain ID in .env
+# Set the WRKChain's CHain ID in .env
 sed -i "s/WRKCHAIN_NETWORK_ID=/WRKCHAIN_NETWORK_ID=$CHAIN_ID/g" /root/assets/build/.env
 
 # Psuedo generate the genesis.json
@@ -56,7 +56,7 @@ sed -i "s/EV2/${EV2_PUBLIC_ADDRESS:2}/g" /root/assets/build/${WRKCHAIN_GENESIS_J
 sed -i "s/RPC/${RPC_NODE_PUBLIC_ADDRESS:2}/g" /root/assets/build/${WRKCHAIN_GENESIS_JSON_FILENAME##*=}
 sed -i "s/WRKCHAIN_ID/${CHAIN_ID}/g" /root/assets/build/${WRKCHAIN_GENESIS_JSON_FILENAME##*=}
 
-# Write the genesis.json to .env. Used when deploying the Workchain Root smart contract
+# Write the genesis.json to .env. Used when deploying the WRKChain Root smart contract
 while IFS='' read -r line || [[ -n "$line" ]]; do
     sed -i "s/WRKCHAIN_GENESIS=/WRKCHAIN_GENESIS=${line}/g" /root/assets/build/.env
 done < /root/assets/build/${WRKCHAIN_GENESIS_JSON_FILENAME##*=}
@@ -74,11 +74,11 @@ wget -T 5 -t 2 -O - ${MAINCHAIN_FAUCET_URL##*=}/sendtx?to=${RPC_NODE_PUBLIC_ADDR
 
 # Copy the generated .env to the Smart Contract deployment directory
 # since it needs some values during deployment
-cp /root/assets/build/.env /root/workchain-root-contract/.env
+cp /root/assets/build/.env /root/wrkchain-root-contract/.env
 
-# Compile Workchain Root smart contract
+# Compile WRKChain Root smart contract
 MAINCHAIN_NETWORK_ID=$(grep 'MAINCHAIN_NETWORK_ID' /root/assets/build/.env)
-cd /root/workchain-root-contract
+cd /root/wrkchain-root-contract
 truffle compile
 truffle migrate --reset
 WRKCHAIN_ROOT_CONTRACT_ADDRESS=$(node abi.js addr ${MAINCHAIN_NETWORK_ID##*=})
@@ -89,27 +89,27 @@ echo "======================================="
 echo "= ENVIRONMENT INITIALISATION COMPLETE ="
 echo "======================================="
 echo ""
-echo "Workchain EV1"
+echo "WRKChain EV1"
 echo "---"
 echo "Public address: ${EV1_PUBLIC_ADDRESS}"
 echo "Private Key: ${EV1_PRIVATE_KEY}"
 echo ""
-echo "Workchain EV2"
+echo "WRKChain EV2"
 echo "---"
 echo "Public address: ${EV2_PUBLIC_ADDRESS}"
 echo "Private Key: ${EV2_PRIVATE_KEY}"
 echo ""
-echo "Workchain RPC Node"
+echo "WRKChain RPC Node"
 echo "--------"
 echo "Public address: ${RPC_NODE_PUBLIC_ADDRESS}"
 echo "Private Key: ${RPC_NODE_PRIVATE_KEY}"
 echo ""
 echo "Generated Wallet Mnemonic: ${MNEMONIC}"
 echo ""
-echo "(Wallets will work on both Mainchain and Workchain)"
+echo "(Wallets will work on both Mainchain and WRKChain)"
 echo ""
-echo "Workchain Network ID: ${CHAIN_ID}"
-echo "Workchain Root smart contract address on Mainchain: ${WRKCHAIN_ROOT_CONTRACT_ADDRESS}"
+echo "WRKChain Network ID: ${CHAIN_ID}"
+echo "WRKChain Root smart contract address on Mainchain: ${WRKCHAIN_ROOT_CONTRACT_ADDRESS}"
 echo ""
 echo "now run:"
 echo ""

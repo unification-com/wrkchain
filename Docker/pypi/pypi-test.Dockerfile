@@ -6,4 +6,4 @@ RUN pip install --upgrade --index-url https://pypi.org/simple/ workchain
 
 COPY examples /examples
 
-CMD python -m workchain.sdk generate-workchain /examples/config.json /build
+CMD python -m wrkchain.sdk generate-wrkchain /examples/config.json /build

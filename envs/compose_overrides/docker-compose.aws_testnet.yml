@@ -1,22 +1,22 @@
 version: "3"
 services:
-  workchain_bootnode:
+  wrkchain_bootnode:
     network_mode: host
 
-  workchain_validator_1:
+  wrkchain_validator_1:
     network_mode: host
 
-  workchain_validator_2:
+  wrkchain_validator_2:
     network_mode: host
 
-  workchain_node_1:
+  wrkchain_node_1:
     network_mode: host
 
-  workchain_explorer:
+  wrkchain_explorer:
     network_mode: host
 
-  workchain_validator_service:
+  wrkchain_validator_service:
     network_mode: host
 
-  workchain_oracle:
+  wrkchain_oracle:
     network_mode: host
