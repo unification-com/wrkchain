@@ -9,14 +9,14 @@ from wrkchain.utils import repo_root
 
 
 class WorkchainDocumentation:
-    def __init__(self, workchain_name, nodes, mainchain_netork,
+    def __init__(self, wrkchain_name, nodes, mainchain_netork,
                  ledger_base_type, oracle_addresses, mainchain_web3_provider,
-                 mainchain_network_id, workchain_id, bootnode_config,
+                 mainchain_network_id, wrkchain_id, bootnode_config,
                  genesis_json):
 
         self.__doc_params = {
-            'workchain_name': workchain_name,
-            'workchain_id': workchain_id,
+            'wrkchain_name': wrkchain_name,
+            'wrkchain_id': wrkchain_id,
             'bootnode_config': bootnode_config,
             'nodes': nodes,
             'network': mainchain_netork,
@@ -130,7 +130,7 @@ class WorkchainDocumentation:
 
         d['__CONTENTS__'] = self.__generate_contents(d)
         d['__DOCUMENTATION_TITLE__'] = f'# "' \
-            f'{self.__doc_params["workchain_name"]}" Documentation'
+            f'{self.__doc_params["wrkchain_name"]}" Documentation'
 
         self.__documentation['content'] = template.substitute(d)
 

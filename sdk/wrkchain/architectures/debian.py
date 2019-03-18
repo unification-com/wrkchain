@@ -1,5 +1,5 @@
 def generate_geth_cmd(
-        node, bootnode_config, workchain_id, listen_port, linebreak=False):
+        node, bootnode_config, wrkchain_id, listen_port, linebreak=False):
 
     flags = []
 
@@ -10,7 +10,7 @@ def generate_geth_cmd(
 
     flags = flags + [
         f'--port {listen_port}',
-        f'--networkid {workchain_id}',
+        f'--networkid {wrkchain_id}',
         f'--syncmode=full',
         f'--verbosity=4'
     ]
