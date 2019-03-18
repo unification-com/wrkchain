@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><%= WORKCHAIN_NAME%></title>
+    <title><%= WRKCHAIN_NAME%></title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
@@ -15,7 +15,7 @@
     <header>
       <!-- Fixed navbar -->
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#"><%= WORKCHAIN_NAME%></a>
+        <a class="navbar-brand" href="#"><%= WRKCHAIN_NAME%></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,7 +34,7 @@
     <h1 class="mt-5">Block Validation</h1>
 
     <p class="lead">
-      Check <%= WORKCHAIN_NAME%> Block #<input type="text" id="block_num"> <button id="check_block">Check</button>
+      Check <%= WRKCHAIN_NAME%> Block #<input type="text" id="block_num"> <button id="check_block">Check</button>
     </p>
         <br>
 
@@ -42,13 +42,13 @@
 
     <div id="validation_container">
 
-      <h2><%= WORKCHAIN_NAME%> Block #<span id="block_num_title"></span> <span id="block_valid"></span></h2>
+      <h2><%= WRKCHAIN_NAME%> Block #<span id="block_num_title"></span> <span id="block_valid"></span></h2>
 
       <h3>Block Hashes</h3>
 
       <table>
         <tr>
-            <td><strong><%= WORKCHAIN_NAME%> actual: </strong></td>
+            <td><strong><%= WRKCHAIN_NAME%> actual: </strong></td>
           <td><span id="block_hash"></span></td>
         <tr>
         <tr>
@@ -65,7 +65,7 @@
 
       <table>
         <tr>
-          <td><strong><%= WORKCHAIN_NAME%> actual: </strong></td>
+          <td><strong><%= WRKCHAIN_NAME%> actual: </strong></td>
           <td><span id="parent_block_hash"></span></td>
         <tr>
         <tr>
@@ -82,7 +82,7 @@
 
       <table>
         <tr>
-          <td><strong><%= WORKCHAIN_NAME%> actual:</strong> </td>
+          <td><strong><%= WRKCHAIN_NAME%> actual:</strong> </td>
           <td><span id="block_tx_root"></span></td>
         <tr>
         <tr>
@@ -99,7 +99,7 @@
 
       <table>
         <tr>
-          <td><strong><%= WORKCHAIN_NAME%> actual:</strong> </td>
+          <td><strong><%= WRKCHAIN_NAME%> actual:</strong> </td>
           <td><span id="block_state_root"></span></td>
         <tr>
         <tr>
@@ -116,7 +116,7 @@
 
       <table>
         <tr>
-          <td><strong><%= WORKCHAIN_NAME%>: </strong></td>
+          <td><strong><%= WRKCHAIN_NAME%>: </strong></td>
           <td><span id="block_receipts_root"></span></td>
         <tr>
         <tr>
@@ -165,10 +165,10 @@
         $('#no_data').hide();
         $('#validation_container').hide();
 
-        let workchainRoot = new WorkchainRoot('<%= WORKCHAIN_ROOT_CONTRACT_ADDRESS%>',
+        let workchainRoot = new WorkchainRoot('<%= WRKCHAIN_ROOT_CONTRACT_ADDRESS%>',
                                 '<%= MAINCHAIN_WEB3_PROVIDER_URL%>',
-                                '<%= WORKCHAIN_WEB3_PROVIDER_URL%>',
-                                <%- JSON.stringify(WORKCHAIN_ROOT_ABI)%>);
+                                '<%= WRKCHAIN_WEB3_PROVIDER_URL%>',
+                                <%- JSON.stringify(WRKCHAIN_ROOT_ABI)%>);
 
         $('#check_block').click(function() {
           let block_num = $('#block_num').val();

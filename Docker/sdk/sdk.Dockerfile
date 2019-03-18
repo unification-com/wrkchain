@@ -31,11 +31,11 @@ RUN pip install -r requirements.txt && \
     git clone https://github.com/unification-com/workchain-root-contract.git --depth 1
 
 RUN echo "py.test /src/tests" >> /root/.bash_history && \
-    echo "python -m workchain.sdk generate_workchain /examples/config.json /build" >> /root/.bash_history && \
+    echo "python -m wrkchain.sdk generate_wrkchain /examples/config.json /build" >> /root/.bash_history && \
     echo "py.test /src/systemtests" >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
 
-COPY sdk/workchain /src/workchain
+COPY sdk/wrkchain /src/wrkchain
 COPY sdk/tests /src/tests
 COPY sdk/systemtests /src/systemtests
 COPY sdk/tests/test_data /examples
@@ -43,4 +43,4 @@ COPY templates /templates
 
 RUN py.test /src/tests
 
-CMD ["python", "-m", "workchain.sdk", "generate_workchain", "/examples/config.json", "/build"]
+CMD ["python", "-m", "wrkchain.sdk", "generate_wrkchain", "/examples/config.json", "/build"]

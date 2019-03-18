@@ -1,5 +1,5 @@
 {
-    "workchain": {
+    "wrkchain": {
         "title": "Empty Nodes - should break",
         "nodes": [],
         "coin": {

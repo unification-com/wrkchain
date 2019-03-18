@@ -37,8 +37,8 @@ test_genesis = {
 }
 
 test_config = {
-   "workchain":{
-      "title":"Example Workchain",
+   "wrkchain":{
+      "title":"Example WRKChain",
       "ledger":{
           "base": "geth",
           "consensus": {
@@ -158,19 +158,19 @@ def check_overrides_in_config(overrides, config):
 
 
 def test_parse_config():
-    from workchain.config import WorkchainConfig
+    from wrkchain.config import WRKChainConfig
 
     config_files = examples()
     assert len(config_files) > 0
 
     for f in config_files:
-        workchain_config = WorkchainConfig(f)
-        config = workchain_config.get()
+        wrkchain_config = WRKChainConfig(f)
+        config = wrkchain_config.get()
         print(config)
 
 
 def test_parse_config_missing_nodes():
-    from workchain.config import WorkchainConfig, \
+    from wrkchain.config import WRKChainConfig, \
         MissingConfigOverrideException
 
     config_files = fail_examples('nodes_')
@@ -179,11 +179,11 @@ def test_parse_config_missing_nodes():
     for f in config_files:
         with pytest.raises(MissingConfigOverrideException):
             # should fail - missing nodes
-            WorkchainConfig(f)
+            WRKChainConfig(f)
 
 
 def test_parse_config_missing_mainchain():
-    from workchain.config import WorkchainConfig, \
+    from wrkchain.config import WRKChainConfig, \
         MissingConfigOverrideException
 
     config_files = fail_examples('mainchain_')
@@ -192,11 +192,11 @@ def test_parse_config_missing_mainchain():
     for f in config_files:
         with pytest.raises(MissingConfigOverrideException):
             # should fail - invalid mainchain config
-            WorkchainConfig(f)
+            WRKChainConfig(f)
 
 
 def test_parse_config_invalid_addresses():
-    from workchain.config import WorkchainConfig, \
+    from wrkchain.config import WRKChainConfig, \
         InvalidOverrideException
 
     config_files = fail_examples('address_')
@@ -205,33 +205,33 @@ def test_parse_config_invalid_addresses():
     for f in config_files:
         with pytest.raises(InvalidOverrideException):
             # should fail - invalid mainchain config
-            WorkchainConfig(f)
+            WRKChainConfig(f)
 
 
 def test_successful_override():
-    from workchain.config import WorkchainConfig
+    from wrkchain.config import WRKChainConfig
 
     config_files = examples()
     assert len(config_files) > 0
 
     for f in config_files:
-        workchain_config = WorkchainConfig(f)
-        config = workchain_config.get()
-        override = workchain_config.get_overrides()
+        wrkchain_config = WRKChainConfig(f)
+        config = wrkchain_config.get()
+        override = wrkchain_config.get_overrides()
         check_overrides_in_config(override, config)
 
 
 def test_composer():
-    from workchain.composer import generate
-    from workchain.genesis import DEFAULT_NETWORK_ID
-    from workchain.sdk import configure_bootnode
+    from wrkchain.composer import generate
+    from wrkchain.genesis import DEFAULT_NETWORK_ID
+    from wrkchain.sdk import configure_bootnode
     build_dir = '/tmp'
     bootnode_cfg = configure_bootnode(build_dir, test_config)
     generate(test_config, bootnode_cfg, DEFAULT_NETWORK_ID)
 
 
 def test_generate_documentation():
-    from workchain.sdk import generate_documentation
+    from wrkchain.sdk import generate_documentation
     documentation = generate_documentation(test_config, test_genesis,
                                            bootnode_config)
     print(documentation)
@@ -240,8 +240,8 @@ def test_generate_documentation():
 
 
 def test_generate_documentation_no_bootnode():
-    from workchain.sdk import generate_documentation
-    test_config['workchain']['bootnode']['use'] = False
+    from wrkchain.sdk import generate_documentation
+    test_config['wrkchain']['bootnode']['use'] = False
     documentation = generate_documentation(test_config, test_genesis,
                                            static_bootnode_config)
     print(documentation)
@@ -250,9 +250,9 @@ def test_generate_documentation_no_bootnode():
 
 
 def test_generate_genesis():
-    from workchain.sdk import generate_genesis
+    from wrkchain.sdk import generate_genesis
 
-    genesis_json, workchain_id = generate_genesis(test_config)
+    genesis_json, wrkchain_id = generate_genesis(test_config)
     print(genesis_json)
     assert len(genesis_json) > 0
-    assert workchain_id > 0
+    assert wrkchain_id > 0

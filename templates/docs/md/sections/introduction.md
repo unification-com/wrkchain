@@ -1,6 +1,6 @@
 
-### $__SECTION_NUMBER__.1 About your Workchain
+### $__SECTION_NUMBER__.1 About your WRKChain
 
-**Your Workchain Network ID:** $__WORKCHAIN_NETWORK_ID__
+**Your WRKChain Network ID:** $__WRKCHAIN_NETWORK_ID__
 
 ### $__SECTION_NUMBER__.1.1 Generated Files

@@ -1,6 +1,6 @@
 {
-    "workchain": {
-        "title": "Example Workchain",
+    "wrkchain": {
+        "title": "Example WRKChain",
         "ledger": {
             "base": "geth",
             "consensus": {

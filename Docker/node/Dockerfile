@@ -24,11 +24,11 @@ RUN geth account import --password /root/.walletpassword  /root/.privatekey
 ENV BOOTNODE_ID=""
 ENV BOOTNODE_IP=""
 ENV BOOTNODE_PORT=""
-ENV WORKCHAIN_NETWORK_ID=""
+ENV WRKCHAIN_NETWORK_ID=""
 ENV GETH_LISTEN_PORT=""
 ENV RPC_PORT=""
 
-CMD exec geth --bootnodes "enode://$BOOTNODE_ID@$BOOTNODE_IP:$BOOTNODE_PORT" --networkid "$WORKCHAIN_NETWORK_ID" --verbosity=4 --rpc --rpcaddr "0.0.0.0" --rpcport "$RPC_PORT" --rpcapi "eth,web3,net,admin,debug,db" --rpccorsdomain "*" --syncmode="full" --port $GETH_LISTEN_PORT
+CMD exec geth --bootnodes "enode://$BOOTNODE_ID@$BOOTNODE_IP:$BOOTNODE_PORT" --networkid "$WRKCHAIN_NETWORK_ID" --verbosity=4 --rpc --rpcaddr "0.0.0.0" --rpcport "$RPC_PORT" --rpcapi "eth,web3,net,admin,debug,db" --rpccorsdomain "*" --syncmode="full" --port $GETH_LISTEN_PORT
 
 EXPOSE $RPC_PORT
 EXPOSE $GETH_LISTEN_PORT

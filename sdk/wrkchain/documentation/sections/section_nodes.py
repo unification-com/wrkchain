@@ -1,15 +1,15 @@
-from workchain.documentation.sections.doc_section import DocSection
-from workchain.architectures.debian import generate_geth_cmd
+from wrkchain.documentation.sections.doc_section import DocSection
+from wrkchain.architectures.debian import generate_geth_cmd
 
 
 class SectionNodes(DocSection):
-    def __init__(self, section_number, title, nodes, workchain_id,
+    def __init__(self, section_number, title, nodes, wrkchain_id,
                  bootnode_config):
         path_to_md = 'sections/nodes.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__nodes = nodes
-        self.__workchain_id = workchain_id
+        self.__wrkchain_id = wrkchain_id
         self.__bootnode_config = bootnode_config
 
     def generate(self):
@@ -26,7 +26,7 @@ class SectionNodes(DocSection):
                                          '`~/.ethereum`'
 
             geth_cmd = generate_geth_cmd(
-                node, self.__bootnode_config, self.__workchain_id, listen_port,
+                node, self.__bootnode_config, self.__wrkchain_id, listen_port,
                 linebreak=True)
 
             if node['is_validator']:
@@ -50,10 +50,10 @@ class SectionNodesBuilder:
     def __init__(self):
         self.__instance = None
 
-    def __call__(self, section_number, title, nodes, workchain_id,
+    def __call__(self, section_number, title, nodes, wrkchain_id,
                  bootnode_config, **_ignored):
         if not self.__instance:
             self.__instance = SectionNodes(section_number, title,
-                                           nodes, workchain_id,
+                                           nodes, wrkchain_id,
                                            bootnode_config)
         return self.__instance

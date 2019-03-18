@@ -1,14 +1,14 @@
 from string import Template
 
 from web3 import Web3
-from workchain.documentation.sections.doc_section import DocSection
+from wrkchain.documentation.sections.doc_section import DocSection
 
 TESTNET_FAUCET_URL = 'http://52.14.173.249/sendtx?to='
 
 
 class SectionSetup(DocSection):
     def __init__(self, section_number, title, network, oracle_addresses,
-                 workchain_id, mainchain_rpc_host, mainchain_rpc_port,
+                 wrkchain_id, mainchain_rpc_host, mainchain_rpc_port,
                  mainchain_rpc_uri, mainchain_network_id, genesis_json):
         path_to_md = 'sections/setup.md'
         DocSection.__init__(self, path_to_md, section_number, title)
@@ -16,7 +16,7 @@ class SectionSetup(DocSection):
         self.__network = network
         self.__oracle_addresses = oracle_addresses
         self.__section_number = section_number
-        self.__workchain_id = workchain_id
+        self.__wrkchain_id = wrkchain_id
         self.__mainchain_rpc_host = mainchain_rpc_host
         self.__mainchain_rpc_port = mainchain_rpc_port
         self.__mainchain_rpc_uri = mainchain_rpc_uri
@@ -26,7 +26,7 @@ class SectionSetup(DocSection):
     def generate(self):
         d = {
             '__FUND_ORACLE_ADDRESSES__': self.__fund(),
-            '__DEPLOY_WORKCHAIN_ROOT_CONTRACT__': self.__deply_contract(),
+            '__DEPLOY_WRKCHAIN_ROOT_CONTRACT__': self.__deply_contract(),
             '__MAINCHAIN_NETWORK__': self.__network
         }
         self.add_content(d, append=False)
@@ -90,9 +90,9 @@ class SectionSetup(DocSection):
             '__MAINCHAIN_RPC_PORT__': self.__mainchain_rpc_port,
             '__MAINCHAIN_NETWORK_ID__': self.__mainchain_network_id,
             '__MAINCHAIN_WEB3_PROVIDER_URL__': self.__mainchain_rpc_uri,
-            '__WORKCHAIN_GENESIS__': self.__genesis_json,
-            '__WORKCHAIN_NETWORK_ID__': self.__workchain_id,
-            '__WORKCHAIN_EVS__': (', '.join('"' + item + '"' for item in
+            '__WRKCHAIN_GENESIS__': self.__genesis_json,
+            '__WRKCHAIN_NETWORK_ID__': self.__wrkchain_id,
+            '__WRKCHAIN_EVS__': (', '.join('"' + item + '"' for item in
                                             self.__oracle_addresses)),
             '__GENESIS_SHA3__': genesis_sha3
         }
@@ -107,13 +107,13 @@ class SectionSetupBuilder:
         self.__instance = None
 
     def __call__(self, section_number, title, network, oracle_addresses,
-                 workchain_id, mainchain_rpc_host, mainchain_rpc_port,
+                 wrkchain_id, mainchain_rpc_host, mainchain_rpc_port,
                  mainchain_rpc_uri, mainchain_network_id, genesis_json,
                  **_ignored):
 
         if not self.__instance:
             self.__instance = SectionSetup(section_number, title, network,
-                                           oracle_addresses, workchain_id,
+                                           oracle_addresses, wrkchain_id,
                                            mainchain_rpc_host,
                                            mainchain_rpc_port,
                                            mainchain_rpc_uri,

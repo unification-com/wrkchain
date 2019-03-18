@@ -1,6 +1,6 @@
 {
-    "workchain": {
-        "title": "Simple Single Node Workchain",
+    "wrkchain": {
+        "title": "Simple Single Node WRKChain",
         "nodes": [
             {
                 "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
