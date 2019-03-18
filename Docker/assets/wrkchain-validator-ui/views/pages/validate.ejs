@@ -52,8 +52,8 @@
           <td><span id="block_hash"></span></td>
         <tr>
         <tr>
-          <td><strong>Workchain Root Smart contract: </strong></td>
-          <td><span id="workchain_root_hash"></span></td>
+          <td><strong>WRKChain Root Smart contract: </strong></td>
+          <td><span id="wrkchain_root_hash"></span></td>
         <tr>
         <tr>
           <td><strong>Valid:</strong> </td>
@@ -69,8 +69,8 @@
           <td><span id="parent_block_hash"></span></td>
         <tr>
         <tr>
-          <td><strong>Workchain Root Smart contract: </strong></td>
-          <td><span id="parent_workchain_root_hash"></span></td>
+          <td><strong>WRKChain Root Smart contract: </strong></td>
+          <td><span id="parent_wrkchain_root_hash"></span></td>
         <tr>
         <tr>
           <td><strong>Valid: </strong></td>
@@ -86,8 +86,8 @@
           <td><span id="block_tx_root"></span></td>
         <tr>
         <tr>
-          <td><strong>Workchain Root Smart contract: </strong></td>
-          <td><span id="workchain_tx_root"></span></td>
+          <td><strong>WRKChain Root Smart contract: </strong></td>
+          <td><span id="wrkchain_tx_root"></span></td>
         <tr>
         <tr>
           <td><strong>Valid: </strong></td>
@@ -103,8 +103,8 @@
           <td><span id="block_state_root"></span></td>
         <tr>
         <tr>
-          <td><strong>Workchain Root Smart contract: </strong></td>
-          <td><span id="workchain_state_root"></span></td>
+          <td><strong>WRKChain Root Smart contract: </strong></td>
+          <td><span id="wrkchain_state_root"></span></td>
         <tr>
         <tr>
           <td><strong>Valid: </strong></td>
@@ -120,8 +120,8 @@
           <td><span id="block_receipts_root"></span></td>
         <tr>
         <tr>
-          <td><strong>Workchain Root Smart contract: </strong></td>
-          <td><span id="workchain_receipts_root"></span></td>
+          <td><strong>WRKChain Root Smart contract: </strong></td>
+          <td><span id="wrkchain_receipts_root"></span></td>
         <tr>
         <tr>
           <td><strong>Valid:</strong> </td>
@@ -149,7 +149,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="js/web3.min.js"></script>
-    <script type="text/javascript" src="js/WorkchainRoot.proto.js"></script>
+    <script type="text/javascript" src="js/WRKChainRoot.proto.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 
 
@@ -165,7 +165,7 @@
         $('#no_data').hide();
         $('#validation_container').hide();
 
-        let workchainRoot = new WorkchainRoot('<%= WRKCHAIN_ROOT_CONTRACT_ADDRESS%>',
+        let wrkChainRoot = new WRKChainRoot('<%= WRKCHAIN_ROOT_CONTRACT_ADDRESS%>',
                                 '<%= MAINCHAIN_WEB3_PROVIDER_URL%>',
                                 '<%= WRKCHAIN_WEB3_PROVIDER_URL%>',
                                 <%- JSON.stringify(WRKCHAIN_ROOT_ABI)%>);
@@ -181,7 +181,7 @@
         <% } %>
 
         function validateBlock(block_num) {
-            workchainRoot.validateBlock(block_num, function(block, root_data) {
+            wrkChainRoot.validateBlock(block_num, function(block, root_data) {
 
                 if(root_data.hash == '0x0000000000000000000000000000000000000000000000000000000000000000') {
                   $('#no_data').text('No data currently stored in Worckchain Root for Block #' + block_num);
@@ -204,7 +204,7 @@
 
                 //Block hash
                 $('#block_hash').text(block.hash);
-                $('#workchain_root_hash').text(root_data.hash);
+                $('#wrkchain_root_hash').text(root_data.hash);
                 if(root_data.hash == block.hash) {
                   $('#hash_valid').text("YES");
                   $('#hash_valid').css('color', 'green');
@@ -216,7 +216,7 @@
 
                 //Parent Hash
                 $('#parent_block_hash').text(block.parentHash);
-                $('#parent_workchain_root_hash').text(root_data.parent_hash);
+                $('#parent_wrkchain_root_hash').text(root_data.parent_hash);
                 if(root_data.parent_hash == block.parentHash) {
                   $('#parent_hash_valid').text("YES");
                   $('#parent_hash_valid').css('color', 'green');
@@ -228,7 +228,7 @@
 
                 //Tx Root
                 $('#block_tx_root').text(block.transactionsRoot);
-                $('#workchain_tx_root').text(root_data.tx_root);
+                $('#wrkchain_tx_root').text(root_data.tx_root);
                 if(root_data.tx_root == block.transactionsRoot) {
                   $('#tx_root_valid').text("YES");
                   $('#tx_root_valid').css('color', 'green');
@@ -240,7 +240,7 @@
 
                 //State Root
                 $('#block_state_root').text(block.stateRoot);
-                $('#workchain_state_root').text(root_data.state_root);
+                $('#wrkchain_state_root').text(root_data.state_root);
                 if(root_data.state_root == block.stateRoot) {
                   $('#state_root_valid').text("YES");
                   $('#state_root_valid').css('color', 'green');
@@ -252,7 +252,7 @@
 
                 //Receipts Root
                 $('#block_receipts_root').text(block.receiptsRoot);
-                $('#workchain_receipts_root').text(root_data.receipt_root);
+                $('#wrkchain_receipts_root').text(root_data.receipt_root);
                 if(root_data.receipt_root == block.receiptsRoot) {
                   $('#receipts_root_valid').text("YES");
                   $('#receipts_root_valid').css('color', 'green');
