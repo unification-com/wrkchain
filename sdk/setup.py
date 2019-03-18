@@ -17,10 +17,10 @@ setuptools.setup(
     version="0.0.2",
     author="Unification Foundation",
     author_email="hello@unification.com",
-    description="Bring up a Workchain",
+    description="Bring up a WRKChain",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/unification-com/workchain",
+    url="https://github.com/unification-com/wrkchain",
     packages=setuptools.find_packages(),
     install_requires=requires,
     classifiers=[
