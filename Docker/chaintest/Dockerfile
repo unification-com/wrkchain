@@ -35,7 +35,7 @@ ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 ENV PYTHONPATH /haiku
 
-RUN echo "telnet workchain-rpc-validator-1 8101" >> /root/.bash_history && \
+RUN echo "telnet wrkchain-rpc-validator-1 8101" >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
 
 CMD /bin/sleep 600
