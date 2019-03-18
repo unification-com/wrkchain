@@ -28,7 +28,7 @@ ENV LANG C.UTF-8
 ENV PYTHONPATH /src
 
 RUN pip install -r requirements.txt && \
-    git clone https://github.com/unification-com/workchain-root-contract.git --depth 1
+    git clone https://github.com/unification-com/wrkchain-root-contract.git --depth 1
 
 RUN echo "py.test /src/tests" >> /root/.bash_history && \
     echo "python -m wrkchain.sdk generate_wrkchain /examples/config.json /build" >> /root/.bash_history && \
