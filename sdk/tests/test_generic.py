@@ -38,7 +38,7 @@ test_genesis = {
 
 test_config = {
    "wrkchain":{
-      "title":"Example Workchain",
+      "title":"Example WRKChain",
       "ledger":{
           "base": "geth",
           "consensus": {
