@@ -4,9 +4,9 @@ import logging
 
 from wrkchain.bootnode import BootnodeKey
 from wrkchain.composer import generate
-from wrkchain.config import WRKChainConfig, MissingConfigOverrideException,\
+from wrkchain.config import WRKChainConfig, MissingConfigOverrideException, \
     InvalidOverrideException
-from wrkchain.documentation.documentation import WorkchainDocumentation
+from wrkchain.documentation.documentation import WRKChainDocumentation
 from wrkchain.genesis import build_genesis, generate_wrkchain_id
 from wrkchain.mainchain import UndMainchain
 from wrkchain.utils import write_build_file, get_oracle_addresses
@@ -15,7 +15,6 @@ log = logging.getLogger(__name__)
 
 
 def generate_documentation(config, genesis_json, bootnode_config):
-
     # derived from config
     wrkchain_name = config['wrkchain']['title']
     nodes = config['wrkchain']['nodes']
@@ -28,15 +27,15 @@ def generate_documentation(config, genesis_json, bootnode_config):
     # from genesis.json
     wrkchain_id = genesis_json['config']['chainId']
 
-    wrkchain_documentation = WorkchainDocumentation(wrkchain_name, nodes,
-                                                     mainchain_netork,
-                                                     ledger_base_type,
-                                                     oracle_addresses,
-                                                     mainchain_web3_provider,
-                                                     mainchain_network_id,
-                                                     wrkchain_id,
-                                                     bootnode_config,
-                                                     genesis_json)
+    wrkchain_documentation = WRKChainDocumentation(wrkchain_name, nodes,
+                                                   mainchain_netork,
+                                                   ledger_base_type,
+                                                   oracle_addresses,
+                                                   mainchain_web3_provider,
+                                                   mainchain_network_id,
+                                                   wrkchain_id,
+                                                   bootnode_config,
+                                                   genesis_json)
     wrkchain_documentation.generate()
 
     documentation = {
@@ -57,7 +56,7 @@ def generate_genesis(config):
     wrkchain_id = generate_wrkchain_id()
 
     genesis_json = build_genesis(
-        block_period=block_period,  validators=nodes,
+        block_period=block_period, validators=nodes,
         wrkchain_base=wrkchain_base,
         wrkchain_consensus=wrkchain_consensus,
         wrkchain_id=wrkchain_id,

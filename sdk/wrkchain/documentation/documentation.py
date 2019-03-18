@@ -8,7 +8,7 @@ from wrkchain.documentation.sections.section import section_factory
 from wrkchain.utils import repo_root
 
 
-class WorkchainDocumentation:
+class WRKChainDocumentation:
     def __init__(self, wrkchain_name, nodes, mainchain_netork,
                  ledger_base_type, oracle_addresses, mainchain_web3_provider,
                  mainchain_network_id, wrkchain_id, bootnode_config,
@@ -54,7 +54,7 @@ class WorkchainDocumentation:
             },
             '__SECTION_ORACLE__': {
                 'content': '',
-                'title': 'Running your Workchain Oracle'
+                'title': 'Running your WRKChain Oracle'
             },
             '__SECTION_NETWORK__': {
                 'content': '',
