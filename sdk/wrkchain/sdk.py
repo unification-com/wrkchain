@@ -121,28 +121,29 @@ def configure_bootnode(build_dir, config):
         node_info = generate_bootnode_info(build_dir, ip, port)
         bootnode_config['type'] = 'dedicated'
         bootnode_config['nodes'] = node_info
-    else:
-        nodes = {}
-        static_addresses_list = []
 
-        for item in config['wrkchain']['nodes']:
-            public_address = item['address']
-            ip = item['ip']
-            port = item['listen_port']
+    nodes = {}
+    static_addresses_list = []
 
-            node_info = generate_bootnode_info(build_dir, ip, port,
-                                               public_address)
+    for item in config['wrkchain']['nodes']:
+        public_address = item['address']
+        ip = item['ip']
+        port = item['listen_port']
 
-            nodes[public_address] = node_info
-            static_addresses_list.append(node_info['enode'])
+        node_info = generate_bootnode_info(build_dir, ip, port,
+                                           public_address)
 
-        bootnode_config['type'] = 'static'
-        bootnode_config['nodes'] = nodes
+        nodes[public_address] = node_info
 
-        rendered_static_nodes = json.dumps(static_addresses_list,
-                                           indent=2, separators=(',', ':'))
-        write_static_nodes(build_dir, rendered_static_nodes)
+    static_addresses_list.append(node_info['enode'])
 
+    bootnode_config['type'] = 'static'
+    bootnode_config['nodes'] = nodes
+
+    rendered_static_nodes = json.dumps(
+        static_addresses_list, indent=2, separators=(',', ':'))
+
+    write_static_nodes(build_dir, rendered_static_nodes)
     return bootnode_config
 
 
