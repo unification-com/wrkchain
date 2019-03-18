@@ -96,15 +96,15 @@ services:
     container_name: workchain_explorer
 
   workchain_validator_service:
-    hostname: workchain_validator_service
+    hostname: wrkchain_validator_service
     depends_on:
       - workchain_node_1
     build:
       context: ./Docker
-      dockerfile: ./workchain_validator_service/Dockerfile
+      dockerfile: Docker/wrkchain_validator_service/Dockerfile
     ports:
     - ${WRKCHAIN_VALIDATOR_SERVICE_PORT}:${WRKCHAIN_VALIDATOR_SERVICE_PORT}
-    container_name: workchain_validator_service
+    container_name: wrkchain_validator_service
 
   workchain_oracle:
     hostname: workchain_oracle
