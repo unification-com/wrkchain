@@ -2,12 +2,12 @@
 #### $__SECTION_NUMBER__.2.1 Using Truffle
 
 ```bash
-cd workchain-root-contract
+cd wrkchain-root-contract
 npm install -g truffle
 npm install
 ```
 
-Create a file called `.env` in the `workchain-root-contract` directory 
+Create a file called `.env` in the `wrkchain-root-contract` directory
 containing the following:
 
 ```text
@@ -24,7 +24,7 @@ WRKCHAIN_EVS=[$__WRKCHAIN_EVS__]
 
 <span style="color:red">**Please only do this with test addresses, and not production wallets!**</span>
 
-Modify the `.env` file in the `workchain-root-contract` directory 
+Modify the `.env` file in the `wrkchain-root-contract` directory
 adding the following:
 
 ```text
@@ -68,11 +68,11 @@ node abi.js addr $__MAINCHAIN_NETWORK_ID__
 #### $__SECTION_NUMBER__.2.2 Manual Deployment
 
 Using your preferred method for Smart Contract compilation, compile
-`workchain-root-contract/contracts/WorkchainRoot.sol`
+`wrkchain-root-contract/contracts/WRKChainRoot.sol`
 
-When deploying, the `WorkchainRoot` constructor requires three arguments:
+When deploying, the `WRKChainRoot` constructor requires three arguments:
 
 `genesis_block` is the web3.SHA3 result from the minified `genesis.json` content: `$__GENESIS_SHA3__`  
-`chain_id` is your Workchain ID: `$__WRKCHAIN_NETWORK_ID__`  
+`chain_id` is your WRKChain ID: `$__WRKCHAIN_NETWORK_ID__`
 `current_evs` is an array of the initial EVs' public addresses: `[$__WRKCHAIN_EVS__]`
 
