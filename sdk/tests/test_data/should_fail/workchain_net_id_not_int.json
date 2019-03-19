@@ -1,0 +1,18 @@
+{
+    "wrkchain": {
+        "title": "Simple Single Node WRKChain",
+        "wrkchain_network_id": "cheese",
+        "nodes": [
+            {
+                "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
+                "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5"
+            }
+        ],
+        "coin": {
+            "symbol": "SIMP"
+        }
+    },
+    "mainchain": {
+        "network": "testnet"
+    }
+}

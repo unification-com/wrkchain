@@ -211,6 +211,19 @@ def test_parse_config_invalid_addresses():
             WRKChainConfig(f)
 
 
+def test_invalid_workchain_configs():
+    from wrkchain.config import WRKChainConfig, \
+        InvalidOverrideException
+
+    config_files = fail_examples('workchain_')
+    assert len(config_files) > 0
+
+    for f in config_files:
+        with pytest.raises(InvalidOverrideException):
+            # should fail - invalid workchain config
+            WRKChainConfig(f)
+
+
 def test_successful_override():
     from wrkchain.config import WRKChainConfig
 
