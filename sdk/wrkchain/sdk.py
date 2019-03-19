@@ -87,6 +87,11 @@ def write_static_nodes(build_dir, static_nodes):
     write_build_file(build_dir + '/static-nodes.json', static_nodes)
 
 
+def write_generated_config(build_dir, config):
+    rendered_config = json.dumps(config, indent=2, separators=(',', ':'))
+    write_build_file(build_dir + '/generated_config.json', rendered_config)
+
+
 def check_oracle_address_funds(config):
     oracle_addresses = get_oracle_addresses(config)
     network = config['mainchain']['network']
@@ -190,6 +195,7 @@ def generate_wrkchain(config_file, build_dir):
 
     docker_composition = generate(config, bootnode_config, wrkchain_id)
 
+    write_generated_config(build_dir, config)
     write_genesis(build_dir, rendered_genesis)
     write_documentation(build_dir, documentation)
     write_composition(build_dir, docker_composition)
