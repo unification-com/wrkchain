@@ -92,6 +92,7 @@ class WRKChainConfig:
         basic_default = {
             'wrkchain': {
                 'title': 'My WRKChain',
+                'wrkchain_network_id': False,
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
                 'chaintest': False,
@@ -109,6 +110,13 @@ class WRKChainConfig:
         # Title
         if 'title' in wrkchain_overrides:
             self.__config['wrkchain']['title'] = wrkchain_overrides['title']
+
+        # WRKChain Network ID
+        if 'wrkchain_network_id' in wrkchain_overrides:
+            # Todo - check/cleanse int
+            wrkchain_network_id = wrkchain_overrides['wrkchain_network_id']
+            self.__config['wrkchain']['wrkchain_network_id'] = \
+                wrkchain_network_id
 
         # Ledger
         if 'ledger' in wrkchain_overrides:

@@ -1,6 +1,7 @@
 {
     "wrkchain": {
         "title": "Example WRKChain",
+        "wrkchain_network_id": 6450628417,
         "ledger": {
             "base": "geth",
             "consensus": {

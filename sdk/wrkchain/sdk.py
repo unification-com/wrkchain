@@ -54,7 +54,10 @@ def generate_genesis(config):
 
     wrkchain_base = config['wrkchain']['ledger']['base']
     wrkchain_consensus = config['wrkchain']['ledger']['consensus']['type']
-    wrkchain_id = generate_wrkchain_id()
+    if config['wrkchain']['wrkchain_network_id']:
+        wrkchain_id = config['wrkchain']['wrkchain_network_id']
+    else:
+        wrkchain_id = generate_wrkchain_id()
 
     genesis_json = build_genesis(
         block_period=block_period, validators=nodes,
