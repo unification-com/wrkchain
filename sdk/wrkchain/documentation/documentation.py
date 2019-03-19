@@ -12,7 +12,7 @@ class WRKChainDocumentation:
     def __init__(self, wrkchain_name, nodes, mainchain_netork,
                  ledger_base_type, oracle_addresses, mainchain_web3_provider,
                  mainchain_network_id, wrkchain_id, bootnode_config,
-                 genesis_json):
+                 genesis_json, build_dir):
 
         self.__doc_params = {
             'wrkchain_name': wrkchain_name,
@@ -27,7 +27,8 @@ class WRKChainDocumentation:
             'mainchain_rpc_type': mainchain_web3_provider['type'],
             'mainchain_rpc_uri': mainchain_web3_provider['uri'],
             'mainchain_network_id': mainchain_network_id,
-            'genesis_json': json.dumps(genesis_json, separators=(',', ':'))
+            'genesis_json': json.dumps(genesis_json, separators=(',', ':')),
+            'build_dir': build_dir
         }
 
         # Section order is also defined here, by order of the elements in dict

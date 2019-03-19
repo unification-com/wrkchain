@@ -15,7 +15,7 @@ from wrkchain.utils import write_build_file, get_oracle_addresses
 log = logging.getLogger(__name__)
 
 
-def generate_documentation(config, genesis_json, bootnode_config):
+def generate_documentation(config, genesis_json, bootnode_config, build_dir):
     # derived from config
     wrkchain_name = config['wrkchain']['title']
     nodes = config['wrkchain']['nodes']
@@ -36,7 +36,8 @@ def generate_documentation(config, genesis_json, bootnode_config):
                                                    mainchain_network_id,
                                                    wrkchain_id,
                                                    bootnode_config,
-                                                   genesis_json)
+                                                   genesis_json,
+                                                   build_dir)
     wrkchain_documentation.generate()
 
     documentation = {
@@ -189,7 +190,7 @@ def generate_wrkchain(config_file, build_dir):
     bootnode_config = configure_bootnode(build_dir, config)
 
     documentation = generate_documentation(config, genesis_json,
-                                           bootnode_config)
+                                           bootnode_config, build_dir)
 
     rendered_genesis = json.dumps(genesis_json, indent=2, separators=(',', ':'))
 
