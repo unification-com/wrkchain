@@ -1,6 +1,7 @@
 import click
 import json
 import logging
+import os
 
 from wrkchain.bootnode import BootnodeKey
 from wrkchain.composer import generate
@@ -171,6 +172,10 @@ def generate_wrkchain(config_file, build_dir):
         click.echo("SDK ERROR:")
         click.echo(e)
         exit()
+
+    if not os.path.exists(build_dir):
+        os.makedirs(build_dir)
+        os.chmod(build_dir, 0o777)
 
     genesis_json, wrkchain_id = generate_genesis(config)
     bootnode_config = configure_bootnode(build_dir, config)
