@@ -178,18 +178,18 @@ def generate_wrkchain(config_file, build_dir):
     documentation = generate_documentation(config, genesis_json,
                                            bootnode_config)
 
-    rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
+    rendered_genesis = json.dumps(genesis_json, indent=2, separators=(',', ':'))
 
-    composition = generate(config, bootnode_config, wrkchain_id)
+    docker_composition = generate(config, bootnode_config, wrkchain_id)
 
-    write_genesis(build_dir, rendered)
+    write_genesis(build_dir, rendered_genesis)
     write_documentation(build_dir, documentation)
-    write_composition(build_dir, composition)
+    write_composition(build_dir, docker_composition)
 
     click.echo(documentation['md'])
     click.echo(bootnode_config)
-    click.echo(rendered)
-    click.echo(composition)
+    click.echo(rendered_genesis)
+    click.echo(docker_composition)
 
 
 if __name__ == "__main__":
