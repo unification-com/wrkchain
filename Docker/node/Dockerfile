@@ -1,16 +1,27 @@
-FROM ubuntu:xenial
+FROM debian:stretch-slim
 
-RUN apt-get update \
-     && apt-get install -y wget software-properties-common \
-     && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get -y install \
+        build-essential \
+        git \
+        telnet \
+        vim \
+        wget
 
 WORKDIR "/root"
 
-RUN add-apt-repository -y ppa:ethereum/ethereum
+RUN wget https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.10.3.linux-amd64.tar.gz && \
+    mkdir ~/.go
+
+ENV GOPATH="/root/.go"
+ENV GOROOT="/usr/local/go"
+ENV PATH="/usr/local/go/bin:${PATH}"
+
+RUN go get github.com/ethereum/go-ethereum
+RUN go install github.com/ethereum/go-ethereum/cmd/geth
 
 ARG binary
-RUN apt-get update \
-     && apt-get install -y ethereum
 
 ARG WALLET_PASS
 ARG PRIVATE_KEY
@@ -18,8 +29,8 @@ ARG GENESIS_JSON_FILENAME
 RUN echo $WALLET_PASS > /root/.walletpassword
 RUN echo $PRIVATE_KEY > /root/.privatekey
 ADD ./assets/build/$GENESIS_JSON_FILENAME /root/assets/genesis.json
-RUN geth init /root/assets/genesis.json
-RUN geth account import --password /root/.walletpassword  /root/.privatekey
+RUN /root/.go/bin/geth init /root/assets/genesis.json
+RUN /root/.go/bin/geth account import --password /root/.walletpassword  /root/.privatekey
 
 ENV BOOTNODE_ID=""
 ENV BOOTNODE_IP=""
@@ -28,7 +39,7 @@ ENV WRKCHAIN_NETWORK_ID=""
 ENV GETH_LISTEN_PORT=""
 ENV RPC_PORT=""
 
-CMD exec geth --bootnodes "enode://$BOOTNODE_ID@$BOOTNODE_IP:$BOOTNODE_PORT" --networkid "$WRKCHAIN_NETWORK_ID" --verbosity=4 --rpc --rpcaddr "0.0.0.0" --rpcport "$RPC_PORT" --rpcapi "eth,web3,net,admin,debug,db" --rpccorsdomain "*" --syncmode="full" --port $GETH_LISTEN_PORT
+CMD exec /root/.go/bin/geth --bootnodes "enode://$BOOTNODE_ID@$BOOTNODE_IP:$BOOTNODE_PORT" --networkid "$WRKCHAIN_NETWORK_ID" --verbosity=4 --rpc --rpcaddr "0.0.0.0" --rpcport "$RPC_PORT" --rpcapi "eth,web3,net,admin,debug,db" --rpccorsdomain "*" --syncmode="full" --port $GETH_LISTEN_PORT
 
 EXPOSE $RPC_PORT
 EXPOSE $GETH_LISTEN_PORT
