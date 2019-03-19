@@ -232,18 +232,20 @@ def test_composer():
 
 def test_generate_documentation():
     from wrkchain.sdk import generate_documentation
+    build_dir = '/tmp'
     documentation = generate_documentation(test_config, test_genesis,
-                                           bootnode_config)
+                                           bootnode_config, build_dir)
     print(documentation)
     assert len(documentation['md']) > 0
     assert len(documentation['html']) > 0
 
 
 def test_generate_documentation_no_bootnode():
+    build_dir = '/tmp'
     from wrkchain.sdk import generate_documentation
     test_config['wrkchain']['bootnode']['use'] = False
     documentation = generate_documentation(test_config, test_genesis,
-                                           static_bootnode_config)
+                                           static_bootnode_config, build_dir)
     print(documentation)
     assert len(documentation['md']) > 0
     assert len(documentation['html']) > 0

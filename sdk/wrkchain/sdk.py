@@ -55,7 +55,7 @@ def generate_genesis(config):
 
     wrkchain_base = config['wrkchain']['ledger']['base']
     wrkchain_consensus = config['wrkchain']['ledger']['consensus']['type']
-    if config['wrkchain']['wrkchain_network_id']:
+    if 'wrkchain_network_id' in config['wrkchain']:
         wrkchain_id = config['wrkchain']['wrkchain_network_id']
     else:
         wrkchain_id = generate_wrkchain_id()
