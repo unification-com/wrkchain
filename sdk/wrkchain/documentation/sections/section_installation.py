@@ -2,12 +2,23 @@ from wrkchain.documentation.sections.doc_section import DocSection
 
 
 class SectionInstallationGeth(DocSection):
-    def __init__(self, section_number, title):
+    def __init__(self, section_number, title, bootnode_config):
         path_to_md = 'sections/install_geth.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
+        self.__bootnode_config = bootnode_config
+
     def generate(self):
-        d = {}
+        install_bootnode = ""
+        if self.__bootnode_config['type'] == 'dedicated':
+            install_bootnode_md = f'templates/docs/md/sections/' \
+                f'install_geth_bootnode.md'
+            install_bootnode_md_path = self.root_dir / install_bootnode_md
+            install_bootnode = install_bootnode_md_path.read_text()
+
+        d = {
+            '__INSTALL_GETH_BOOTNODE__': install_bootnode
+        }
         self.add_content(d, append=False)
         return self.get_contents()
 
@@ -16,14 +27,17 @@ class SectionInstallationBuilder:
     def __init__(self):
         self.__instance = None
 
-    def __call__(self, section_number, title, base, **_ignored):
+    def __call__(self, section_number, title, base, bootnode_config,
+                 **_ignored):
 
         if not self.__instance:
             if base == 'geth':
                 self.__instance = SectionInstallationGeth(section_number,
-                                                          title)
+                                                          title,
+                                                          bootnode_config)
             else:
                 self.__instance = SectionInstallationGeth(section_number,
-                                                          title)
+                                                          title,
+                                                          bootnode_config)
 
         return self.__instance

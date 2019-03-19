@@ -36,3 +36,5 @@ And then install the geth binary:
 
 The latest documentation regarding installing go-ethereum can be found here:
 <https://geth.ethereum.org/install/>
+
+$__INSTALL_GETH_BOOTNODE__
