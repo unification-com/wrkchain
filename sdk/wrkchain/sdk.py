@@ -114,13 +114,6 @@ def generate_bootnode_info(build_dir, ip, port, public_address=''):
 
 def configure_bootnode(build_dir, config):
     bootnode_config = {}
-    if config['wrkchain']['bootnode']['use']:
-        ip = config['wrkchain']['bootnode']['ip']
-        port = config['wrkchain']['bootnode']['port']
-        node_info = generate_bootnode_info(build_dir, ip, port)
-        bootnode_config['type'] = 'dedicated'
-        bootnode_config['nodes'] = node_info
-
     nodes = {}
     static_addresses_list = []
 
@@ -134,15 +127,24 @@ def configure_bootnode(build_dir, config):
 
         nodes[public_address] = node_info
 
-    static_addresses_list.append(node_info['enode'])
+        static_addresses_list.append(node_info['enode'])
 
-    bootnode_config['type'] = 'static'
-    bootnode_config['nodes'] = nodes
+    if config['wrkchain']['bootnode']['use']:
+        ip = config['wrkchain']['bootnode']['ip']
+        port = config['wrkchain']['bootnode']['port']
+        node_info = generate_bootnode_info(build_dir, ip, port)
+        bootnode_type = 'dedicated'
+        nodes = node_info
+    else:
+        bootnode_type = 'static'
 
     rendered_static_nodes = json.dumps(
-        static_addresses_list, indent=2, separators=(',', ':'))
+            static_addresses_list, indent=2, separators=(',', ':'))
 
     write_static_nodes(build_dir, rendered_static_nodes)
+
+    bootnode_config['type'] = bootnode_type
+    bootnode_config['nodes'] = nodes
     return bootnode_config
 
 
@@ -185,6 +187,7 @@ def generate_wrkchain(config_file, build_dir):
     write_composition(build_dir, composition)
 
     click.echo(documentation['md'])
+    click.echo(bootnode_config)
     click.echo(rendered)
     click.echo(composition)
 
