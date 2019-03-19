@@ -46,7 +46,7 @@ class WRKChainDocumentation:
             },
             '__SECTION_BOOTNODE__': {
                 'content': '',
-                'title': 'Bootnode'
+                'title': 'Running your Bootnode'
             },
             '__SECTION_NODES__':  {
                 'content': '',
