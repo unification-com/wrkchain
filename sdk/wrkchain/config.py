@@ -113,10 +113,15 @@ class WRKChainConfig:
 
         # WRKChain Network ID
         if 'wrkchain_network_id' in wrkchain_overrides:
-            # Todo - check/cleanse int
             wrkchain_network_id = wrkchain_overrides['wrkchain_network_id']
-            self.__config['wrkchain']['wrkchain_network_id'] = \
-                wrkchain_network_id
+            if isinstance(wrkchain_network_id, int):
+                self.__config['wrkchain']['wrkchain_network_id'] = \
+                    wrkchain_network_id
+            else:
+                err = f'wrkchain_network_id "{wrkchain_network_id}" - ' \
+                      f'must be an integer. Found string, or int passed ' \
+                      f'as string'
+                raise InvalidOverrideException(err)
 
         # Ledger
         if 'ledger' in wrkchain_overrides:
