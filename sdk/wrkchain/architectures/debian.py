@@ -1,3 +1,6 @@
+GETH_PATH = '/root/.go/bin/geth'
+
+
 def generate_geth_cmd(
         node, bootnode_config, wrkchain_id, listen_port, linebreak=False):
 
@@ -44,4 +47,4 @@ def generate_geth_cmd(
     else:
         options = ' '.join(flags)
 
-    return f"{'/usr/bin/geth'} {options}"
+    return f"{GETH_PATH} {options}"
