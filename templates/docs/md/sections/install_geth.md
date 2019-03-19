@@ -16,9 +16,12 @@ wget https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz && \
 Then set your GOPATH and GOROOT
 
 `
-export GOPATH="/root/.go"
+export GOPATH="$$HOME/.go"
 export GOROOT="/usr/local/go"
 `
+
+**Note:** it's advisable to permanently set these environment variables
+ in your shell's `rc`, for example `~/.bashrc`.
 
 The latest documentation regarding installing Go can be found here
 <https://golang.org/doc/install>
