@@ -92,6 +92,7 @@ class WRKChainConfig:
         basic_default = {
             'wrkchain': {
                 'title': 'My WRKChain',
+                'wrkchain_network_id': False,
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
                 'chaintest': False,
@@ -109,6 +110,18 @@ class WRKChainConfig:
         # Title
         if 'title' in wrkchain_overrides:
             self.__config['wrkchain']['title'] = wrkchain_overrides['title']
+
+        # WRKChain Network ID
+        if 'wrkchain_network_id' in wrkchain_overrides:
+            wrkchain_network_id = wrkchain_overrides['wrkchain_network_id']
+            if isinstance(wrkchain_network_id, int):
+                self.__config['wrkchain']['wrkchain_network_id'] = \
+                    wrkchain_network_id
+            else:
+                err = f'wrkchain_network_id "{wrkchain_network_id}" - ' \
+                      f'must be an integer. Found string, or int passed ' \
+                      f'as string'
+                raise InvalidOverrideException(err)
 
         # Ledger
         if 'ledger' in wrkchain_overrides:

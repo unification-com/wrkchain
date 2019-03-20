@@ -37,87 +37,90 @@ test_genesis = {
 }
 
 test_config = {
-   "wrkchain":{
-      "title":"Example WRKChain",
-      "ledger":{
-          "base": "geth",
-          "consensus": {
-              "type": "clique",
-              "period": 5,
-              "epoch": 30000
-          },
-          "permission": "public"
+  "wrkchain":{
+    "title":"Example WRKChain",
+    "wrkchain_network_id":6450628417,
+    "ledger":{
+      "base":"geth",
+      "consensus":{
+        "type":"clique",
+        "period":5,
+        "epoch":30000
       },
-      "bootnode": {
-        "use": True,
-        "ip": "127.0.0.1",
-        "port": "30301"
+      "permission":"public"
+    },
+    "bootnode":{
+      "use":True,
+      "ip":"172.25.0.2",
+      "port":30304
+    },
+    "chaintest":False,
+    "nodes":[
+      {
+        "id":"Validator UK",
+        "address":"0xA6ac533Bd51cc4c8BB0c72612669c62B35521578",
+        "private_key":"7deeb75a3bbaa57bc073380b77f47d701d7e2ef7551719f3767d4eee0a5fdffd",
+        "ip":"172.25.0.4",
+        "listen_port":30302,
+        "is_validator":True,
+        "write_to_oracle":True,
+        "rpc":False
       },
-      "chaintest": False,
-      "nodes": [
-          {
-              "id": "Validator UK",
-              "address": "0xA6ac533Bd51cc4c8BB0c72612669c62B35521578",
-              "private_key": "7deeb75a3bbaa57bc073380b77f47d701d7e2ef7551719f3767d4eee0a5fdffd",
-              "ip": "172.25.0.4",
-              "listen_port": 30302,
-              "is_validator": True,
-              "write_to_oracle": True,
-              "rpc": False
-          },
-          {
-              "id": "Validator US",
-              "address": "0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA",
-              "private_key": "b7459e3be8b6825ac1b606d5f4ac61652e04086f0645d7f768b5e1a176afffcf",
-              "ip": "172.25.0.5",
-              "listen_port": 30303,
-              "is_validator": True,
-              "write_to_oracle": True,
-              "rpc": False
-          },
-          {
-              "id": "JSON-RPC Node",
-              "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
-              "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
-              "ip": "172.25.0.6",
-              "listen_port": 30304,
-              "is_validator": False,
-              "write_to_oracle": False,
-              "rpc": {
-                  "port": 8545,
-                  "apis": {
-                      "eth": True,
-                      "web3": True,
-                      "net": True,
-                      "admin": True,
-                      "debug": True,
-                      "db": True,
-                      "personal": False,
-                      "miner": False
-                  }
-              }
+      {
+        "id":"Validator US",
+        "address":"0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA",
+        "private_key":"b7459e3be8b6825ac1b606d5f4ac61652e04086f0645d7f768b5e1a176afffcf",
+        "ip":"172.25.0.5",
+        "listen_port":30303,
+        "is_validator":True,
+        "write_to_oracle":True,
+        "rpc":False
+      },
+      {
+        "id":"JSON-RPC Node",
+        "address":"0x46eE44d01531371312c3BeC9198277e3F5474106",
+        "private_key":"d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
+        "ip":"172.25.0.6",
+        "listen_port":30304,
+        "is_validator":False,
+        "write_to_oracle":False,
+        "rpc":{
+          "port":8545,
+          "apis":{
+            "eth":True,
+            "web3":True,
+            "net":True,
+            "admin":True,
+            "debug":True,
+            "db":True,
+            "personal":False,
+            "miner":False,
+            "ssh":False,
+            "txpool":False
           }
-      ],
-      "coin": {
-          "symbol": "COIN",
-          "prefund": [
-              {
-                  "address": "0x015d1CBC280a455885b98DD6e5C5C173ad45B366",
-                  "balance": "1000000000"
-              }
-          ]
+        }
       }
-   },
-   "mainchain": {
-     "network": "testnet",
-     "network_id": 50005,
-     "web3_provider": {
-       "type": "http",
-       "uri": "http://52.14.173.249:8101",
-       "host": "52.14.173.249",
-       "port": "8101"
-     }
-   }
+    ],
+    "coin":{
+      "symbol":"COIN",
+      "prefund":[
+        {
+          "address":"0xfBf151E90436beC94DA59D0D4f434C9Ea6CC40Cd",
+          "balance":"1000000000"
+        }
+      ]
+    }
+  },
+  "mainchain":{
+    "network":"testnet",
+    "network_id":50005,
+    "web3_provider":{
+      "type":"http",
+      "uri":"http://52.14.173.249:8101",
+      "host":"52.14.173.249",
+      "port":"8101"
+    }
+  }
 }
 
 static_bootnode_config = {'type': 'static', 'nodes': {'0xA6ac533Bd51cc4c8BB0c72612669c62B35521578': {'address': 'ded1316f6b52d83675cbd20593b76f5f82d98dae23e01505728abfd4d1d63b58577891d6b2cfcd07c735460cfa857f2cb58a6800cb6c3b2ac9805940630c393d', 'enode': 'enode://ded1316f6b52d83675cbd20593b76f5f82d98dae23e01505728abfd4d1d63b58577891d6b2cfcd07c735460cfa857f2cb58a6800cb6c3b2ac9805940630c393d@127.0.0.1:30303', 'ip': '127.0.0.1', 'port': 30303}, '0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA': {'address': '27d2cde435562fe176e185510a3c748b692c311102a060d1b6ed1be7e02ce4679dea02a50cc60d60d80074c5635f4dab69d82d83406690c88d58c01d41534407', 'enode': 'enode://27d2cde435562fe176e185510a3c748b692c311102a060d1b6ed1be7e02ce4679dea02a50cc60d60d80074c5635f4dab69d82d83406690c88d58c01d41534407@127.0.0.1:30302', 'ip': '127.0.0.1', 'port': 30302}, '0x46eE44d01531371312c3BeC9198277e3F5474106': {'address': '8db8bd50335abccfb746c9584c526f07a7939983bfec8329abfbba19cd29adc6514927f5eb51fa8d8ccaa321afae03391f64a7566256ebe709cb1cc212afd710', 'enode': 'enode://8db8bd50335abccfb746c9584c526f07a7939983bfec8329abfbba19cd29adc6514927f5eb51fa8d8ccaa321afae03391f64a7566256ebe709cb1cc212afd710@127.0.0.1:30303', 'ip': '127.0.0.1', 'port': 30303}}}
@@ -208,6 +211,19 @@ def test_parse_config_invalid_addresses():
             WRKChainConfig(f)
 
 
+def test_invalid_workchain_configs():
+    from wrkchain.config import WRKChainConfig, \
+        InvalidOverrideException
+
+    config_files = fail_examples('workchain_')
+    assert len(config_files) > 0
+
+    for f in config_files:
+        with pytest.raises(InvalidOverrideException):
+            # should fail - invalid workchain config
+            WRKChainConfig(f)
+
+
 def test_successful_override():
     from wrkchain.config import WRKChainConfig
 
@@ -232,18 +248,20 @@ def test_composer():
 
 def test_generate_documentation():
     from wrkchain.sdk import generate_documentation
+    build_dir = '/tmp'
     documentation = generate_documentation(test_config, test_genesis,
-                                           bootnode_config)
+                                           bootnode_config, build_dir)
     print(documentation)
     assert len(documentation['md']) > 0
     assert len(documentation['html']) > 0
 
 
 def test_generate_documentation_no_bootnode():
+    build_dir = '/tmp'
     from wrkchain.sdk import generate_documentation
     test_config['wrkchain']['bootnode']['use'] = False
     documentation = generate_documentation(test_config, test_genesis,
-                                           static_bootnode_config)
+                                           static_bootnode_config, build_dir)
     print(documentation)
     assert len(documentation['md']) > 0
     assert len(documentation['html']) > 0

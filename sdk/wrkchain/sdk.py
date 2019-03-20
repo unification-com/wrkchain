@@ -1,6 +1,7 @@
 import click
 import json
 import logging
+import os
 
 from wrkchain.bootnode import BootnodeKey
 from wrkchain.composer import generate
@@ -14,7 +15,7 @@ from wrkchain.utils import write_build_file, get_oracle_addresses
 log = logging.getLogger(__name__)
 
 
-def generate_documentation(config, genesis_json, bootnode_config):
+def generate_documentation(config, genesis_json, bootnode_config, build_dir):
     # derived from config
     wrkchain_name = config['wrkchain']['title']
     nodes = config['wrkchain']['nodes']
@@ -35,7 +36,8 @@ def generate_documentation(config, genesis_json, bootnode_config):
                                                    mainchain_network_id,
                                                    wrkchain_id,
                                                    bootnode_config,
-                                                   genesis_json)
+                                                   genesis_json,
+                                                   build_dir)
     wrkchain_documentation.generate()
 
     documentation = {
@@ -53,7 +55,10 @@ def generate_genesis(config):
 
     wrkchain_base = config['wrkchain']['ledger']['base']
     wrkchain_consensus = config['wrkchain']['ledger']['consensus']['type']
-    wrkchain_id = generate_wrkchain_id()
+    if 'wrkchain_network_id' in config['wrkchain']:
+        wrkchain_id = config['wrkchain']['wrkchain_network_id']
+    else:
+        wrkchain_id = generate_wrkchain_id()
 
     genesis_json = build_genesis(
         block_period=block_period, validators=nodes,
@@ -81,6 +86,11 @@ def write_composition(build_dir, composition):
 
 def write_static_nodes(build_dir, static_nodes):
     write_build_file(build_dir + '/static-nodes.json', static_nodes)
+
+
+def write_generated_config(build_dir, config):
+    rendered_config = json.dumps(config, indent=2, separators=(',', ':'))
+    write_build_file(build_dir + '/generated_config.json', rendered_config)
 
 
 def check_oracle_address_funds(config):
@@ -114,13 +124,6 @@ def generate_bootnode_info(build_dir, ip, port, public_address=''):
 
 def configure_bootnode(build_dir, config):
     bootnode_config = {}
-    if config['wrkchain']['bootnode']['use']:
-        ip = config['wrkchain']['bootnode']['ip']
-        port = config['wrkchain']['bootnode']['port']
-        node_info = generate_bootnode_info(build_dir, ip, port)
-        bootnode_config['type'] = 'dedicated'
-        bootnode_config['nodes'] = node_info
-
     nodes = {}
     static_addresses_list = []
 
@@ -134,15 +137,24 @@ def configure_bootnode(build_dir, config):
 
         nodes[public_address] = node_info
 
-    static_addresses_list.append(node_info['enode'])
+        static_addresses_list.append(node_info['enode'])
 
-    bootnode_config['type'] = 'static'
-    bootnode_config['nodes'] = nodes
+    if config['wrkchain']['bootnode']['use']:
+        ip = config['wrkchain']['bootnode']['ip']
+        port = config['wrkchain']['bootnode']['port']
+        node_info = generate_bootnode_info(build_dir, ip, port)
+        bootnode_type = 'dedicated'
+        nodes = node_info
+    else:
+        bootnode_type = 'static'
 
     rendered_static_nodes = json.dumps(
-        static_addresses_list, indent=2, separators=(',', ':'))
+            static_addresses_list, indent=2, separators=(',', ':'))
 
     write_static_nodes(build_dir, rendered_static_nodes)
+
+    bootnode_config['type'] = bootnode_type
+    bootnode_config['nodes'] = nodes
     return bootnode_config
 
 
@@ -170,23 +182,29 @@ def generate_wrkchain(config_file, build_dir):
         click.echo(e)
         exit()
 
+    if not os.path.exists(build_dir):
+        os.makedirs(build_dir)
+        os.chmod(build_dir, 0o777)
+
     genesis_json, wrkchain_id = generate_genesis(config)
     bootnode_config = configure_bootnode(build_dir, config)
 
     documentation = generate_documentation(config, genesis_json,
-                                           bootnode_config)
+                                           bootnode_config, build_dir)
 
-    rendered = json.dumps(genesis_json, indent=2, separators=(',', ':'))
+    rendered_genesis = json.dumps(genesis_json, indent=2, separators=(',', ':'))
 
-    composition = generate(config, bootnode_config, wrkchain_id)
+    docker_composition = generate(config, bootnode_config, wrkchain_id)
 
-    write_genesis(build_dir, rendered)
+    write_generated_config(build_dir, config)
+    write_genesis(build_dir, rendered_genesis)
     write_documentation(build_dir, documentation)
-    write_composition(build_dir, composition)
+    write_composition(build_dir, docker_composition)
 
     click.echo(documentation['md'])
-    click.echo(rendered)
-    click.echo(composition)
+    click.echo(bootnode_config)
+    click.echo(rendered_genesis)
+    click.echo(docker_composition)
 
 
 if __name__ == "__main__":
