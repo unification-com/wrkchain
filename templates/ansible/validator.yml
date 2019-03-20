@@ -1,0 +1,17 @@
+---
+- hosts: validator
+  gather_facts: no
+  remote_user: ec2-user
+
+  roles:
+    - base
+
+  tasks:
+    - hostname: name={{ validator_name }}
+      become: yes
+
+    - name: upgrade all packages
+      yum: name=* state=latest
+      become: yes
+
+...

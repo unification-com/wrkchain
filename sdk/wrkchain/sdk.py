@@ -12,6 +12,8 @@ from wrkchain.genesis import build_genesis, generate_wrkchain_id
 from wrkchain.mainchain import UndMainchain
 from wrkchain.utils import write_build_file, get_oracle_addresses
 
+from wrkchain.ansible import generate_ansible
+
 log = logging.getLogger(__name__)
 
 
@@ -200,6 +202,8 @@ def generate_wrkchain(config_file, build_dir):
     write_genesis(build_dir, rendered_genesis)
     write_documentation(build_dir, documentation)
     write_composition(build_dir, docker_composition)
+
+    generate_ansible(build_dir, config)
 
     click.echo(documentation['md'])
     click.echo(bootnode_config)
