@@ -14,11 +14,11 @@
     name:
       - git
       - nc
+      - mosh
       - telnet
       - tmux
-      - vim
-      - mosh
       - wget
+      - vim
     state: latest
   become: yes
 ...
