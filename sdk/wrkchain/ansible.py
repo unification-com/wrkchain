@@ -1,45 +1,34 @@
 from pathlib import Path
-from shutil import copytree, rmtree
+from shutil import copy, rmtree
 
 from jinja2 import Environment, FileSystemLoader
 
 from wrkchain.utils import template_root
 
 
-def generate_directories(build_dir: Path):
-    ansible_dir = build_dir / 'ansible'
+def template_map(source: Path, target: Path, maps: dict):
+    loader = FileSystemLoader(str(source))
+    environment = Environment(loader=loader)
 
-    if ansible_dir.exists():
-        rmtree(str(ansible_dir))
+    for path in [x for x in source.rglob('*') if not x.is_dir()]:
+        relative = path.relative_to(source)
+        context = maps.get(str(relative))
+        dest = target / relative
+        if not dest.parent.exists():
+            dest.parent.mkdir(parents=True)
 
-    ansible_dir.mkdir()
-    (ansible_dir / 'roles').mkdir()
-
-
-def copy_role(build_dir: Path, template_dir: Path, role):
-    role_path = template_dir / 'ansible' / 'roles' / role
-
-    ansible_dir = build_dir / 'ansible'
-    role_dir = ansible_dir / 'roles' / role
-
-    copytree(str(role_path), str(role_dir))
+        if context:
+            template = environment.get_template(str(relative))
+            dest.write_text(template.render(context))
+        else:
+            copy(str(path), str(dest))
 
 
 def generate_ansible(build_dir, config):
     build_root = Path(build_dir)
-    templates = template_root()
+    ansible_dir = build_root / 'ansible'
 
-    loader = FileSystemLoader(str(templates / 'ansible'))
-    environment = Environment(loader=loader)
-    template = environment.get_template('validator.yml')
-    context = {
-        'validator_name': 'temp'
+    d = {
+        'validator.yml': {'validator_name': 'temp'}
     }
-    built = template.render(context)
-
-    generate_directories(build_root)
-    copy_role(build_root, templates, 'base')
-    copy_role(build_root, templates, 'geth')
-
-    target = build_root / 'ansible' / 'validator.yml'
-    target.write_text(built)
+    template_map(template_root() / 'ansible', ansible_dir, d)
