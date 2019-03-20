@@ -8,6 +8,10 @@ def repo_root() -> Path:
     return current_script.parent.parent.parent
 
 
+def template_root() -> Path:
+    return repo_root() / 'templates'
+
+
 def write_build_file(file_path, file_contents):
     genesis_file = open(file_path, "w")
     genesis_file.write(file_contents)
