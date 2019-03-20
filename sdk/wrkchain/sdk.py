@@ -10,7 +10,7 @@ from wrkchain.config import WRKChainConfig, MissingConfigOverrideException, \
 from wrkchain.documentation.documentation import WRKChainDocumentation
 from wrkchain.genesis import build_genesis, generate_wrkchain_id
 from wrkchain.mainchain import UndMainchain
-from wrkchain.utils import write_build_file, get_oracle_addresses
+from wrkchain.utils import write_build_file, get_oracle_addresses, chmod_tree
 
 from wrkchain.ansible import generate_ansible
 
@@ -204,6 +204,8 @@ def generate_wrkchain(config_file, build_dir):
     write_composition(build_dir, docker_composition)
 
     generate_ansible(build_dir, config)
+
+    chmod_tree(build_dir)
 
     click.echo(documentation['md'])
     click.echo(bootnode_config)

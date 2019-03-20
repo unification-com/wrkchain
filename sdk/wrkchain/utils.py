@@ -51,3 +51,16 @@ def check_overrides_in_config(overrides, config):
                 print(f'{key}: NO MATCH:')
                 print(f'Override: {data}')
                 print(f'Config: {config[key]}')
+
+
+def chmod_tree(path):
+    chmod_path = Path(os.path.abspath(path))
+    chmod_path.chmod(0o777)
+    with os.scandir(chmod_path) as listOfEntries:
+        for entry in listOfEntries:
+            if entry.is_file():
+                chmod_file = chmod_path / entry.name
+                chmod_file.chmod(0o666)
+            else:
+                sub_dir = chmod_path / entry.name
+                chmod_tree(sub_dir)
