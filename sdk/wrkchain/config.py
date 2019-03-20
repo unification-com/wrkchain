@@ -286,6 +286,9 @@ class WRKChainConfig:
             "write_to_oracle": True,
             "rpc": {
                 "port": 8545,
+                "rpccorsdomain": "*",
+                "rpcvhosts": "*",
+                "rpcaddr": "0.0.0.0",
                 "apis": {
                     "eth": True,
                     "web3": True,

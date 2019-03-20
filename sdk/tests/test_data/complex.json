@@ -47,6 +47,9 @@
                 "write_to_oracle": false,
                 "rpc": {
                     "port": 8547,
+                    "rpccorsdomain": "*",
+                    "rpcvhosts": "*",
+                    "rpcaddr": "0.0.0.0",
                     "apis": {
                         "eth": true,
                         "web3": true,
