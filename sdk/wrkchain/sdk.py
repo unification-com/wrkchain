@@ -186,7 +186,6 @@ def generate_wrkchain(config_file, build_dir):
 
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
-        os.chmod(build_dir, 0o777)
 
     genesis_json, wrkchain_id = generate_genesis(config)
     bootnode_config = configure_bootnode(build_dir, config)
