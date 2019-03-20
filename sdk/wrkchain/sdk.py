@@ -3,6 +3,8 @@ import json
 import logging
 import os
 
+from shutil import rmtree
+
 from wrkchain.bootnode import BootnodeKey
 from wrkchain.composer import generate
 from wrkchain.config import WRKChainConfig, MissingConfigOverrideException, \
@@ -168,8 +170,12 @@ def main():
 @main.command()
 @click.argument('config_file')
 @click.argument('build_dir')
-def generate_wrkchain(config_file, build_dir):
+@click.option('--docker', type=bool, default=False)
+@click.option('--clean', type=bool, default=False)
+def generate_wrkchain(config_file, build_dir, docker=False, clean=False):
     log.info(f'Generating environment from: {config_file}')
+
+    # ToDo - check/cleanse build_dir
 
     try:
         wrkchain_config = WRKChainConfig(config_file)
@@ -183,6 +189,9 @@ def generate_wrkchain(config_file, build_dir):
         click.echo("SDK ERROR:")
         click.echo(e)
         exit()
+
+    if clean:
+        rmtree(build_dir)
 
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
@@ -204,7 +213,9 @@ def generate_wrkchain(config_file, build_dir):
 
     generate_ansible(build_dir, config)
 
-    chmod_tree(build_dir)
+    if docker:
+        # Need to set correct permissions, since Docker runs as root
+        chmod_tree(build_dir)
 
     click.echo(documentation['md'])
     click.echo(bootnode_config)

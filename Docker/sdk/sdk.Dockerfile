@@ -44,4 +44,4 @@ COPY wrkchain.json /wrkchain.json
 
 RUN py.test /src/tests
 
-CMD ["python", "-m", "wrkchain.sdk", "generate_wrkchain", "/wrkchain.json", "/build"]
+CMD ["python", "-m", "wrkchain.sdk", "generate_wrkchain", "/wrkchain.json", "/build", "--docker=true"]

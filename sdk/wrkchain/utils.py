@@ -16,7 +16,6 @@ def write_build_file(file_path, file_contents):
     genesis_file = open(file_path, "w")
     genesis_file.write(file_contents)
     genesis_file.close()
-    os.chmod(file_path, 0o666)
 
 
 def get_oracle_addresses(config):
