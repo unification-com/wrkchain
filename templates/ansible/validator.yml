@@ -5,6 +5,7 @@
 
   roles:
     - base
+    - geth
 
   tasks:
     - hostname: name={{ validator_name }}

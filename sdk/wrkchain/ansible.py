@@ -39,6 +39,7 @@ def generate_ansible(build_dir, config):
 
     generate_directories(build_root)
     copy_role(build_root, templates, 'base')
+    copy_role(build_root, templates, 'geth')
 
     target = build_root / 'ansible' / 'validator.yml'
     target.write_text(built)
