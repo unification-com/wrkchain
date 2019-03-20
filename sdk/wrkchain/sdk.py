@@ -199,8 +199,7 @@ def generate_wrkchain(config_file, build_dir, docker=False, clean=False):
     genesis_json, wrkchain_id = generate_genesis(config)
     bootnode_config = configure_bootnode(build_dir, config)
 
-    documentation = generate_documentation(config, genesis_json,
-                                           bootnode_config, build_dir)
+
 
     rendered_genesis = json.dumps(genesis_json, indent=2, separators=(',', ':'))
 
@@ -208,10 +207,13 @@ def generate_wrkchain(config_file, build_dir, docker=False, clean=False):
 
     write_generated_config(build_dir, config)
     write_genesis(build_dir, rendered_genesis)
-    write_documentation(build_dir, documentation)
     write_composition(build_dir, docker_composition)
 
     generate_ansible(build_dir, config)
+
+    documentation = generate_documentation(config, genesis_json,
+                                           bootnode_config, build_dir)
+    write_documentation(build_dir, documentation)
 
     if docker:
         # Need to set correct permissions, since Docker runs as root
