@@ -199,9 +199,8 @@ def generate_wrkchain(config_file, build_dir, docker=False, clean=False):
     genesis_json, wrkchain_id = generate_genesis(config)
     bootnode_config = configure_bootnode(build_dir, config)
 
-
-
-    rendered_genesis = json.dumps(genesis_json, indent=2, separators=(',', ':'))
+    rendered_genesis = json.dumps(genesis_json, indent=2,
+                                  separators=(',', ':'))
 
     docker_composition = generate(config, bootnode_config, wrkchain_id)
 
