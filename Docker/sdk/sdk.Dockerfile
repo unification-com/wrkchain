@@ -40,7 +40,8 @@ COPY sdk/tests /src/tests
 COPY sdk/systemtests /src/systemtests
 COPY sdk/tests/test_data /examples
 COPY templates /templates
+COPY wrkchain.json /wrkchain.json
 
 RUN py.test /src/tests
 
-CMD ["python", "-m", "wrkchain.sdk", "generate_wrkchain", "/examples/config.json", "/build"]
+CMD ["python", "-m", "wrkchain.sdk", "generate_wrkchain", "/wrkchain.json", "/build"]

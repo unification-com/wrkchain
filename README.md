@@ -22,8 +22,17 @@ generated.
 
 ### Docker
 
-The quickest method is to run the Dockerised SDK. You will need both Docker and
-Docker compose installing, then from the root directory, run:
+The quickest method is to run the Dockerised SDK. You will need to install both 
+Docker and Docker compose.
+
+Either copy one of the sample config files from `sdk/tests/test_data` to
+`wrkchain.json`, or roll your own. For example
+
+```bash
+cp sdk/tests/test_data/simple.json ./wrkchain.json
+```
+
+Edit as `wrkchain.json` required, then run:
 
 ```bash
 make sdk

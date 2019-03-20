@@ -14,6 +14,7 @@ sdk:
 	docker run -v `pwd`/build:/build sdk
 
 init-prepare:
+	@test -s $(ROOT_DIR)/wrkchain.json || { echo "\nBUILD ERROR!\n\nwrkchain.json does not exist. Exiting...\n"; exit 1; }
 	$(MAKE) info
 	$(MAKE) clean
 

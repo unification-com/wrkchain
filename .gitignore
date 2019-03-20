@@ -125,3 +125,6 @@ node_modules/
 /log.txt
 /docker-compose.override.yml
 /Docker/assets/build/
+
+# default config file for Docker & make sdk command
+wrkchain.json
