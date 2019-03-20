@@ -11,24 +11,24 @@
 
 - command: wget https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.10.3.linux-amd64.tar.gz
   args:
-    chdir: /home/ec2-user
+    chdir: /home/{{ home }}
     creates: /usr/local/go/VERSION
   become: yes
 
 - name: create local go directory
-  file: path=/home/ec2-user/.go state=directory owner=ec2-user group=ec2-user
+  file: path=/home/{{ home }}/.go state=directory owner={{ home }} group={{ home }}
 
 - command: go get -d github.com/ethereum/go-ethereum
   args:
-    chdir: /home/ec2-user
-    creates: /home/ec2-user/.go/src/github.com/ethereum/go-ethereum
+    chdir: /home/{{ home }}
+    creates: /home/{{ home }}/.go/src/github.com/ethereum/go-ethereum
 
 - command: go get github.com/ethereum/go-ethereum/cmd/geth
   args:
-    chdir: /home/ec2-user
-    creates: /home/ec2-user/.go/bin/geth
+    chdir: /home/{{ home }}
+    creates: /home/{{ home }}/.go/bin/geth
 
 - name: create data directories
-  file: path=/home/ec2-user/data state=directory owner=ec2-user group=ec2-user
+  file: path=/home/{{ home }}/data state=directory owner={{ home }} group={{ home }}
 
 ...

@@ -1,7 +1,7 @@
 ---
 - hosts: validator
   gather_facts: no
-  remote_user: ec2-user
+  remote_user: {{ home }}
 
   roles:
     - base

@@ -28,7 +28,13 @@ def generate_ansible(build_dir, config):
     build_root = Path(build_dir)
     ansible_dir = build_root / 'ansible'
 
+    validator_one = {
+        'home': 'ec2-user',
+        'validator_name': 'validator-1'
+    }
+
     d = {
-        'validator.yml': {'validator_name': 'temp'}
+        'validator.yml': validator_one,
+        'roles/geth/tasks/main.yml': validator_one,
     }
     template_map(template_root() / 'ansible', ansible_dir, d)
