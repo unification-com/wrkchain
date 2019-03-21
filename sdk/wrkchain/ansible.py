@@ -29,7 +29,7 @@ def generate_ansible(build_dir, config):
     ansible_dir = build_root / 'ansible'
 
     validator_one = {
-        'home': 'ec2-user',
+        'home': 'vagrant',
         'validator_name': 'validator-1'
     }
 
