@@ -2,12 +2,14 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.define "validator" do |validator|
+{% for v in validators %}
+  config.vm.define "{{ v.validator_name }}" do |validator|
       validator.vm.box = "centos/7"
 
       validator.vm.provision "ansible" do |ansible|
         ansible.verbose = "v"
-        ansible.playbook = "validator.yml"
+        ansible.playbook = "{{ v.validator_name }}.yml"
       end
   end
+{% endfor %}
 end
