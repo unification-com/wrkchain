@@ -43,29 +43,20 @@ def generate_ansible(build_dir, config):
     build_root = Path(build_dir)
     ansible_dir = build_root / 'ansible'
 
-    provisioner = {
+    ansible_defaults = {
         'home': 'vagrant',
     }
 
-    validators = {
-        'validators':
-            [
-                {
-                    'home': 'vagrant',
-                    'validator_name': 'validator-1'
-                },
-                {
-                    'home': 'vagrant',
-                    'validator_name': 'validator-2'
-                }
-            ]
-    }
+    nodes = {'validators': []}
+    for index, node in enumerate(config['wrkchain']['nodes']):
+        ansible_d = {'validator_name': f'validator-{index+1}'}
+        nodes['validators'].append({**node, **ansible_defaults, **ansible_d})
 
-    validator_builder = Validators(validators)
+    validator_builder = Validators(nodes)
 
     d = {
         'validator.yml': validator_builder,
-        'Vagrantfile': validators,
-        'roles/geth/tasks/main.yml': provisioner,
+        'Vagrantfile': nodes,
+        'roles/geth/tasks/main.yml': ansible_defaults,
     }
     template_map(template_root() / 'ansible', ansible_dir, d)
