@@ -5,7 +5,7 @@ from wrkchain.documentation.sections.doc_section import DocSection
 
 class SectionInstallation(DocSection):
     def __init__(self, section_number, title, bootnode_config, base):
-        path_to_md = 'sections/installation.md'
+        path_to_md = 'installation.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__bootnode_config = bootnode_config
@@ -30,7 +30,7 @@ class SectionInstallation(DocSection):
         return self.get_contents()
 
     def __install_geth(self):
-        install_md = f'templates/docs/md/sections/sub/install/geth.md'
+        install_md = f'{self.template_dir()}/sub/install/geth.md'
         install_md_path = self.root_dir / install_md
         install_geth = install_md_path.read_text()
         t = Template(install_geth)
@@ -41,7 +41,7 @@ class SectionInstallation(DocSection):
     def __install_geth_bootnode(self):
         contents = ''
         if self.__bootnode_config['type'] == 'dedicated':
-            install_md = f'templates/docs/md/sections/sub/install/' \
+            install_md = f'{self.template_dir()}/sub/install/' \
                 f'geth_bootnode.md'
             install_md_path = self.root_dir / install_md
             install_bootnode = install_md_path.read_text()
@@ -52,7 +52,7 @@ class SectionInstallation(DocSection):
         return contents
 
     def __install_wrkchain_oracle(self):
-        install_md = f'templates/docs/md/sections/sub/install/' \
+        install_md = f'{self.template_dir()}/sub/install/' \
             f'wrkchain_oracle.md'
         install_md_path = self.root_dir / install_md
         install_oracle = install_md_path.read_text()

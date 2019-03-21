@@ -3,7 +3,7 @@ from wrkchain.documentation.sections.doc_section import DocSection
 
 class SectionNetwork(DocSection):
     def __init__(self, section_number, title, nodes):
-        path_to_md = 'sections/network.md'
+        path_to_md = 'network.md'
         DocSection.__init__(self, path_to_md, section_number, title)
         self.__nodes = nodes
 

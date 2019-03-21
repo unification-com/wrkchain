@@ -5,10 +5,11 @@ from wrkchain.utils import repo_root
 
 class DocSection:
     def __init__(self, md_path, section_number, title):
-        base_md_template_dir = 'templates/docs/md'
+        self.__template_dir = 'templates/docs/md/sections/'
         self.root_dir = repo_root()
 
-        self.template_path = self.root_dir / base_md_template_dir / md_path
+        self.template_path = self.root_dir / \
+            self.__template_dir / md_path
 
         self.template = self.template_path.read_text()
         self.contents = ''
@@ -23,6 +24,9 @@ class DocSection:
 
     def get_contents(self):
         return f'{self.title}\n\n{self.contents}'
+
+    def template_dir(self):
+        return self.__template_dir
 
     def set_title(self, section_number, title):
         self.title = f'## {section_number}. {title}'

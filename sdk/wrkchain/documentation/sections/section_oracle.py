@@ -6,7 +6,7 @@ class SectionOracle(DocSection):
                  mainchain_rpc_uri, wrkchain_id, nodes,
                  oracle_write_frequency):
 
-        path_to_md = 'sections/oracle.md'
+        path_to_md = 'oracle.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__oracle_addresses = oracle_addresses
