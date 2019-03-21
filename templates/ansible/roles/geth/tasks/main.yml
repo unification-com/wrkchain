@@ -30,7 +30,7 @@
     chdir: /home/{{ home }}/.go/src/github.com/ethereum
     creates: /home/{{ home }}/.go/src/github.com/ethereum/go-ethereum
 
-- command: /usr/local/go/bin/go get github.com/ethereum/go-ethereum/cmd/geth
+- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/geth
   args:
     chdir: /home/{{ home }}
     creates: /home/{{ home }}/.go/bin/geth
