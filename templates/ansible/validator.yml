@@ -1,5 +1,5 @@
 ---
-- hosts: validator
+- hosts: {{ validator_name }}
   gather_facts: no
   remote_user: {{ home }}
 
