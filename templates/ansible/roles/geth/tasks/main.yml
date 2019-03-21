@@ -34,6 +34,9 @@
   args:
     chdir: /home/{{ home }}
     creates: /home/{{ home }}/.go/bin/geth
+  environment:
+    GOROOT: /usr/local/go
+    GOPATH: {{ home }}/.go
 
 - name: create data directories
   file: path=/home/{{ home }}/data state=directory owner={{ home }} group={{ home }}
