@@ -1,6 +1,7 @@
 import os
 
 from wrkchain.documentation.sections.doc_section import DocSection
+from wrkchain.utils import dir_tree
 
 
 class SectionIntroduction(DocSection):
@@ -14,22 +15,10 @@ class SectionIntroduction(DocSection):
     def generate(self):
         d = {
             '__WRKCHAIN_NETWORK_ID__': self.__wrkchain_id,
-            '__BUILD_DIR_STRUCTURE__': self.__gen_tree(self.__build_dir)
+            '__BUILD_DIR_STRUCTURE__': dir_tree(self.__build_dir)
         }
         self.add_content(d, append=False)
         return self.get_contents()
-
-    def __gen_tree(self, path, padding=''):
-        tree = ''
-        with os.scandir(path) as listOfEntries:
-            for entry in listOfEntries:
-                if entry.is_file():
-                    tree += padding + entry.name + '\n'
-                else:
-                    tree += entry.name + '\n'
-                    sub_dir = path + '/' + entry.name
-                    tree += self.__gen_tree(sub_dir, '  ')
-        return tree
 
 
 class SectionIntroductionBuilder:

@@ -3,6 +3,8 @@ import json
 import logging
 import os
 
+from shutil import rmtree
+
 from wrkchain.bootnode import BootnodeKey
 from wrkchain.composer import generate
 from wrkchain.config import WRKChainConfig, MissingConfigOverrideException, \
@@ -10,7 +12,9 @@ from wrkchain.config import WRKChainConfig, MissingConfigOverrideException, \
 from wrkchain.documentation.documentation import WRKChainDocumentation
 from wrkchain.genesis import build_genesis, generate_wrkchain_id
 from wrkchain.mainchain import UndMainchain
-from wrkchain.utils import write_build_file, get_oracle_addresses
+from wrkchain.utils import write_build_file, get_oracle_addresses, chmod_tree
+
+from wrkchain.ansible import generate_ansible
 
 log = logging.getLogger(__name__)
 
@@ -166,8 +170,12 @@ def main():
 @main.command()
 @click.argument('config_file')
 @click.argument('build_dir')
-def generate_wrkchain(config_file, build_dir):
+@click.option('--docker', type=bool, default=False)
+@click.option('--clean', type=bool, default=False)
+def generate_wrkchain(config_file, build_dir, docker=False, clean=False):
     log.info(f'Generating environment from: {config_file}')
+
+    # ToDo - check/cleanse build_dir
 
     try:
         wrkchain_config = WRKChainConfig(config_file)
@@ -182,24 +190,33 @@ def generate_wrkchain(config_file, build_dir):
         click.echo(e)
         exit()
 
+    if clean:
+        rmtree(build_dir)
+
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
-        os.chmod(build_dir, 0o777)
 
     genesis_json, wrkchain_id = generate_genesis(config)
     bootnode_config = configure_bootnode(build_dir, config)
 
-    documentation = generate_documentation(config, genesis_json,
-                                           bootnode_config, build_dir)
-
-    rendered_genesis = json.dumps(genesis_json, indent=2, separators=(',', ':'))
+    rendered_genesis = json.dumps(genesis_json, indent=2,
+                                  separators=(',', ':'))
 
     docker_composition = generate(config, bootnode_config, wrkchain_id)
 
     write_generated_config(build_dir, config)
     write_genesis(build_dir, rendered_genesis)
-    write_documentation(build_dir, documentation)
     write_composition(build_dir, docker_composition)
+
+    generate_ansible(build_dir, config)
+
+    documentation = generate_documentation(config, genesis_json,
+                                           bootnode_config, build_dir)
+    write_documentation(build_dir, documentation)
+
+    if docker:
+        # Need to set correct permissions, since Docker runs as root
+        chmod_tree(build_dir)
 
     click.echo(documentation['md'])
     click.echo(bootnode_config)

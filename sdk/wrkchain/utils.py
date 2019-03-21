@@ -8,11 +8,14 @@ def repo_root() -> Path:
     return current_script.parent.parent.parent
 
 
+def template_root() -> Path:
+    return repo_root() / 'templates'
+
+
 def write_build_file(file_path, file_contents):
     genesis_file = open(file_path, "w")
     genesis_file.write(file_contents)
     genesis_file.close()
-    os.chmod(file_path, 0o666)
 
 
 def get_oracle_addresses(config):
@@ -47,3 +50,30 @@ def check_overrides_in_config(overrides, config):
                 print(f'{key}: NO MATCH:')
                 print(f'Override: {data}')
                 print(f'Config: {config[key]}')
+
+
+def chmod_tree(path):
+    chmod_path = Path(os.path.abspath(path))
+    chmod_path.chmod(0o777)
+    with os.scandir(chmod_path) as listOfEntries:
+        for entry in listOfEntries:
+            if entry.is_file():
+                chmod_file = chmod_path / entry.name
+                chmod_file.chmod(0o666)
+            else:
+                sub_dir = chmod_path / entry.name
+                chmod_tree(sub_dir)
+
+
+def dir_tree(directory):
+    if isinstance(directory, str):
+        directory = Path(directory)
+    tree = f'+ {directory}\n'
+    for path in sorted(directory.rglob('*')):
+        depth = len(path.relative_to(directory).parts)
+        spacer = '  ' * depth
+        if path.is_file():
+            tree += f'{spacer}- {path.name}\n'
+        else:
+            tree += f'{spacer}+ {path.name}\n'
+    return tree

@@ -19,3 +19,4 @@ which can be modified and used again with the SDK
 **docker-compose.yml**: Docker composition for testnet  
 **static-nodes.json**: Static nodes file, used when no `bootnode` is configured  
 **node_keys**: Directory containing your bootnode key, or keys for your static nodes  
+**ansible**: Directory containing Ansible configuration

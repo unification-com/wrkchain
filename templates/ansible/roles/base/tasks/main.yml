@@ -1,0 +1,24 @@
+---
+# base role
+
+- name: enable EPEL
+  yum: name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present
+  become: yes
+
+- name: upgrade all packages
+  yum: name=* state=latest
+  become: yes
+
+- name: install yum dependencies
+  yum:
+    name:
+      - git
+      - nc
+      - mosh
+      - telnet
+      - tmux
+      - wget
+      - vim
+    state: latest
+  become: yes
+...

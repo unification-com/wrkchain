@@ -33,13 +33,16 @@ def generate_geth_cmd(
             if use_api:
                 apis.append(api)
         rpc_port = node["rpc"]["port"]
+        rpcaddr = node["rpc"]["rpcaddr"]
+        rpccorsdomain = node["rpc"]["rpccorsdomain"]
+        rpcvhosts = node["rpc"]["rpcvhosts"]
         flags = flags + [
             f'--rpc',
-            f'--rpcaddr "0.0.0.0"',
+            f'--rpcaddr "{rpcaddr}"',
             f'--rpcport "{rpc_port}"',
             f'--rpcapi "{",".join(apis)}"',
-            f'--rpccorsdomain "*"',
-            f'--rpcvhosts "*"']
+            f'--rpccorsdomain "{rpccorsdomain}"',
+            f'--rpcvhosts "{rpcvhosts}"']
 
     flags = sorted(flags)
     if linebreak:

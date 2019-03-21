@@ -88,6 +88,15 @@ class WRKChainConfig:
                 f'{", ".join(VALID_MAINCHAIN_NETWORKS)}'
             raise MissingConfigOverrideException(err)
 
+        if 'wrkchain_network_id' in self.__overrides['wrkchain']:
+            wrkchain_network_id = \
+                self.__overrides['wrkchain']['wrkchain_network_id']
+            if not isinstance(wrkchain_network_id, int):
+                err = f'wrkchain_network_id "{wrkchain_network_id}" - ' \
+                    f'must be an integer. Found string, or int passed ' \
+                    f'as string'
+                raise InvalidOverrideException(err)
+
     def __load_basic_defaults(self):
         basic_default = {
             'wrkchain': {
@@ -114,14 +123,8 @@ class WRKChainConfig:
         # WRKChain Network ID
         if 'wrkchain_network_id' in wrkchain_overrides:
             wrkchain_network_id = wrkchain_overrides['wrkchain_network_id']
-            if isinstance(wrkchain_network_id, int):
-                self.__config['wrkchain']['wrkchain_network_id'] = \
-                    wrkchain_network_id
-            else:
-                err = f'wrkchain_network_id "{wrkchain_network_id}" - ' \
-                      f'must be an integer. Found string, or int passed ' \
-                      f'as string'
-                raise InvalidOverrideException(err)
+            self.__config['wrkchain']['wrkchain_network_id'] = \
+                wrkchain_network_id
 
         # Ledger
         if 'ledger' in wrkchain_overrides:
@@ -286,6 +289,9 @@ class WRKChainConfig:
             "write_to_oracle": True,
             "rpc": {
                 "port": 8545,
+                "rpccorsdomain": "*",
+                "rpcvhosts": "*",
+                "rpcaddr": "0.0.0.0",
                 "apis": {
                     "eth": True,
                     "web3": True,

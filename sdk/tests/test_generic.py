@@ -86,6 +86,9 @@ test_config = {
         "write_to_oracle":False,
         "rpc":{
           "port":8545,
+          "rpccorsdomain": "*",
+          "rpcvhosts": "*",
+          "rpcaddr": "0.0.0.0",
           "apis":{
             "eth":True,
             "web3":True,
