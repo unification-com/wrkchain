@@ -1,11 +1,13 @@
 .DEFAULT_GOAL := help
-.PHONY: sdk
+.PHONY: clean help info init-prepare sdk
 
 # Set some variables
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 help:
-	@echo "run: make sdk"
+	@echo "Create and edit $(ROOT_DIR)/wrkchain.json"
+	@echo "then run:"
+	@echo "  make sdk"
 
 sdk:
 	$(MAKE) init-prepare
