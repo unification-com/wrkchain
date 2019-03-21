@@ -39,6 +39,7 @@ test_genesis = {
 test_config = {
   "wrkchain":{
     "title":"Example WRKChain",
+    "oracle_write_frequency": 60,
     "wrkchain_network_id":6450628417,
     "ledger":{
       "base":"geth",

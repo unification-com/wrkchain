@@ -28,6 +28,7 @@ def generate_documentation(config, genesis_json, bootnode_config, build_dir):
     oracle_addresses = get_oracle_addresses(config)
     mainchain_web3_provider = config['mainchain']['web3_provider']
     mainchain_network_id = config['mainchain']['network_id']
+    oracle_write_frequency = config['wrkchain']['oracle_write_frequency']
 
     # from genesis.json
     wrkchain_id = genesis_json['config']['chainId']
@@ -41,7 +42,8 @@ def generate_documentation(config, genesis_json, bootnode_config, build_dir):
                                                    wrkchain_id,
                                                    bootnode_config,
                                                    genesis_json,
-                                                   build_dir)
+                                                   build_dir,
+                                                   oracle_write_frequency)
     wrkchain_documentation.generate()
 
     documentation = {
