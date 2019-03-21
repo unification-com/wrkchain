@@ -3,32 +3,63 @@ from string import Template
 from wrkchain.documentation.sections.doc_section import DocSection
 
 
-class SectionInstallationGeth(DocSection):
-    def __init__(self, section_number, title, bootnode_config):
-        path_to_md = 'sections/sub/install/geth.md'
+class SectionInstallation(DocSection):
+    def __init__(self, section_number, title, bootnode_config, base):
+        path_to_md = 'sections/installation.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__bootnode_config = bootnode_config
         self.__section_number = section_number
+        self.__base = base
 
     def generate(self):
-        install_bootnode_content = ""
-        if self.__bootnode_config['type'] == 'dedicated':
-            install_bootnode_content = self.__install_bootnode()
 
+        install_node = ''
+        install_bootnode = ''
+
+        if self.__base == 'geth':
+            install_node = self.__install_geth()
+            install_bootnode = self.__install_geth_bootnode()
+        
         d = {
-            '__INSTALL_GETH_BOOTNODE__': install_bootnode_content
+            '__INSTALL_NODES__': install_node,
+            '__INSTALL_BOOTNODE__': install_bootnode,
+            '__INSTALL_WRKCHAIN_ORACLE__': self.__install_wrkchain_oracle()
         }
         self.add_content(d, append=False)
         return self.get_contents()
 
-    def __install_bootnode(self):
-        install_bootnode_md = f'templates/docs/md/sections/' \
-            f'sub/install/geth_bootnode.md'
-        install_bootnode_md_path = self.root_dir / install_bootnode_md
-        install_bootnode = install_bootnode_md_path.read_text()
-        t = Template(install_bootnode)
-        return t.substitute({'__SECTION_NUMBER__': self.__section_number})
+    def __install_geth(self):
+        install_md = f'templates/docs/md/sections/sub/install/geth.md'
+        install_md_path = self.root_dir / install_md
+        install_geth = install_md_path.read_text()
+        t = Template(install_geth)
+        contents = t.substitute(
+            {'__SECTION_NUMBER__': self.__section_number})
+        return contents
+
+    def __install_geth_bootnode(self):
+        contents = ''
+        if self.__bootnode_config['type'] == 'dedicated':
+            install_md = f'templates/docs/md/sections/sub/install/' \
+                f'geth_bootnode.md'
+            install_md_path = self.root_dir / install_md
+            install_bootnode = install_md_path.read_text()
+            t = Template(install_bootnode)
+            contents =  t.substitute(
+                {'__SECTION_NUMBER__': self.__section_number})
+
+        return contents
+
+    def __install_wrkchain_oracle(self):
+        install_md = f'templates/docs/md/sections/sub/install/' \
+            f'wrkchain_oracle.md'
+        install_md_path = self.root_dir / install_md
+        install_oracle = install_md_path.read_text()
+        t = Template(install_oracle)
+        contents = t.substitute(
+            {'__SECTION_NUMBER__': self.__section_number})
+        return contents
 
 
 class SectionInstallationBuilder:
@@ -39,13 +70,7 @@ class SectionInstallationBuilder:
                  **_ignored):
 
         if not self.__instance:
-            if base == 'geth':
-                self.__instance = SectionInstallationGeth(section_number,
-                                                          title,
-                                                          bootnode_config)
-            else:
-                self.__instance = SectionInstallationGeth(section_number,
-                                                          title,
-                                                          bootnode_config)
+            self.__instance = SectionInstallation(section_number,
+                                                  title, bootnode_config, base)
 
         return self.__instance
