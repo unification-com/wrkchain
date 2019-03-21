@@ -22,12 +22,12 @@
     dest: /usr/local
     remote_src: yes
 
-- name: create local go directory
-  file: path=/home/{{ home }}/.go state=directory owner={{ home }} group={{ home }}
+- name: create ethereum go directory
+  file: path=/home/{{ home }}/.go/src/github.com/ethereum state=directory owner={{ home }} group={{ home }} recurse=yes
 
-- command: /usr/local/go/bin/go get -d github.com/ethereum/go-ethereum
+- command: git clone https://github.com/ethereum/go-ethereum --depth 1
   args:
-    chdir: /home/{{ home }}
+    chdir: /home/{{ home }}/.go/src/github.com/ethereum
     creates: /home/{{ home }}/.go/src/github.com/ethereum/go-ethereum
 
 - command: /usr/local/go/bin/go get github.com/ethereum/go-ethereum/cmd/geth
