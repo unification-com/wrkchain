@@ -6,4 +6,6 @@ relevant software.
 Follow the previos instructions for installing Go, and fetching the go-ethereum
 codebase, then install the bootnode binary:
 
-`go install github.com/ethereum/go-ethereum/cmd/bootnode`
+```bash
+go install github.com/ethereum/go-ethereum/cmd/bootnode
+```

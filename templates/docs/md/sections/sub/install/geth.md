@@ -16,11 +16,11 @@ mkdir ~/.go
 
 Then set your GOPATH and GOROOT
 
-`
+```bash
 export GOPATH="$$HOME/.go"
 export GOROOT="/usr/local/go"
 export PATH=$$PATH:$$GOROOT/bin:$$GOPATH/bin
-`
+```
 
 **Note:** it's advisable to permanently set these environment variables
  in your shell's `rc`, for example `~/.bashrc`.
