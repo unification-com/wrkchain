@@ -1,4 +1,4 @@
-GETH_PATH = '/root/.go/bin/geth'
+GETH_PATH = '$GOPATH/bin/geth'
 
 
 def generate_geth_cmd(
