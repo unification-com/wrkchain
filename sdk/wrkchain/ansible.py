@@ -12,7 +12,7 @@ class Validators:
 
     def write(self, environment, target, relative):
         template = environment.get_template(str(relative))
-        for index, validator in enumerate(self.context['validators']):
+        for index, validator in enumerate(self.context):
             base, ext = str(relative).split('.')
             dest = target / f'{base}-{index + 1}.{ext}'
             dest.write_text(template.render(validator))
@@ -43,27 +43,12 @@ def generate_ansible(build_dir, config):
     build_root = Path(build_dir)
     ansible_dir = build_root / 'ansible'
 
-    ansible_defaults = {
-        'home': 'vagrant',
-    }
-
-    nodes = {'validators': []}
-    for index, node in enumerate(config['wrkchain']['nodes']):
-        nodes['validators'].append({**node, **ansible_defaults})
-
-    bootnode_cfg = {
-        **config['wrkchain']['bootnode'],
-        **ansible_defaults
-    }
-    nodes['bootnode'] = bootnode_cfg
-
-    validator_builder = Validators(nodes)
+    validator_builder = Validators(config['wrkchain']['nodes'])
 
     d = {
         'wrkchain-node.yml': validator_builder,
-        'wrkchain-bootnode.yml': bootnode_cfg,
-        'Vagrantfile': nodes,
-        'roles/geth/tasks/main.yml': ansible_defaults,
+        'wrkchain-bootnode.yml': config['wrkchain']['bootnode'],
+        'Vagrantfile': config['wrkchain'],
     }
 
     template_map(template_root() / 'ansible', ansible_dir, d)

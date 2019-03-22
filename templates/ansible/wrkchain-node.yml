@@ -1,7 +1,6 @@
 ---
 - hosts: {{ name }}
   gather_facts: no
-  remote_user: {{ home }}
 
   roles:
     - base
