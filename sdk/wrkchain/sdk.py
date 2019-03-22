@@ -177,8 +177,6 @@ def main():
 def generate_wrkchain(config_file, build_dir, docker=False, clean=False):
     log.info(f'Generating environment from: {config_file}')
 
-    # ToDo - check/cleanse build_dir
-
     try:
         wrkchain_config = WRKChainConfig(config_file)
         config = wrkchain_config.get()
