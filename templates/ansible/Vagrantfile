@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
 
       bootnode.vm.provision "ansible" do |ansible|
         ansible.verbose = "v"
-        ansible.playbook = "{{ bootnode.bootnode_name }}.yml"
+        ansible.playbook = "{{ bootnode.name }}.yml"
       end
   end
 {% endif %}
@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
 
       validator.vm.provision "ansible" do |ansible|
         ansible.verbose = "v"
-        ansible.playbook = "{{ v.validator_name }}.yml"
+        ansible.playbook = "{{ v.name }}.yml"
       end
   end
 {% endfor %}
