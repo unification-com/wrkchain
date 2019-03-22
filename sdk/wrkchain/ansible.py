@@ -49,13 +49,13 @@ def generate_ansible(build_dir, config):
 
     nodes = {'validators': []}
     for index, node in enumerate(config['wrkchain']['nodes']):
-        ansible_d = {'validator_name': f'validator-{index+1}'}
+        ansible_d = {'validator_name': f'wrkchain-validator-{index+1}'}
         nodes['validators'].append({**node, **ansible_defaults, **ansible_d})
 
     validator_builder = Validators(nodes)
 
     d = {
-        'validator.yml': validator_builder,
+        'wrkchain-validator.yml': validator_builder,
         'Vagrantfile': nodes,
         'roles/geth/tasks/main.yml': ansible_defaults,
     }
