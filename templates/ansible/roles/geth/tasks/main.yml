@@ -21,6 +21,7 @@
     src: /home/{{ home }}/go.tar.gz
     dest: /usr/local
     remote_src: yes
+  become: yes
 
 - name: create ethereum go directory
   file: path=/home/{{ home }}/.go/src/github.com/ethereum state=directory owner={{ home }} group={{ home }} recurse=yes
