@@ -47,16 +47,26 @@ def generate_ansible(build_dir, config):
         'home': 'vagrant',
     }
 
+
     nodes = {'validators': []}
     for index, node in enumerate(config['wrkchain']['nodes']):
         ansible_d = {'validator_name': f'wrkchain-validator-{index+1}'}
         nodes['validators'].append({**node, **ansible_defaults, **ansible_d})
 
+    bootnode_cfg = {
+        **config['wrkchain']['bootnode'],
+        **ansible_defaults,
+        **{'bootnode_name': 'wrkchain-bootnode'}
+    }
+    nodes['bootnode'] = bootnode_cfg
+
     validator_builder = Validators(nodes)
 
     d = {
         'wrkchain-validator.yml': validator_builder,
+        'wrkchain-bootnode.yml': bootnode_cfg,
         'Vagrantfile': nodes,
         'roles/geth/tasks/main.yml': ansible_defaults,
     }
+
     template_map(template_root() / 'ansible', ansible_dir, d)
