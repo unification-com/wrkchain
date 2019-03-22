@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
         ansible.playbook = "{{ bootnode.name }}.yml"
       end
   end
-{% endif %}
+{%- endif %}
 {% for v in validators %}
   config.vm.define "{{ v.name }}" do |validator|
       validator.vm.box = "centos/7"
