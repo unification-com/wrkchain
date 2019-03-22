@@ -42,5 +42,4 @@
 
 - name: create data directories
   file: path=/home/{{ home }}/data state=directory owner={{ home }} group={{ home }}
-
 ...
