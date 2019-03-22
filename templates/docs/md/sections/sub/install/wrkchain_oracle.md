@@ -1,4 +1,4 @@
-### $__SECTION_NUMBER__.3 Install WRKChain Oracle
+### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install WRKChain Oracle
 
 ```bash
 go get -d github.com/unification-com/oracle

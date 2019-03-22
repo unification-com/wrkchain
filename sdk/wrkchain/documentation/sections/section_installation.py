@@ -11,6 +11,7 @@ class SectionInstallation(DocSection):
         self.__bootnode_config = bootnode_config
         self.__section_number = section_number
         self.__base = base
+        self.__sub_section_number = 1
 
     def generate(self):
 
@@ -35,7 +36,9 @@ class SectionInstallation(DocSection):
         install_geth = install_md_path.read_text()
         t = Template(install_geth)
         contents = t.substitute(
-            {'__SECTION_NUMBER__': self.__section_number})
+            {'__SECTION_NUMBER__': self.__section_number,
+             '__SUB_SECTION_NUMBER__': self.__sub_section_number})
+        self.__sub_section_number += 1
         return contents
 
     def __install_geth_bootnode(self):
@@ -47,7 +50,9 @@ class SectionInstallation(DocSection):
             install_bootnode = install_md_path.read_text()
             t = Template(install_bootnode)
             contents =  t.substitute(
-                {'__SECTION_NUMBER__': self.__section_number})
+                {'__SECTION_NUMBER__': self.__section_number,
+                 '__SUB_SECTION_NUMBER__': self.__sub_section_number})
+            self.__sub_section_number += 1
 
         return contents
 
@@ -58,7 +63,9 @@ class SectionInstallation(DocSection):
         install_oracle = install_md_path.read_text()
         t = Template(install_oracle)
         contents = t.substitute(
-            {'__SECTION_NUMBER__': self.__section_number})
+            {'__SECTION_NUMBER__': self.__section_number,
+             '__SUB_SECTION_NUMBER__': self.__sub_section_number})
+        self.__sub_section_number += 1
         return contents
 
 

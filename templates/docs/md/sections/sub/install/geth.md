@@ -1,7 +1,7 @@
 On each computer designated to run your network, you will need to install the 
 relevant software.
 
-### $__SECTION_NUMBER__.1 Install Go and Geth
+### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Go and Geth
 
 The recommended way to install geth is installing Go and then installing Geth
 using Go.
