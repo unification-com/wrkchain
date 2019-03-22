@@ -9,16 +9,9 @@
     state: latest
   become: yes
 
-- name: Download Go
-  get_url:
-    url: https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz
-    dest: /home/{{ home }}/go.tar.gz
-    owner: {{ home }}
-    group: {{ home }}
-
-- name: Extract go.tar.gz into /usr/local
+- name: Download and unpack Go
   unarchive:
-    src: /home/{{ home }}/go.tar.gz
+    src: https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz
     dest: /usr/local
     remote_src: yes
   become: yes
