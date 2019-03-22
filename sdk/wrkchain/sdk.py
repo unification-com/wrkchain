@@ -12,7 +12,7 @@ from wrkchain.config import WRKChainConfig, MissingConfigOverrideException, \
 from wrkchain.documentation.documentation import WRKChainDocumentation
 from wrkchain.genesis import build_genesis, generate_wrkchain_id
 from wrkchain.mainchain import UndMainchain
-from wrkchain.utils import write_build_file, get_oracle_addresses, chmod_tree
+from wrkchain.utils import write_build_file, get_oracle_addresses
 
 from wrkchain.ansible import generate_ansible
 
@@ -172,9 +172,8 @@ def main():
 @main.command()
 @click.argument('config_file')
 @click.argument('build_dir')
-@click.option('--docker', type=bool, default=False)
 @click.option('--clean', type=bool, default=False)
-def generate_wrkchain(config_file, build_dir, docker=False, clean=False):
+def generate_wrkchain(config_file, build_dir, clean=False):
     log.info(f'Generating environment from: {config_file}')
 
     try:
@@ -213,10 +212,6 @@ def generate_wrkchain(config_file, build_dir, docker=False, clean=False):
     documentation = generate_documentation(config, genesis_json,
                                            bootnode_config, build_dir)
     write_documentation(build_dir, documentation)
-
-    if docker:
-        # Need to set correct permissions, since Docker runs as root
-        chmod_tree(build_dir)
 
     click.echo(documentation['md'])
     click.echo(bootnode_config)
