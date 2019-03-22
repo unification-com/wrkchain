@@ -1,0 +1,18 @@
+---
+- hosts: {{ bootnode_name }}
+  gather_facts: no
+  remote_user: {{ home }}
+
+  roles:
+    - base
+    - geth
+
+  tasks:
+    - hostname: name={{ bootnode_name }}
+      become: yes
+
+    - name: upgrade all packages
+      yum: name=* state=latest
+      become: yes
+
+...
