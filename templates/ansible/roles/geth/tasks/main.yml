@@ -39,6 +39,14 @@
     GOROOT: /usr/local/go
     GOPATH: /home/{{ home }}/.go
 
+- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/bootnode
+  args:
+    chdir: /home/{{ home }}
+    creates: /home/{{ home }}/.go/bin/bootnode
+  environment:
+    GOROOT: /usr/local/go
+    GOPATH: /home/{{ home }}/.go
+
 - name: create data directories
   file: path=/home/{{ home }}/data state=directory owner={{ home }} group={{ home }}
 
