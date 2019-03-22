@@ -3,7 +3,7 @@
 
 Vagrant.configure("2") do |config|
 {% if bootnode %}
-  config.vm.define "{{ bootnode.bootnode_name }}" do |bootnode|
+  config.vm.define "{{ bootnode.name }}" do |bootnode|
       bootnode.vm.box = "centos/7"
 
       bootnode.vm.provision "ansible" do |ansible|
@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
   end
 {% endif %}
 {% for v in validators %}
-  config.vm.define "{{ v.validator_name }}" do |validator|
+  config.vm.define "{{ v.name }}" do |validator|
       validator.vm.box = "centos/7"
 
       validator.vm.provision "ansible" do |ansible|

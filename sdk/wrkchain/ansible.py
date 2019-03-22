@@ -47,16 +47,13 @@ def generate_ansible(build_dir, config):
         'home': 'vagrant',
     }
 
-
     nodes = {'validators': []}
     for index, node in enumerate(config['wrkchain']['nodes']):
-        ansible_d = {'validator_name': f'wrkchain-validator-{index+1}'}
-        nodes['validators'].append({**node, **ansible_defaults, **ansible_d})
+        nodes['validators'].append({**node, **ansible_defaults})
 
     bootnode_cfg = {
         **config['wrkchain']['bootnode'],
-        **ansible_defaults,
-        **{'bootnode_name': 'wrkchain-bootnode'}
+        **ansible_defaults
     }
     nodes['bootnode'] = bootnode_cfg
 

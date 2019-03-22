@@ -286,7 +286,8 @@ class WRKChainConfig:
         bootnode = {
             "use": False,
             "ip": "172.25.0.2",
-            "port": 30304
+            "port": 30304,
+            "name": "bootnode"
         }
 
         return bootnode
@@ -295,6 +296,7 @@ class WRKChainConfig:
     def __load_default_node(node_num):
         node = {
             "id": f'Validator & JSON RPC {node_num}',
+            "name": f'wrkchain-node-{node_num}',
             "address": "",
             "private_key": "",
             "ip": "172.25.0.2",
