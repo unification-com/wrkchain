@@ -38,7 +38,7 @@ class SectionNodes(DocSection):
                  '__EV_PUBLIC_ADDRESS__': public_address,
                  '__GETH_COMMAND__': geth_cmd,
                  '__NODE_TYPE__': ' & '.join(node_types),
-                 '__NODE_NAME__': node['title'],
+                 '__NODE_TITLE__': node['title'],
                  '__COPY_STATIC_NODES_JSON__': copy_static_nodes_json
                  }
             self.add_content(d, append=True)

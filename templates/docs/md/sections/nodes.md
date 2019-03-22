@@ -1,4 +1,4 @@
-### $__SECTION_NUMBER__.$__NODE_NUM__ Node $__NODE_NUM__: $__NODE_NAME__
+### $__SECTION_NUMBER__.$__NODE_NUM__ Node $__NODE_NUM__: $__NODE_TITLE__
 
 Node Type: $__NODE_TYPE__
 
