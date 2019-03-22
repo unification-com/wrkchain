@@ -60,7 +60,7 @@ def generate_ansible(build_dir, config):
     validator_builder = Validators(nodes)
 
     d = {
-        'wrkchain-validator.yml': validator_builder,
+        'wrkchain-node.yml': validator_builder,
         'wrkchain-bootnode.yml': bootnode_cfg,
         'Vagrantfile': nodes,
         'roles/geth/tasks/main.yml': ansible_defaults,
