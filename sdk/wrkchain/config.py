@@ -295,7 +295,7 @@ class WRKChainConfig:
     @staticmethod
     def __load_default_node(node_num):
         node = {
-            "id": f'Validator & JSON RPC {node_num}',
+            "title": f'Validator & JSON RPC {node_num}',
             "name": f'wrkchain-node-{node_num}',
             "address": "",
             "private_key": "",
