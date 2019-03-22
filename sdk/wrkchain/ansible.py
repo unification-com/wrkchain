@@ -1,7 +1,7 @@
 from pathlib import Path
 from shutil import copy, rmtree
 
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import DebugUndefined, Environment, FileSystemLoader
 
 from wrkchain.utils import template_root
 
@@ -20,7 +20,7 @@ class Validators:
 
 def template_map(source: Path, target: Path, maps: dict):
     loader = FileSystemLoader(str(source))
-    environment = Environment(loader=loader)
+    environment = Environment(loader=loader, undefined=DebugUndefined)
 
     for path in [x for x in source.rglob('*') if not x.is_dir()]:
         relative = path.relative_to(source)
