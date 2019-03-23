@@ -7,8 +7,8 @@ from shutil import rmtree
 
 from wrkchain.bootnode import BootnodeKey
 from wrkchain.composer import generate
-from wrkchain.config import WRKChainConfig, MissingConfigOverrideException, \
-    InvalidOverrideException
+from wrkchain.config import (
+    WRKChainConfig, MissingConfigOverrideException, InvalidOverrideException)
 from wrkchain.documentation.documentation import WRKChainDocumentation
 from wrkchain.genesis import build_genesis, generate_wrkchain_id
 from wrkchain.mainchain import UndMainchain
@@ -33,17 +33,11 @@ def generate_documentation(config, genesis_json, bootnode_config, build_dir):
     # from genesis.json
     wrkchain_id = genesis_json['config']['chainId']
 
-    wrkchain_documentation = WRKChainDocumentation(wrkchain_name, nodes,
-                                                   mainchain_netork,
-                                                   ledger_base_type,
-                                                   oracle_addresses,
-                                                   mainchain_web3_provider,
-                                                   mainchain_network_id,
-                                                   wrkchain_id,
-                                                   bootnode_config,
-                                                   genesis_json,
-                                                   build_dir,
-                                                   oracle_write_frequency)
+    wrkchain_documentation = WRKChainDocumentation(
+        wrkchain_name, nodes, mainchain_netork, ledger_base_type,
+        oracle_addresses, mainchain_web3_provider, mainchain_network_id,
+        wrkchain_id, bootnode_config, genesis_json, build_dir,
+        oracle_write_frequency)
     wrkchain_documentation.generate()
 
     documentation = {
