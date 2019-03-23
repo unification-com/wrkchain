@@ -36,7 +36,7 @@ def bootnode(config):
     }
 
 
-def chaintest():
+def chaintest(config):
     name = 'chaintest'
     return {
         'name': name,
@@ -44,7 +44,7 @@ def chaintest():
         'container_name': name,
         'networks': {
             'chainnet': {
-                'ipv4_address': get_ip()
+                'ipv4_address': config['ip']
             }
         },
         'build': {
@@ -117,7 +117,7 @@ def generate(config, bootnode_config, wrkchain_id):
     services = services + nodes
 
     if config['wrkchain']['chaintest']:
-        services = services + [chaintest()]
+        services = services + [chaintest(config['wrkchain']['chaintest'])]
 
     networks = {
         'chainnet': {
