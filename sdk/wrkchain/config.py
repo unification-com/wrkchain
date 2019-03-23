@@ -114,7 +114,7 @@ class WRKChainConfig:
                 'wrkchain_network_id': False,
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
-                'chaintest': False,
+                'chaintest': {"use": False },
                 'nodes': [],
                 'coin': self.__load_default_coin()
             },
