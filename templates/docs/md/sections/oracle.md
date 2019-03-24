@@ -1,11 +1,11 @@
 Ensure the following addresses have UND on the Mainchain, since they will
-be used to send data to the WRKCHain Root Smart Contract:
+be used to send data to the WRKChain Root Smart Contract:
 
 ```text
 $__ORACLE_ADDRESSES__
 ```
 
-One each computer responsible for running the WRKCHain Oracle (usually one or 
+One each computer responsible for running the WRKChain Oracle (usually one or
 more Validator nodes), run:
 
 ```bash
@@ -18,5 +18,5 @@ Where:
 `http://localhost:8545`  
 `PRIVATE_KEY_FOR_ORACLE_ADDRESS` = the private key for the Oracle Address which 
 will write to the WRKChain Root smart contract  
-`WRKCHAIN_ROOT_CONTRACT_ADDRESS` = the address of your deployed WRKCchain Root
+`WRKCHAIN_ROOT_CONTRACT_ADDRESS` = the address of your deployed WRKChain Root
 smart contract on Mainchain

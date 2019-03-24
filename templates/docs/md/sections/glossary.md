@@ -3,7 +3,7 @@
 handling P2P discovery of the Validator nodes in your network  
 
 **JSON RPC Node**: An optional node on the network responsible for accepting
-and forwarding JSO RPC API requests and transactions  
+and forwarding JSON RPC API requests and transactions
 
 **Validator**: A node on the network responsible for generating and signing new 
 blocks  
