@@ -1,5 +1,5 @@
 On the computer designated to run your bootnode, you will need to install the 
-relevant software.
+following software.
 
 ### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Bootnode
 
