@@ -18,7 +18,7 @@ def bootnode(config):
             mode=None, external_ip=None),
         ],
         'networks': {
-            'chainnet': {
+            'wrkchainnet': {
                 'ipv4_address': config['ip']
             }
         },
@@ -41,7 +41,7 @@ def chaintest(config):
         'hostname': name,
         'container_name': name,
         'networks': {
-            'chainnet': {
+            'wrkchainnet': {
                 'ipv4_address': config['ip']
             }
         },
@@ -103,7 +103,7 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
             'container_name': name,
             'ports': ports,
             'networks': {
-                'chainnet': {
+                'wrkchainnet': {
                     'ipv4_address': validator['ip']
                 }
             },
@@ -129,7 +129,7 @@ def generate(config, bootnode_config, wrkchain_id):
         services = services + [chaintest(config['wrkchain']['chaintest'])]
 
     networks = {
-        'chainnet': {
+        'wrkchainnet': {
             'driver': 'bridge',
             'ipam': {
                 'config': [{'subnet': config['docker_network']['subnet']}]
