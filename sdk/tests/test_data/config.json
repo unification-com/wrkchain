@@ -17,7 +17,7 @@
             "port": 30304
         },
         "chaintest": {
-            "use": true,
+            "use": false,
             "ip": "172.25.0.7"
         },
         "nodes": [
