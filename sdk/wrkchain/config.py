@@ -130,7 +130,7 @@ class WRKChainConfig:
                 'wrkchain_network_id': False,
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
-                'chaintest': {"use": False },
+                'chaintest': {"use": False},
                 'nodes': [],
                 'coin': self.__load_default_coin()
             },
@@ -157,6 +157,11 @@ class WRKChainConfig:
             self.__config['wrkchain']['wrkchain_network_id'] = \
                 wrkchain_network_id
 
+        # Docker subnet
+        if 'docker_network' in self.__overrides:
+            docker_network_overrides = self.__overrides['docker_network']
+            self.__override_docker_network(docker_network_overrides)
+
         # Ledger
         if 'ledger' in wrkchain_overrides:
             self.__override_ledger(wrkchain_overrides['ledger'])
@@ -182,10 +187,6 @@ class WRKChainConfig:
         if 'mainchain' in self.__overrides:
             mainchain_overrides = self.__overrides['mainchain']
             self.__override_mainchain(mainchain_overrides)
-
-        if 'docker_network' in self.__overrides:
-            docker_network_overrides = self.__overrides['docker_network']
-            self.__override_docker_network(docker_network_overrides)
 
     def __override_ledger(self, ledger):
         # Todo - load according to selected base (geth, etc.)
@@ -306,25 +307,37 @@ class WRKChainConfig:
 
         return ledger
 
-    @staticmethod
-    def __load_default_bootnode():
+    def __load_default_bootnode(self):
+
+        if 'docker_config' in self.__config:
+            subnet = IP(self.__config['docker_network']['subnet'])
+        else:
+            docker_config = self.__load_default_docker_network()
+            subnet = IP(docker_config['subnet'])
+
         bootnode = {
             "use": False,
-            "ip": "172.25.0.2",
+            "ip": subnet[1].strNormal(),
             "port": 30304,
             "name": "bootnode"
         }
 
         return bootnode
 
-    @staticmethod
-    def __load_default_node(node_num):
+    def __load_default_node(self, node_num):
+
+        if 'docker_config' in self.__config:
+            subnet = IP(self.__config['docker_network']['subnet'])
+        else:
+            docker_config = self.__load_default_docker_network()
+            subnet = IP(docker_config['subnet'])
+
         node = {
             "title": f'Validator & JSON RPC {node_num}',
             "name": f'wrkchain-node-{node_num}',
             "address": "",
             "private_key": "",
-            "ip": "172.25.0.2",
+            "ip": subnet[node_num + 1].strNormal(),
             "listen_port": 30301,
             "is_validator": True,
             "write_to_oracle": True,
