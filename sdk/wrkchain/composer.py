@@ -24,11 +24,12 @@ def bootnode(config):
         },
         'build': {
             'context': '..',
-            'dockerfile': 'Docker/bootnode/Dockerfile',
-            'args': {
-                'BOOTNODE_PORT': config['port'],
-            }
-        }
+            'dockerfile': 'Docker/bootnode/Dockerfile'
+        },
+        'environment': [f'BOOTNODE_PORT={config["port"]}'],
+        'command': f'/root/.go/bin/bootnode -nodekey '
+        f'/root/node_keys/bootnode.key -verbosity 4 --addr :{config["port"]}'
+
     }
 
 
