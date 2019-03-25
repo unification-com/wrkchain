@@ -317,7 +317,7 @@ class WRKChainConfig:
 
         bootnode = {
             "use": False,
-            "ip": subnet[1].strNormal(),
+            "ip": subnet[2].strNormal(),
             "port": 30304,
             "name": "bootnode"
         }
@@ -337,7 +337,7 @@ class WRKChainConfig:
             "name": f'wrkchain-node-{node_num}',
             "address": "",
             "private_key": "",
-            "ip": subnet[node_num + 1].strNormal(),
+            "ip": subnet[node_num + 2].strNormal(),
             "listen_port": 30301,
             "is_validator": True,
             "write_to_oracle": True,
