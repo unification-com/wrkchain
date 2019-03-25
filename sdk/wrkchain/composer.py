@@ -28,7 +28,8 @@ def bootnode(config):
         },
         'environment': [f'BOOTNODE_PORT={config["port"]}'],
         'command': f'/root/.go/bin/bootnode -nodekey '
-        f'/root/node_keys/bootnode.key -verbosity 4 --addr :{config["port"]}'
+        f'/root/node_keys/bootnode.key -verbosity 4 --addr :{config["port"]}',
+        'expose': [config["port"]]
 
     }
 
@@ -81,17 +82,20 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
         }
 
         ports = []
+        expose_ports = []
         if validator['rpc']:
             rpc_port = validator['rpc']['port']
             ports.append(ServicePort(
                 published=rpc_port, target=rpc_port, protocol=None,
                 mode=None, external_ip=None))
+            expose_ports.append(rpc_port)
 
         if validator['is_validator']:
             geth_listen_port = validator['listen_port']
             ports.append(ServicePort(
                 published=geth_listen_port, target=geth_listen_port,
                 protocol=None, mode=None, external_ip=None))
+            expose_ports.append(geth_listen_port)
 
         d.append({
             'name': name,
@@ -104,7 +108,8 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
                 }
             },
             'build': build_d,
-            'command': cmd
+            'command': cmd,
+            'expose': expose_ports
         })
     return d
 

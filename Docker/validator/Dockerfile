@@ -34,4 +34,3 @@ RUN echo $PRIVATE_KEY > /root/.privatekey
 RUN /root/.go/bin/geth init /root/assets/genesis.json
 RUN /root/.go/bin/geth account import --password /root/.walletpassword  /root/.privatekey
 
-EXPOSE $GETH_LISTEN_PORT
