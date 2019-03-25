@@ -12,6 +12,8 @@ VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet']
 VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
                   'shh', 'txpool', 'web3']
 
+GETH_START_PORT = 30304
+
 
 class MissingConfigOverrideException(Exception):
     def __init__(self, *args, **kwargs):
@@ -318,7 +320,7 @@ class WRKChainConfig:
         bootnode = {
             "use": False,
             "ip": subnet[2].strNormal(),
-            "port": 30304,
+            "port": GETH_START_PORT,
             "name": "bootnode"
         }
 
@@ -338,7 +340,7 @@ class WRKChainConfig:
             "address": "",
             "private_key": "",
             "ip": subnet[node_num + 2].strNormal(),
-            "listen_port": 30301,
+            "listen_port": GETH_START_PORT + node_num,
             "is_validator": True,
             "write_to_oracle": True,
             "rpc": {
