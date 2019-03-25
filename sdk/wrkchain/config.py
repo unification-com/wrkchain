@@ -202,6 +202,14 @@ class WRKChainConfig:
         new_conf = self.__load_default_bootnode()
 
         for key, data in bootnode_conf.items():
+            if key == 'ip':
+                try:
+                    IP(data)
+                except ValueError as e:
+                    err = f'Config wrkchain.bootnode.ip error {data} ' \
+                        f'is not a valid IP: {e}'
+                    raise InvalidOverrideException(err)
+
             new_conf[key] = data
         self.__config['wrkchain']['bootnode'] = new_conf
 
@@ -238,6 +246,13 @@ class WRKChainConfig:
                             f'address "{data}"" is not a valid address'
                         raise InvalidOverrideException(err)
                     new_node[key] = Web3.toChecksumAddress(data)
+                elif key == 'ip':
+                    try:
+                        IP(data)
+                    except ValueError as e:
+                        err = f'Config wrkchain.nodes[{node_num - 1}].ip ' \
+                            f'error {data} is not a valid IP: {e}'
+                        raise InvalidOverrideException(err)
                 else:
                     new_node[key] = data
 
@@ -296,6 +311,13 @@ class WRKChainConfig:
 
     def __override_chaintest(self, chaintest):
         for k, v in chaintest.items():
+            if k == 'ip':
+                try:
+                    IP(v)
+                except ValueError as e:
+                    err = f'Config wrkchain.chaintest.ip ' \
+                        f'error {v} is not a valid IP: {e}'
+                    raise InvalidOverrideException(err)
             self.__config['wrkchain']['chaintest'][k] = v
 
     @staticmethod
