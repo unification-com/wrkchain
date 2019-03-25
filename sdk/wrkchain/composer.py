@@ -76,8 +76,9 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
         }
 
         if validator['rpc']:
+            rpc_port = validator['rpc']['port']
             ports = [ServicePort(
-                published=8101, target=8101, protocol=None,
+                published=rpc_port, target=rpc_port, protocol=None,
                 mode=None, external_ip=None),
             ]
         else:
