@@ -132,7 +132,7 @@ def generate(config, bootnode_config, wrkchain_id):
         'chainnet': {
             'driver': 'bridge',
             'ipam': {
-                'config': [{'subnet': '172.25.0.0/24'}]
+                'config': [{'subnet': config['docker_network']['subnet']}]
             }
         }
     }
