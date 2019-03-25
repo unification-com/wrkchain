@@ -9,7 +9,9 @@ $__FUND_ORACLE_ADDRESSES__
 
 Clone the WRKChain Root smart contract repo into a suitable directory:
 
-`https://github.com/unification-com/wrkchain-root-contract`
+```bash
+git clone https://github.com/unification-com/wrkchain-root-contract
+```
 
 Once cloned, you have several options for deploying the smart contract on $__MAINCHAIN_NETWORK__
 

@@ -5,7 +5,7 @@ from wrkchain.architectures.debian import generate_geth_cmd
 class SectionNodes(DocSection):
     def __init__(self, section_number, title, nodes, wrkchain_id,
                  bootnode_config):
-        path_to_md = 'sections/nodes.md'
+        path_to_md = 'nodes.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__nodes = nodes
@@ -27,7 +27,7 @@ class SectionNodes(DocSection):
 
             geth_cmd = generate_geth_cmd(
                 node, self.__bootnode_config, self.__wrkchain_id, listen_port,
-                linebreak=True)
+                linebreak=True, gopath='$GOPATH')
 
             if node['is_validator']:
                 node_types.append('Validator')
@@ -38,7 +38,7 @@ class SectionNodes(DocSection):
                  '__EV_PUBLIC_ADDRESS__': public_address,
                  '__GETH_COMMAND__': geth_cmd,
                  '__NODE_TYPE__': ' & '.join(node_types),
-                 '__NODE_NAME__': node['id'],
+                 '__NODE_TITLE__': node['title'],
                  '__COPY_STATIC_NODES_JSON__': copy_static_nodes_json
                  }
             self.add_content(d, append=True)

@@ -9,33 +9,37 @@
     state: latest
   become: yes
 
-- name: Download Go
-  get_url:
-    url: https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz
-    dest: /home/{{ home }}/go.tar.gz
-    owner: {{ home }}
-    group: {{ home }}
-
-- name: Extract go.tar.gz into /usr/local
+- name: Download and unpack Go
   unarchive:
-    src: /home/{{ home }}/go.tar.gz
+    src: https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz
     dest: /usr/local
     remote_src: yes
+  become: yes
 
-- name: create local go directory
-  file: path=/home/{{ home }}/.go state=directory owner={{ home }} group={{ home }}
+- name: create ethereum go directory
+  file: path=/home/{{ ansible_user }}/.go/src/github.com/ethereum state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
 
-- command: /usr/local/go/bin/go get -d github.com/ethereum/go-ethereum
+- command: git clone https://github.com/ethereum/go-ethereum --depth 1
   args:
-    chdir: /home/{{ home }}
-    creates: /home/{{ home }}/.go/src/github.com/ethereum/go-ethereum
+    chdir: /home/{{ ansible_user }}/.go/src/github.com/ethereum
+    creates: /home/{{ ansible_user }}/.go/src/github.com/ethereum/go-ethereum
 
-- command: /usr/local/go/bin/go get github.com/ethereum/go-ethereum/cmd/geth
+- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/geth
   args:
-    chdir: /home/{{ home }}
-    creates: /home/{{ home }}/.go/bin/geth
+    chdir: /home/{{ ansible_user }}
+    creates: /home/{{ ansible_user }}/.go/bin/geth
+  environment:
+    GOROOT: /usr/local/go
+    GOPATH: /home/{{ ansible_user }}/.go
+
+- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/bootnode
+  args:
+    chdir: /home/{{ ansible_user }}
+    creates: /home/{{ ansible_user }}/.go/bin/bootnode
+  environment:
+    GOROOT: /usr/local/go
+    GOPATH: /home/{{ ansible_user }}/.go
 
 - name: create data directories
-  file: path=/home/{{ home }}/data state=directory owner={{ home }} group={{ home }}
-
+  file: path=/home/{{ ansible_user }}/data state=directory owner={{ ansible_user }} group={{ ansible_user }}
 ...

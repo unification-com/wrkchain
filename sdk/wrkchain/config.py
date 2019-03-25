@@ -97,10 +97,20 @@ class WRKChainConfig:
                     f'as string'
                 raise InvalidOverrideException(err)
 
+        if 'oracle_write_frequency' in self.__overrides['wrkchain']:
+            oracle_write_frequency = \
+                self.__overrides['wrkchain']['oracle_write_frequency']
+            if not isinstance(oracle_write_frequency, int):
+                err = f'oracle_write_frequency "{oracle_write_frequency}" - ' \
+                    f'must be an integer. Found string, or int passed ' \
+                    f'as string'
+                raise InvalidOverrideException(err)
+
     def __load_basic_defaults(self):
         basic_default = {
             'wrkchain': {
                 'title': 'My WRKChain',
+                'oracle_write_frequency': 10,
                 'wrkchain_network_id': False,
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
@@ -119,6 +129,10 @@ class WRKChainConfig:
         # Title
         if 'title' in wrkchain_overrides:
             self.__config['wrkchain']['title'] = wrkchain_overrides['title']
+
+        if 'oracle_write_frequency' in wrkchain_overrides:
+            self.__config['wrkchain']['oracle_write_frequency'] = \
+                wrkchain_overrides['oracle_write_frequency']
 
         # WRKChain Network ID
         if 'wrkchain_network_id' in wrkchain_overrides:
@@ -272,7 +286,8 @@ class WRKChainConfig:
         bootnode = {
             "use": False,
             "ip": "172.25.0.2",
-            "port": 30304
+            "port": 30304,
+            "name": "bootnode"
         }
 
         return bootnode
@@ -280,7 +295,8 @@ class WRKChainConfig:
     @staticmethod
     def __load_default_node(node_num):
         node = {
-            "id": f'Validator & JSON RPC {node_num}',
+            "title": f'Validator & JSON RPC {node_num}',
+            "name": f'wrkchain-node-{node_num}',
             "address": "",
             "private_key": "",
             "ip": "172.25.0.2",

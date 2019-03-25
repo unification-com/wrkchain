@@ -2,11 +2,24 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "centos/7"
-  config.vm.define "validator"
+{% if bootnode %}
+  config.vm.define "{{ bootnode.name }}" do |bootnode|
+      bootnode.vm.box = "centos/7"
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.verbose = "v"
-    ansible.playbook = "validator.yml"
+      bootnode.vm.provision "ansible" do |ansible|
+        ansible.verbose = "v"
+        ansible.playbook = "{{ bootnode.name }}.yml"
+      end
   end
+{%- endif %}
+{% for n in nodes %}
+  config.vm.define "{{ n.name }}" do |node|
+      node.vm.box = "centos/7"
+
+      node.vm.provision "ansible" do |ansible|
+        ansible.verbose = "v"
+        ansible.playbook = "{{ n.name }}.yml"
+      end
+  end
+{% endfor %}
 end

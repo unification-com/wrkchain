@@ -119,12 +119,8 @@ venv.bak/
 node_modules/
 
 # Local docker build stuff
-/Docker/assets/bootnode.key
-/Docker/assets/workchain.env
-/Docker/assets/workchain_genesis.json
 /log.txt
-/docker-compose.override.yml
-/Docker/assets/build/
+/build*
 
 # default config file for Docker & make sdk command
 wrkchain.json

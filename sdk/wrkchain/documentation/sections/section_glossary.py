@@ -3,7 +3,7 @@ from wrkchain.documentation.sections.doc_section import DocSection
 
 class SectionGlossary(DocSection):
     def __init__(self, section_number, title):
-        path_to_md = 'sections/glossary.md'
+        path_to_md = 'glossary.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
     def generate(self):

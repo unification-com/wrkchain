@@ -1,0 +1,17 @@
+---
+- hosts: {{ name }}
+  gather_facts: no
+
+  roles:
+    - base
+    - geth
+
+  tasks:
+    - hostname: name={{ name }}
+      become: yes
+
+    - name: upgrade all packages
+      yum: name=* state=latest
+      become: yes
+
+...

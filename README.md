@@ -55,5 +55,5 @@ Then, run:
 ```bash
 mkdir build
 cd sdk
-python -m wrkchain.sdk generate_wrkchain /path/to/config.json /path/to/build
+python -m wrkchain.sdk generate_wrkchain /path/to/config.json ../build
 ```

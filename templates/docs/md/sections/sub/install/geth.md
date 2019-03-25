@@ -1,7 +1,7 @@
 On each computer designated to run your network, you will need to install the 
 relevant software.
 
-### $__SECTION_NUMBER__.1 Install Go and Geth
+### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Go and Geth
 
 The recommended way to install geth is installing Go and then installing Geth
 using Go.
@@ -16,10 +16,11 @@ mkdir ~/.go
 
 Then set your GOPATH and GOROOT
 
-`
+```bash
 export GOPATH="$$HOME/.go"
 export GOROOT="/usr/local/go"
-`
+export PATH=$$PATH:$$GOROOT/bin:$$GOPATH/bin
+```
 
 **Note:** it's advisable to permanently set these environment variables
  in your shell's `rc`, for example `~/.bashrc`.
@@ -37,5 +38,3 @@ And then install the geth binary:
 
 The latest documentation regarding installing go-ethereum can be found here:
 <https://geth.ethereum.org/install/>
-
-$__INSTALL_GETH_BOOTNODE__

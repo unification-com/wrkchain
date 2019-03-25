@@ -6,7 +6,7 @@ from wrkchain.utils import dir_tree
 
 class SectionIntroduction(DocSection):
     def __init__(self, section_number, title, wrkchain_id, build_dir):
-        path_to_md = 'sections/introduction.md'
+        path_to_md = 'introduction.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__wrkchain_id = wrkchain_id

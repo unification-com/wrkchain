@@ -10,7 +10,7 @@ class SectionSetup(DocSection):
     def __init__(self, section_number, title, network, oracle_addresses,
                  wrkchain_id, mainchain_rpc_host, mainchain_rpc_port,
                  mainchain_rpc_uri, mainchain_network_id, genesis_json):
-        path_to_md = 'sections/setup.md'
+        path_to_md = 'setup.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__network = network
@@ -33,7 +33,8 @@ class SectionSetup(DocSection):
         return self.get_contents()
 
     def __fund(self):
-        fund_md = f'templates/docs/md/sections/sub/fund/{self.__network}.md'
+        fund_md = f'{self.template_dir()}/sub/fund/' \
+            f'{self.__network}.md'
         fund_template_path = self.root_dir / fund_md
         fund_template = fund_template_path.read_text()
         t = Template(fund_template)
@@ -64,7 +65,7 @@ class SectionSetup(DocSection):
         return fund_content
 
     def __deply_contract(self):
-        deploy_md = f'templates/docs/md/sections/sub/' \
+        deploy_md = f'{self.template_dir()}/sub/' \
             f'deploy_wrkchain_root_contract/{self.__network}.md'
         deploy_template_path = self.root_dir / deploy_md
         deploy_template = deploy_template_path.read_text()

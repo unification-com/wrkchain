@@ -21,7 +21,8 @@ section_factory.register_builder(
     '__SECTION_BOOTNODE__', SectionBootNodesBuilder())
 section_factory.register_builder(
     '__SECTION_INSTALLATION__', SectionInstallationBuilder())
-section_factory.register_builder('__SECTION_NETWORK__', SectionNetworkBuilder())
+section_factory.register_builder('__SECTION_NETWORK__',
+                                 SectionNetworkBuilder())
 section_factory.register_builder('__SECTION_ORACLE__', SectionOracleBuilder())
 section_factory.register_builder('__SECTION_SETUP__', SectionSetupBuilder())
 section_factory.register_builder('__SECTION_NODES__', SectionNodesBuilder())
