@@ -75,14 +75,20 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
             },
         }
 
+        ports = []
         if validator['rpc']:
             rpc_port = validator['rpc']['port']
-            ports = [ServicePort(
+            ports.append(ServicePort(
                 published=rpc_port, target=rpc_port, protocol=None,
-                mode=None, external_ip=None),
-            ]
-        else:
-            ports = []
+                mode=None, external_ip=None))
+
+        if validator['is_validator']:
+            geth_listen_port = validator['listen_port']
+            ports.append(ServicePort(
+                published=geth_listen_port, target=geth_listen_port,
+                protocol=None, mode=None, external_ip=None))
+
+        print(ports)
 
         d.append({
             'name': name,
