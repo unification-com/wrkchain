@@ -5,10 +5,6 @@ from compose.config.types import ServicePort
 from wrkchain.architectures.debian import generate_geth_cmd
 
 COMPOSE_VERSION = '3.3'
-GETH_BASE_PORT = 30305
-MAX_EVS = 256
-
-port_list = [GETH_BASE_PORT + x for x in range(MAX_EVS)]
 
 
 def bootnode(config):
@@ -65,11 +61,8 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
         else:
             name = f'wrkchain-validator-{n}'
 
-        geth_port = port_list.pop(0)
-
-        #TODO: Consolidate listen ports
         cmd = generate_geth_cmd(
-            validator, bootnode_config, wrkchain_id, port_list.pop(0))
+            validator, bootnode_config, wrkchain_id, validator['listen_port'])
 
         build_d = {
             'context': '..',
@@ -77,7 +70,7 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
             'args': {
                 'WALLET_PASS': 'pass',
                 'PRIVATE_KEY': validator['private_key'],
-                'GETH_LISTEN_PORT': geth_port,
+                'GETH_LISTEN_PORT': validator['listen_port'],
             },
         }
 
