@@ -132,7 +132,7 @@ class WRKChainConfig:
                 'wrkchain_network_id': False,
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
-                'chaintest': {"use": False},
+                'chaintest': self.__load_default_chaintest(),
                 'nodes': [],
                 'coin': self.__load_default_coin()
             },
@@ -174,8 +174,7 @@ class WRKChainConfig:
 
         # Chaintest
         if 'chaintest' in wrkchain_overrides:
-            self.__config['wrkchain']['chaintest'] = \
-                wrkchain_overrides['chaintest']
+            self.__override_chaintest(wrkchain_overrides['chaintest'])
 
         # Nodes
         if 'nodes' in wrkchain_overrides:
@@ -295,6 +294,10 @@ class WRKChainConfig:
         for k, v in docker_network.items():
             self.__config['docker_network'][k] = v
 
+    def __override_chaintest(self, chaintest):
+        for k, v in chaintest.items():
+            self.__config['wrkchain']['chaintest'][k] = v
+
     @staticmethod
     def __load_default_ledger():
         ledger = {
@@ -311,11 +314,7 @@ class WRKChainConfig:
 
     def __load_default_bootnode(self):
 
-        if 'docker_config' in self.__config:
-            subnet = IP(self.__config['docker_network']['subnet'])
-        else:
-            docker_config = self.__load_default_docker_network()
-            subnet = IP(docker_config['subnet'])
+        subnet = self.__get_docker_subnet()
 
         bootnode = {
             "use": False,
@@ -328,11 +327,7 @@ class WRKChainConfig:
 
     def __load_default_node(self, node_num):
 
-        if 'docker_config' in self.__config:
-            subnet = IP(self.__config['docker_network']['subnet'])
-        else:
-            docker_config = self.__load_default_docker_network()
-            subnet = IP(docker_config['subnet'])
+        subnet = self.__get_docker_subnet()
 
         node = {
             "title": f'Validator & JSON RPC {node_num}',
@@ -428,3 +423,19 @@ class WRKChainConfig:
         }
 
         return docker_network
+
+    def __get_docker_subnet(self):
+        if 'docker_config' in self.__config:
+            subnet = IP(self.__config['docker_network']['subnet'])
+        else:
+            docker_config = self.__load_default_docker_network()
+            subnet = IP(docker_config['subnet'])
+        return subnet
+
+    def __load_default_chaintest(self):
+        subnet = self.__get_docker_subnet()
+        chaintest = {
+            'use': False,
+            'ip': subnet[len(subnet) - 1].strNormal()
+        }
+        return chaintest
