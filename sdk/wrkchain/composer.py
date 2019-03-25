@@ -57,10 +57,15 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
 
     for validator in nodes:
         n = n + 1
+        name_list = ['wrkchain']
         if validator['rpc']:
-            name = f'wrkchain-rpc-validator-{n}'
-        else:
-            name = f'wrkchain-validator-{n}'
+            name_list.append('rpc')
+
+        if validator['is_validator']:
+            name_list.append('validator')
+
+        name_list.append(str(n))
+        name = '-'.join(name_list)
 
         cmd = generate_geth_cmd(
             validator, bootnode_config, wrkchain_id, validator['listen_port'])
@@ -87,8 +92,6 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
             ports.append(ServicePort(
                 published=geth_listen_port, target=geth_listen_port,
                 protocol=None, mode=None, external_ip=None))
-
-        print(ports)
 
         d.append({
             'name': name,
