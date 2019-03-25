@@ -125,7 +125,7 @@ def generate(config, bootnode_config, wrkchain_id):
         wrkchain['nodes'], bootnode_config, wrkchain_id)
     services = services + nodes
 
-    if config['wrkchain']['chaintest']:
+    if config['wrkchain']['chaintest']['use']:
         services = services + [chaintest(config['wrkchain']['chaintest'])]
 
     networks = {
