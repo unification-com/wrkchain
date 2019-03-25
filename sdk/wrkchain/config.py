@@ -1,6 +1,7 @@
 import json
 import pprint
 
+from IPy import IP
 from web3 import Web3
 
 REQUIRED_OVERRIDES = ['wrkchain', 'mainchain']
@@ -106,6 +107,21 @@ class WRKChainConfig:
                     f'as string'
                 raise InvalidOverrideException(err)
 
+        if 'docker_network' in self.__overrides:
+            if 'subnet' in self.__overrides['docker_network']:
+                subnet = self.__overrides['docker_network']['subnet']
+
+                try:
+                    docker_subnet = IP(subnet)
+                    if len(docker_subnet) <= 1:
+                        err = f'Docker subnet error ({subnet}): ' \
+                            f'must be IP range, e.g. {subnet}/24'
+                        raise InvalidOverrideException(err)
+
+                except ValueError as e:
+                    err = f'Docker subnet error ({subnet}): {e}'
+                    raise InvalidOverrideException(err)
+
     def __load_basic_defaults(self):
         basic_default = {
             'wrkchain': {
@@ -118,7 +134,8 @@ class WRKChainConfig:
                 'nodes': [],
                 'coin': self.__load_default_coin()
             },
-            'mainchain': self.__load_default_mainchain()
+            'mainchain': self.__load_default_mainchain(),
+            'docker_network': self.__load_default_docker_network()
         }
 
         self.__config = basic_default
@@ -165,6 +182,10 @@ class WRKChainConfig:
         if 'mainchain' in self.__overrides:
             mainchain_overrides = self.__overrides['mainchain']
             self.__override_mainchain(mainchain_overrides)
+
+        if 'docker_network' in self.__overrides:
+            docker_network_overrides = self.__overrides['docker_network']
+            self.__override_docker_network(docker_network_overrides)
 
     def __override_ledger(self, ledger):
         # Todo - load according to selected base (geth, etc.)
@@ -266,6 +287,10 @@ class WRKChainConfig:
             new_config['web3_provider'] = mainchain['web3_provider']
 
         self.__config['mainchain'] = new_config
+
+    def __override_docker_network(self, docker_network):
+        for k, v in docker_network.items():
+            self.__config['docker_network'][k] = v
 
     @staticmethod
     def __load_default_ledger():
@@ -380,3 +405,11 @@ class WRKChainConfig:
                 "port": "8101"
             }
         return web3_provider
+
+    @staticmethod
+    def __load_default_docker_network():
+        docker_network = {
+            "subnet": "172.25.0.0/24"
+        }
+
+        return docker_network
