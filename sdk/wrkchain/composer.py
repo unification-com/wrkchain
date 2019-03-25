@@ -130,8 +130,12 @@ def generate(config, bootnode_config, wrkchain_id):
 
     networks = {
         'chainnet': {
-            'driver': 'bridge', 'ipam': {
-                'config': [{'subnet': '172.25.0.0/24'}]}}}
+            'driver': 'bridge',
+            'ipam': {
+                'config': [{'subnet': '172.25.0.0/24'}]
+            }
+        }
+    }
 
     config = Config(version=COMPOSE_VERSION, services=services, volumes=[],
                     networks=networks, secrets=[], configs=[])
