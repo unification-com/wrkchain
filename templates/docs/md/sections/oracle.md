@@ -9,7 +9,13 @@ One each computer responsible for running the WRKChain Oracle (usually one or
 more Validator nodes), run:
 
 ```bash
-go run $$GOPATH/src/github.com/unification-com/oracle/oracle.go "WRKCHAIN_WEB3_PROVIDER_URL" "$__MAINCHAIN_WEB3_PROVIDER_URL__" "PRIVATE_KEY_FOR_ORACLE_ADDRESS" "WRKCHAIN_ROOT_CONTRACT_ADDRESS" $__ORACLE_WRITE_FREQUENCY__ $__WRKCHAIN_NETWORK_ID__
+go run $$GOPATH/src/github.com/unification-com/oracle/oracle.go \
+    "WRKCHAIN_WEB3_PROVIDER_URL" \
+    "$__MAINCHAIN_WEB3_PROVIDER_URL__" \
+    "PRIVATE_KEY_FOR_ORACLE_ADDRESS" \
+    "WRKCHAIN_ROOT_CONTRACT_ADDRESS" \
+    $__ORACLE_WRITE_FREQUENCY__ \
+    $__WRKCHAIN_NETWORK_ID__
 ```
 
 Where:
