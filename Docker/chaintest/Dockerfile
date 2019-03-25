@@ -19,7 +19,7 @@ RUN wget https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz && \
 
 ENV GOPATH="/root/.go"
 ENV GOROOT="/usr/local/go"
-ENV PATH="/usr/local/go/bin:${PATH}"
+ENV PATH="/usr/local/go/bin:/root/.go/bin:${PATH}"
 
 RUN mkdir /root/.ssh && \
     mkdir -p ${GOPATH}/src/github.com/unification-com
