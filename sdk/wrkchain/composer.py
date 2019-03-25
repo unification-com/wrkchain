@@ -73,7 +73,7 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
 
         build_d = {
             'context': '..',
-            'dockerfile': 'Docker/validator/Dockerfile',
+            'dockerfile': 'Docker/node/Dockerfile',
             'args': {
                 'WALLET_PASS': 'pass',
                 'PRIVATE_KEY': validator['private_key'],
