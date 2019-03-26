@@ -55,7 +55,9 @@ test_config = {
       "ip":"172.25.0.2",
       "port":30304
     },
-    "chaintest":False,
+    "chaintest":{"use": True,
+                 "ip": '172.25.0.255'
+                 },
     "nodes":[
       {
         "title":"Validator UK",
