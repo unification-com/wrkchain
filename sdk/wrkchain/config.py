@@ -13,6 +13,7 @@ VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
                   'shh', 'txpool', 'web3']
 
 GETH_START_PORT = 30304
+RPC_START_PORT = 8545
 
 
 class MissingConfigOverrideException(Exception):
@@ -361,7 +362,7 @@ class WRKChainConfig:
             "is_validator": True,
             "write_to_oracle": True,
             "rpc": {
-                "port": 8545,
+                "port": RPC_START_PORT + (node_num - 1),
                 "rpccorsdomain": "*",
                 "rpcvhosts": "*",
                 "rpcaddr": "0.0.0.0",
