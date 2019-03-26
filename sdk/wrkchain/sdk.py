@@ -10,7 +10,7 @@ from wrkchain.composer import generate
 from wrkchain.config import (
     WRKChainConfig, MissingConfigOverrideException, InvalidOverrideException)
 from wrkchain.documentation.documentation import WRKChainDocumentation
-from wrkchain.genesis import build_genesis, generate_wrkchain_id
+from wrkchain.genesis import build_genesis
 from wrkchain.mainchain import UndMainchain
 from wrkchain.utils import write_build_file, get_oracle_addresses
 
@@ -56,10 +56,7 @@ def generate_genesis(config):
 
     wrkchain_base = config['wrkchain']['ledger']['base']
     wrkchain_consensus = config['wrkchain']['ledger']['consensus']['type']
-    if 'wrkchain_network_id' in config['wrkchain']:
-        wrkchain_id = config['wrkchain']['wrkchain_network_id']
-    else:
-        wrkchain_id = generate_wrkchain_id()
+    wrkchain_id = config['wrkchain']['wrkchain_network_id']
 
     genesis_json = build_genesis(
         block_period=block_period, validators=nodes,

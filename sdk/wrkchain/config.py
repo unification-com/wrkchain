@@ -1,6 +1,7 @@
 import json
 import pprint
 
+from random import SystemRandom
 from IPy import IP
 from web3 import Web3
 
@@ -52,6 +53,11 @@ class WRKChainConfig:
     def print_overrides(self):
         pprint.sorted = lambda x, key=None: x
         pprint.pprint(self.__overrides)
+
+    @staticmethod
+    def generate_wrkchain_id():
+        sys_random = SystemRandom()
+        return sys_random.randint(99999, 9999999999)
 
     def __check_overrides(self, config_file):
 
@@ -157,8 +163,15 @@ class WRKChainConfig:
         # WRKChain Network ID
         if 'wrkchain_network_id' in wrkchain_overrides:
             wrkchain_network_id = wrkchain_overrides['wrkchain_network_id']
+            if not wrkchain_network_id:
+                self.__config['wrkchain']['wrkchain_network_id'] = \
+                    self.generate_wrkchain_id()
+            else:
+                self.__config['wrkchain']['wrkchain_network_id'] = \
+                    wrkchain_network_id
+        else:
             self.__config['wrkchain']['wrkchain_network_id'] = \
-                wrkchain_network_id
+                self.generate_wrkchain_id()
 
         # Docker subnet
         if 'docker_network' in self.__overrides:

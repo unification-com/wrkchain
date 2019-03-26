@@ -1,7 +1,6 @@
 import json
 
 from datetime import datetime
-from random import SystemRandom
 
 from web3.auto import w3
 
@@ -19,11 +18,6 @@ def load_genesis_template(wrkchain_base, wrkchain_consensus):
         t = json.loads(contents)
 
     return t
-
-
-def generate_wrkchain_id():
-    sys_random = SystemRandom()
-    return sys_random.randint(99999, 9999999999)
 
 
 def generate_timestamp():
