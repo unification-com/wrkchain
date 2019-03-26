@@ -7,7 +7,7 @@ Copy the generated `genesis.json` to the computer you will be running Node $__NO
 $__COPY_STATIC_NODES_JSON__
 
 The first time you run the node, you will need to initialise it by running
-the following
+the following:
 
 ```bash
 geth init /PATH/TO/YOUR/GENERATED/genesis.json

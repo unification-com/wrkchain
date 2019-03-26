@@ -5,10 +5,6 @@ from compose.config.types import ServicePort
 from wrkchain.architectures.debian import generate_geth_cmd
 
 COMPOSE_VERSION = '3.3'
-GETH_BASE_PORT = 30305
-MAX_EVS = 256
-
-port_list = [GETH_BASE_PORT + x for x in range(MAX_EVS)]
 
 
 def bootnode(config):
@@ -22,29 +18,31 @@ def bootnode(config):
             mode=None, external_ip=None),
         ],
         'networks': {
-            'chainnet': {
+            'wrkchainnet': {
                 'ipv4_address': config['ip']
             }
         },
         'build': {
             'context': '..',
-            'dockerfile': 'Docker/bootnode/Dockerfile',
-            'args': {
-                'BOOTNODE_PORT': config['port'],
-            }
-        }
+            'dockerfile': 'Docker/bootnode/Dockerfile'
+        },
+        'environment': [f'BOOTNODE_PORT={config["port"]}'],
+        'command': f'/root/.go/bin/bootnode -nodekey '
+        f'/root/node_keys/bootnode.key -verbosity 4 --addr :{config["port"]}',
+        'expose': [config["port"]]
+
     }
 
 
-def chaintest():
+def chaintest(config):
     name = 'chaintest'
     return {
         'name': name,
         'hostname': name,
         'container_name': name,
         'networks': {
-            'chainnet': {
-                'ipv4_address': get_ip()
+            'wrkchainnet': {
+                'ipv4_address': config['ip']
             }
         },
         'build': {
@@ -60,34 +58,44 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
 
     for validator in nodes:
         n = n + 1
+        name_list = ['wrkchain']
         if validator['rpc']:
-            name = f'wrkchain-rpc-validator-{n}'
-        else:
-            name = f'wrkchain-validator-{n}'
+            name_list.append('rpc')
 
-        geth_port = port_list.pop(0)
+        if validator['is_validator']:
+            name_list.append('validator')
 
-        #TODO: Consolidate listen ports
+        name_list.append(str(n))
+        name = '-'.join(name_list)
+
         cmd = generate_geth_cmd(
-            validator, bootnode_config, wrkchain_id, port_list.pop(0))
+            validator, bootnode_config, wrkchain_id, validator['listen_port'])
 
         build_d = {
             'context': '..',
-            'dockerfile': 'Docker/validator/Dockerfile',
+            'dockerfile': 'Docker/node/Dockerfile',
             'args': {
                 'WALLET_PASS': 'pass',
                 'PRIVATE_KEY': validator['private_key'],
-                'GETH_LISTEN_PORT': geth_port,
+                'GETH_LISTEN_PORT': validator['listen_port'],
             },
         }
 
+        ports = []
+        expose_ports = []
         if validator['rpc']:
-            ports = [ServicePort(
-                published=8101, target=8101, protocol=None,
-                mode=None, external_ip=None),
-            ]
-        else:
-            ports = []
+            rpc_port = validator['rpc']['port']
+            ports.append(ServicePort(
+                published=rpc_port, target=rpc_port, protocol=None,
+                mode=None, external_ip=None))
+            expose_ports.append(rpc_port)
+
+        if validator['is_validator']:
+            geth_listen_port = validator['listen_port']
+            ports.append(ServicePort(
+                published=geth_listen_port, target=geth_listen_port,
+                protocol=None, mode=None, external_ip=None))
+            expose_ports.append(geth_listen_port)
 
         d.append({
             'name': name,
@@ -95,12 +103,13 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
             'container_name': name,
             'ports': ports,
             'networks': {
-                'chainnet': {
+                'wrkchainnet': {
                     'ipv4_address': validator['ip']
                 }
             },
             'build': build_d,
-            'command': cmd
+            'command': cmd,
+            'expose': expose_ports
         })
     return d
 
@@ -116,13 +125,17 @@ def generate(config, bootnode_config, wrkchain_id):
         wrkchain['nodes'], bootnode_config, wrkchain_id)
     services = services + nodes
 
-    if config['wrkchain']['chaintest']:
-        services = services + [chaintest()]
+    if config['wrkchain']['chaintest']['use']:
+        services = services + [chaintest(config['wrkchain']['chaintest'])]
 
     networks = {
-        'chainnet': {
-            'driver': 'bridge', 'ipam': {
-                'config': [{'subnet': '172.25.0.0/24'}]}}}
+        'wrkchainnet': {
+            'driver': 'bridge',
+            'ipam': {
+                'config': [{'subnet': config['docker_network']['subnet']}]
+            }
+        }
+    }
 
     config = Config(version=COMPOSE_VERSION, services=services, volumes=[],
                     networks=networks, secrets=[], configs=[])

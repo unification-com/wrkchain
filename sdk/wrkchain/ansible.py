@@ -18,6 +18,17 @@ class Validators:
             dest.write_text(template.render(validator))
 
 
+class Bootnode:
+    def __init__(self, context):
+        self.context = context
+
+    def write(self, environment, target, relative):
+        if self.context['use']:
+            template = environment.get_template(str(relative))
+            dest = target / str(relative)
+            dest.write_text(template.render(self.context))
+
+
 def template_map(source: Path, target: Path, maps: dict):
     loader = FileSystemLoader(str(source))
     environment = Environment(loader=loader, undefined=DebugUndefined)
@@ -30,7 +41,7 @@ def template_map(source: Path, target: Path, maps: dict):
             dest.parent.mkdir(parents=True)
 
         if context:
-            if isinstance(context, Validators):
+            if isinstance(context, Validators) or isinstance(context, Bootnode):
                 context.write(environment, target, relative)
             else:
                 template = environment.get_template(str(relative))
@@ -43,12 +54,15 @@ def generate_ansible(build_dir, config):
     build_root = Path(build_dir)
     ansible_dir = build_root / 'ansible'
 
-    validator_builder = Validators(config['wrkchain']['nodes'])
+    workchain_cfg = config['wrkchain']
+    bootnode_cfg = workchain_cfg['bootnode']
+
+    validator_builder = Validators(workchain_cfg['nodes'])
 
     d = {
+        'wrkchain-bootnode.yml': Bootnode(bootnode_cfg),
         'wrkchain-node.yml': validator_builder,
-        'wrkchain-bootnode.yml': config['wrkchain']['bootnode'],
-        'Vagrantfile': config['wrkchain'],
+        'Vagrantfile': workchain_cfg
     }
 
     template_map(template_root() / 'ansible', ansible_dir, d)

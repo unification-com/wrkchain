@@ -1,6 +1,7 @@
 import json
 import pprint
 
+from IPy import IP
 from web3 import Web3
 
 REQUIRED_OVERRIDES = ['wrkchain', 'mainchain']
@@ -10,6 +11,8 @@ REQUIRED_MAINCHAIN_OVERRIDES = ['network']
 VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet']
 VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
                   'shh', 'txpool', 'web3']
+
+GETH_START_PORT = 30304
 
 
 class MissingConfigOverrideException(Exception):
@@ -106,6 +109,21 @@ class WRKChainConfig:
                     f'as string'
                 raise InvalidOverrideException(err)
 
+        if 'docker_network' in self.__overrides:
+            if 'subnet' in self.__overrides['docker_network']:
+                subnet = self.__overrides['docker_network']['subnet']
+
+                try:
+                    docker_subnet = IP(subnet)
+                    if len(docker_subnet) <= 1:
+                        err = f'Docker subnet error ({subnet}): ' \
+                            f'must be IP range, e.g. {subnet}/24'
+                        raise InvalidOverrideException(err)
+
+                except ValueError as e:
+                    err = f'Docker subnet error ({subnet}): {e}'
+                    raise InvalidOverrideException(err)
+
     def __load_basic_defaults(self):
         basic_default = {
             'wrkchain': {
@@ -114,11 +132,12 @@ class WRKChainConfig:
                 'wrkchain_network_id': False,
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
-                'chaintest': False,
+                'chaintest': self.__load_default_chaintest(),
                 'nodes': [],
                 'coin': self.__load_default_coin()
             },
-            'mainchain': self.__load_default_mainchain()
+            'mainchain': self.__load_default_mainchain(),
+            'docker_network': self.__load_default_docker_network()
         }
 
         self.__config = basic_default
@@ -140,6 +159,11 @@ class WRKChainConfig:
             self.__config['wrkchain']['wrkchain_network_id'] = \
                 wrkchain_network_id
 
+        # Docker subnet
+        if 'docker_network' in self.__overrides:
+            docker_network_overrides = self.__overrides['docker_network']
+            self.__override_docker_network(docker_network_overrides)
+
         # Ledger
         if 'ledger' in wrkchain_overrides:
             self.__override_ledger(wrkchain_overrides['ledger'])
@@ -150,8 +174,7 @@ class WRKChainConfig:
 
         # Chaintest
         if 'chaintest' in wrkchain_overrides:
-            self.__config['wrkchain']['chaintest'] = \
-                wrkchain_overrides['chaintest']
+            self.__override_chaintest(wrkchain_overrides['chaintest'])
 
         # Nodes
         if 'nodes' in wrkchain_overrides:
@@ -179,6 +202,14 @@ class WRKChainConfig:
         new_conf = self.__load_default_bootnode()
 
         for key, data in bootnode_conf.items():
+            if key == 'ip':
+                try:
+                    IP(data)
+                except ValueError as e:
+                    err = f'Config wrkchain.bootnode.ip error {data} ' \
+                        f'is not a valid IP: {e}'
+                    raise InvalidOverrideException(err)
+
             new_conf[key] = data
         self.__config['wrkchain']['bootnode'] = new_conf
 
@@ -215,6 +246,13 @@ class WRKChainConfig:
                             f'address "{data}"" is not a valid address'
                         raise InvalidOverrideException(err)
                     new_node[key] = Web3.toChecksumAddress(data)
+                elif key == 'ip':
+                    try:
+                        IP(data)
+                    except ValueError as e:
+                        err = f'Config wrkchain.nodes[{node_num - 1}].ip ' \
+                            f'error {data} is not a valid IP: {e}'
+                        raise InvalidOverrideException(err)
                 else:
                     new_node[key] = data
 
@@ -267,6 +305,21 @@ class WRKChainConfig:
 
         self.__config['mainchain'] = new_config
 
+    def __override_docker_network(self, docker_network):
+        for k, v in docker_network.items():
+            self.__config['docker_network'][k] = v
+
+    def __override_chaintest(self, chaintest):
+        for k, v in chaintest.items():
+            if k == 'ip':
+                try:
+                    IP(v)
+                except ValueError as e:
+                    err = f'Config wrkchain.chaintest.ip ' \
+                        f'error {v} is not a valid IP: {e}'
+                    raise InvalidOverrideException(err)
+            self.__config['wrkchain']['chaintest'][k] = v
+
     @staticmethod
     def __load_default_ledger():
         ledger = {
@@ -281,26 +334,30 @@ class WRKChainConfig:
 
         return ledger
 
-    @staticmethod
-    def __load_default_bootnode():
+    def __load_default_bootnode(self):
+
+        subnet = self.__get_docker_subnet()
+
         bootnode = {
             "use": False,
-            "ip": "172.25.0.2",
-            "port": 30304,
+            "ip": subnet[2].strNormal(),
+            "port": GETH_START_PORT,
             "name": "bootnode"
         }
 
         return bootnode
 
-    @staticmethod
-    def __load_default_node(node_num):
+    def __load_default_node(self, node_num):
+
+        subnet = self.__get_docker_subnet()
+
         node = {
             "title": f'Validator & JSON RPC {node_num}',
             "name": f'wrkchain-node-{node_num}',
             "address": "",
             "private_key": "",
-            "ip": "172.25.0.2",
-            "listen_port": 30301,
+            "ip": subnet[node_num + 2].strNormal(),
+            "listen_port": GETH_START_PORT + node_num,
             "is_validator": True,
             "write_to_oracle": True,
             "rpc": {
@@ -380,3 +437,27 @@ class WRKChainConfig:
                 "port": "8101"
             }
         return web3_provider
+
+    @staticmethod
+    def __load_default_docker_network():
+        docker_network = {
+            "subnet": "172.25.0.0/24"
+        }
+
+        return docker_network
+
+    def __get_docker_subnet(self):
+        if 'docker_config' in self.__config:
+            subnet = IP(self.__config['docker_network']['subnet'])
+        else:
+            docker_config = self.__load_default_docker_network()
+            subnet = IP(docker_config['subnet'])
+        return subnet
+
+    def __load_default_chaintest(self):
+        subnet = self.__get_docker_subnet()
+        chaintest = {
+            'use': False,
+            'ip': subnet[len(subnet) - 1].strNormal()
+        }
+        return chaintest

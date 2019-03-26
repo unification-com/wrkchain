@@ -22,8 +22,3 @@ RUN go get github.com/ethereum/go-ethereum
 RUN go install github.com/ethereum/go-ethereum/cmd/bootnode
 
 COPY build/node_keys /root/node_keys
-
-ARG BOOTNODE_PORT
-CMD exec bootnode -nodekey /root/node_keys/bootnode.key -verbosity 4 --addr :$BOOTNODE_PORT
-
-EXPOSE $BOOTNODE_PORT

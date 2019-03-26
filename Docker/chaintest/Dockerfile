@@ -19,15 +19,12 @@ RUN wget https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz && \
 
 ENV GOPATH="/root/.go"
 ENV GOROOT="/usr/local/go"
-ENV PATH="/usr/local/go/bin:${PATH}"
+ENV PATH="/usr/local/go/bin:/root/.go/bin:${PATH}"
 
-RUN mkdir /root/.ssh && \
-    mkdir -p ${GOPATH}/src/github.com/unification-com
+RUN mkdir /root/.ssh
 
-RUN cd ${GOPATH}/src/github.com/unification-com && \
-    git clone https://github.com/unification-com/mainchain.git
-
-RUN go install github.com/unification-com/mainchain/cmd/geth
+RUN go get github.com/ethereum/go-ethereum
+RUN go install github.com/ethereum/go-ethereum/cmd/geth
 
 ENV PATH="/root/.pyenv/versions/3.7.2/bin:${PATH}"
 

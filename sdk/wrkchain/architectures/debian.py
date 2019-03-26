@@ -8,7 +8,7 @@ def generate_geth_cmd(
     flags = []
 
     if bootnode_config['type'] == 'dedicated':
-        flags.append(f'--bootnodes {bootnode_config["nodes"]["enode"]}"')
+        flags.append(f'--bootnodes "{bootnode_config["nodes"]["enode"]}"')
     else:
         flags.append(f'--nodekey="/root/node_keys/{node["address"]}.key"')
 

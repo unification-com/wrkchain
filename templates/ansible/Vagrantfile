@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-{% if bootnode %}
+{% if bootnode['use'] %}
   config.vm.define "{{ bootnode.name }}" do |bootnode|
       bootnode.vm.box = "centos/7"
 
