@@ -5,7 +5,7 @@ import os
 
 from shutil import rmtree
 
-from wrkchain.bootnode import BootnodeKey
+from wrkchain.bootnode import BootnodeKey, BootnodeNotFoundException
 from wrkchain.composer import generate
 from wrkchain.config import (
     WRKChainConfig, MissingConfigOverrideException, InvalidOverrideException)
@@ -115,8 +115,14 @@ def check_oracle_address_funds(config):
 def generate_bootnode_info(build_dir, ip, port, docker_ip, docker_port,
                            public_address=''):
     node_info = {}
-    bootnode_key = BootnodeKey(build_dir, ip, port, docker_ip,
+    try:
+        bootnode_key = BootnodeKey(build_dir, ip, port, docker_ip,
                                docker_port, public_address)
+    except BootnodeNotFoundException as e:
+        click.echo("SDK ERROR:")
+        click.echo(e)
+        exit()
+
     bootnode_address = bootnode_key.get_bootnode_address()
 
     node_info['address'] = bootnode_address

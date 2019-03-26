@@ -5,10 +5,19 @@ import subprocess
 BIN_BOOTNODE = shutil.which("bootnode")
 
 
+class BootnodeNotFoundException(Exception):
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
+
+
 class BootnodeKey:
     def __init__(self, build_dir, ip, port, docker_ip, docker_port,
                  key_prefix=''):
-        # Todo - throw exception if BIN_BOOTNODE not found/empty
+
+        if not BIN_BOOTNODE:
+            raise BootnodeNotFoundException('bootnode executable not found. '
+                                            'Please install bootnode')
+
         if len(key_prefix) > 0:
             key_prefix = f'{key_prefix}'
         else:
