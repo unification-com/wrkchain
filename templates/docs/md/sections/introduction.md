@@ -1,7 +1,8 @@
 
 ### $__SECTION_NUMBER__.1 About your WRKChain
 
-**Your WRKChain Network ID:** $__WRKCHAIN_NETWORK_ID__
+**Your WRKChain Network ID:** $__WRKCHAIN_NETWORK_ID__  
+**This configuration is for:** $__MAINCHAIN_NETWORK__
 
 ### $__SECTION_NUMBER__.1.1 Generated Files
 
