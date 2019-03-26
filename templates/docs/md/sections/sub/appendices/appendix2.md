@@ -9,7 +9,7 @@ any Linux variation.
 Instructions how to set up Ansible can be obtained here:
 <https://www.ansible.com>
 
-#### Vagrant Testing
+#### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__.1 Vagrant Testing
 
 The Ansible scripts can be tested via Vagrant by running:
 
@@ -20,7 +20,7 @@ vagrant up
 Instruction how to set up Vagrant can be found here:
 <https://www.vagrantup.com>
 
-#### Production Deployment
+#### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__.2 Production Deployment
 
 Add each of the node names to `/etc/ansible/hosts`
 
