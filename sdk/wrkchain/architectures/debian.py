@@ -24,11 +24,16 @@ def generate_geth_cmd(
         f'--verbosity=4'
     ]
 
+    if docker:
+        wallet_password = f'{path_to}/.walletpassword'
+    else:
+        wallet_password = 'YOUR_WALLET_PASSWORD'
+
     if node['is_validator']:
         flags = flags + [
             f'--gasprice "0"',
             f'--etherbase {node["address"]}',
-            f'--password {path_to}/.walletpassword',
+            f'--password {wallet_password}',
             f'--mine',
             f'--unlock {node["address"]}',
         ]
