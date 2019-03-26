@@ -9,7 +9,7 @@ to its WRKChainRoot smart contract on Mainchain.
 The WRKChain SDK will accept a configurable JSON, and generate for your WRKChain:
 
 - The genesis.json Genesis block
-- A Docker Composition for testing and deployment
+- A Docker Composition for testing
 - Full documentation on how to deploy in a production environment
 
 ## Configuring a WRKChain
@@ -46,5 +46,5 @@ Then, run:
 ```bash
 mkdir build
 cd sdk
-python -m wrkchain.sdk generate_wrkchain /path/to/config.json /path/to/build
+python -m wrkchain.sdk generate_wrkchain /path/to/config.json ../build
 ```
