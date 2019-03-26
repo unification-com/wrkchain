@@ -21,12 +21,14 @@ class SectionAppendices(DocSection):
         appendix_2 = self.__appendix_2()
         appendix_3 = self.__appendix_3()
         appendix_4 = self.__appendix_4()
+        appendix_5 = self.__appendix_5()
 
         d = {
             '__APPENDIX_1__': appendix_1,
             '__APPENDIX_2__': appendix_2,
             '__APPENDIX_3__': appendix_3,
             '__APPENDIX_4__': appendix_4,
+            '__APPENDIX_5__': appendix_5,
         }
         self.add_content(d, append=False)
         return self.get_contents()
@@ -70,6 +72,17 @@ class SectionAppendices(DocSection):
 
     def __appendix_4(self):
         appendix_md = f'{self.template_dir()}/sub/appendices/appendix4.md'
+        appendix_md_path = self.root_dir / appendix_md
+        appendix = appendix_md_path.read_text()
+        t = Template(appendix)
+        contents = t.substitute(
+            {'__SECTION_NUMBER__': self.__section_number,
+             '__SUB_SECTION_NUMBER__': self.__sub_section_number})
+        self.__sub_section_number += 1
+        return contents
+
+    def __appendix_5(self):
+        appendix_md = f'{self.template_dir()}/sub/appendices/appendix5.md'
         appendix_md_path = self.root_dir / appendix_md
         appendix = appendix_md_path.read_text()
         t = Template(appendix)
