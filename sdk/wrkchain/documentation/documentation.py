@@ -62,6 +62,10 @@ class WRKChainDocumentation:
                 'content': '',
                 'title': 'Connecting to your Network'
             },
+            '__SECTION_APPENDICES__': {
+                'content': '',
+                'title': 'Appendices'
+            },
             '__SECTION_GLOSSARY__': {
                 'content': '',
                 'title': 'Glossary'
