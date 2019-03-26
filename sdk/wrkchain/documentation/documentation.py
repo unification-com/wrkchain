@@ -162,6 +162,7 @@ class WRKChainDocumentation:
                 title = ' '.join(title_words)
                 uri = '-'.join(
                     [uri_regex.sub('', word) for word in title_words]).lower()
+                uri = uri.replace('--', '-')
                 contents += f'{leading_spaces}{section_number} [{title}]' \
                     f'(#{uri})  \n'
 
