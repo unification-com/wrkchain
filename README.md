@@ -45,13 +45,24 @@ This will generate everything required in the `build` directory
 
 It is also possible to run the SDK without Docker.
 
-First, install the requirements:
+#### Dependencies
+
+The SDK is dependent upon
+go-ethereum's `bootnode` CMD, which can be installed as follows:
+
+1. install Go from <https://golang.org/doc/install>
+2. `go get github.com/ethereum/go-ethereum`
+3. `go install github.com/ethereum/go-ethereum/cmd/bootnode`
+
+Then, install the Python requirements:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Then, run:
+#### Running the SDK
+
+Once the dependencies are satisfied, the SDK can be run as follows:
 
 ```bash
 mkdir build

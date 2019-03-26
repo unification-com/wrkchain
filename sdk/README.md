@@ -23,8 +23,17 @@ generated.
 
 ### Docker
 
-The quickest method is to run the Dockerised SDK. You will need both Docker and
-Docker compose installing, then from the root directory, run:
+The quickest method is to run the Dockerised SDK. You will need to install both 
+Docker and Docker compose.
+
+Either copy one of the sample config files from `sdk/tests/test_data` to
+`wrkchain.json`, or roll your own. For example
+
+```bash
+cp sdk/tests/test_data/simple.json ./wrkchain.json
+```
+
+Edit as `wrkchain.json` required, then run:
 
 ```bash
 make sdk
@@ -36,13 +45,24 @@ This will generate everything required in the `build` directory
 
 It is also possible to run the SDK without Docker.
 
-First, install the requirements:
+#### Dependencies
+
+The SDK is dependent upon
+go-ethereum's `bootnode` CMD, which can be installed as follows:
+
+1. install Go from <https://golang.org/doc/install>
+2. `go get github.com/ethereum/go-ethereum`
+3. `go install github.com/ethereum/go-ethereum/cmd/bootnode`
+
+Then, install the Python requirements:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Then, run:
+#### Running the SDK
+
+Once the dependencies are satisfied, the SDK can be run as follows:
 
 ```bash
 mkdir build
