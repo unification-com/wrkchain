@@ -52,7 +52,6 @@ RUN pip install -r requirements.txt && \
 
 COPY sdk /home/sdkuser/sdk
 COPY templates /home/sdkuser/templates
-COPY wrkchain.json /home/sdkuser/wrkchain.json
 
 RUN echo "py.test /home/sdkuser/src/tests" >> /home/sdkuser/.bash_history && \
     echo "python -m wrkchain.sdk generate_wrkchain /home/sdkuser/wrkchain.json /home/sdkuser/build" >> /home/sdkuser/.bash_history && \
@@ -60,6 +59,8 @@ RUN echo "py.test /home/sdkuser/src/tests" >> /home/sdkuser/.bash_history && \
     echo "alias ll='ls -la'" >> /home/sdkuser/.bashrc
 
 RUN chown -R sdkuser /home/sdkuser
+
+COPY wrkchain.json /home/sdkuser/wrkchain.json
 
 RUN py.test /home/sdkuser/sdk/tests
 
