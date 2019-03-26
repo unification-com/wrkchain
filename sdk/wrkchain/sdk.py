@@ -109,7 +109,8 @@ def check_oracle_address_funds(config):
                        f'WRKchain Root smart contract')
 
 
-def generate_bootnode_info(build_dir, ip, port, public_address=''):
+def generate_bootnode_info(build_dir, ip, port, docker_ip, docker_port,
+                           public_address=''):
     node_info = {}
     bootnode_key = BootnodeKey(build_dir, ip, port, public_address)
     bootnode_address = bootnode_key.get_bootnode_address()
@@ -118,6 +119,8 @@ def generate_bootnode_info(build_dir, ip, port, public_address=''):
     node_info['enode'] = bootnode_key.get_enode()
     node_info['ip'] = ip
     node_info['port'] = port
+    node_info['docker_ip'] = docker_ip
+    node_info['docker_port'] = docker_port
 
     return node_info
 
@@ -131,9 +134,11 @@ def configure_bootnode(build_dir, config):
         public_address = item['address']
         ip = item['ip']
         port = item['listen_port']
+        docker_ip = item['docker_ip']
+        docker_port = item['docker_listen_port']
 
-        node_info = generate_bootnode_info(build_dir, ip, port,
-                                           public_address)
+        node_info = generate_bootnode_info(build_dir, ip, port, docker_ip,
+                                           docker_port, public_address)
 
         nodes[public_address] = node_info
 
@@ -142,7 +147,10 @@ def configure_bootnode(build_dir, config):
     if config['wrkchain']['bootnode']['use']:
         ip = config['wrkchain']['bootnode']['ip']
         port = config['wrkchain']['bootnode']['port']
-        node_info = generate_bootnode_info(build_dir, ip, port)
+        docker_ip = config['wrkchain']['bootnode']['docker_ip']
+        docker_port = config['wrkchain']['bootnode']['docker_port']
+        node_info = generate_bootnode_info(build_dir, ip, port, docker_ip,
+                                           docker_port)
         bootnode_type = 'dedicated'
         nodes = node_info
     else:

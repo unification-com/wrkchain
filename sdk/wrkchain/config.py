@@ -6,7 +6,7 @@ from web3 import Web3
 
 REQUIRED_OVERRIDES = ['wrkchain', 'mainchain']
 REQUIRED_WRKCHAIN_OVERRIDES = ['nodes']
-REQUIRED_WRKCHAIN_NODE_OVERRIDES = ['address']
+REQUIRED_WRKCHAIN_NODE_OVERRIDES = ['address', 'ip']
 REQUIRED_MAINCHAIN_OVERRIDES = ['network']
 VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet']
 VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
@@ -247,7 +247,7 @@ class WRKChainConfig:
                             f'address "{data}"" is not a valid address'
                         raise InvalidOverrideException(err)
                     new_node[key] = Web3.toChecksumAddress(data)
-                elif key == 'ip':
+                elif key == 'ip' or key == 'docker_ip':
                     try:
                         IP(data)
                     except ValueError as e:
@@ -344,7 +344,9 @@ class WRKChainConfig:
         bootnode = {
             "use": False,
             "ip": subnet[2].strNormal(),
+            "docker_ip": subnet[2].strNormal(),
             "port": GETH_START_PORT,
+            "docker_port": GETH_START_PORT,
             "name": "bootnode"
         }
 
@@ -360,11 +362,14 @@ class WRKChainConfig:
             "address": "",
             "private_key": "",
             "ip": subnet[node_num + 2].strNormal(),
+            "docker_ip": subnet[node_num + 2].strNormal(),
             "listen_port": GETH_START_PORT + node_num,
+            "docker_listen_port": GETH_START_PORT + node_num,
             "is_validator": True,
             "write_to_oracle": True,
             "rpc": {
                 "port": RPC_START_PORT + (node_num - 1),
+                "docker_port": RPC_START_PORT + (node_num - 1),
                 "rpccorsdomain": "*",
                 "rpcvhosts": "*",
                 "rpcaddr": "0.0.0.0",
