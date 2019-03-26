@@ -65,15 +65,16 @@ def chmod_tree(path):
                 chmod_tree(sub_dir)
 
 
-def dir_tree(directory):
+def dir_tree(directory, max_depth=1):
     if isinstance(directory, str):
         directory = Path(directory)
     tree = f'+ {directory}\n'
     for path in sorted(directory.rglob('*')):
         depth = len(path.relative_to(directory).parts)
-        spacer = '  ' * depth
-        if path.is_file():
-            tree += f'{spacer}- {path.name}\n'
-        else:
-            tree += f'{spacer}+ {path.name}\n'
+        if depth <=  max_depth:
+            spacer = '  ' * depth
+            if path.is_file():
+                tree += f'{spacer}- {path.name}\n'
+            else:
+                tree += f'{spacer}+ {path.name}\n'
     return tree
