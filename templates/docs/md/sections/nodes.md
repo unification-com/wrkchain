@@ -18,7 +18,7 @@ The first time you run the node, you will need to initialise it by running
 the following:
 
 ```bash
-geth init ~/ethereum/genesis.json
+geth init ~/.ethereum/genesis.json
 geth account import --password 'YOUR_WALLET_PASSWORD' PRIVATE_KEY_FOR_$__EV_PUBLIC_ADDRESS__
 ```
 
