@@ -23,7 +23,6 @@ RUN go install github.com/ethereum/go-ethereum/cmd/geth
 
 ARG WALLET_PASS
 ARG PRIVATE_KEY
-ARG GETH_LISTEN_PORT
 
 ADD build/genesis.json /root/assets/genesis.json
 COPY build/node_keys /root/node_keys

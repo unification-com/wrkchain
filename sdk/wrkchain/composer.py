@@ -78,7 +78,6 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
             'args': {
                 'WALLET_PASS': 'pass',
                 'PRIVATE_KEY': validator['private_key'],
-                'GETH_LISTEN_PORT': validator['docker_listen_port'],
             },
         }
 
