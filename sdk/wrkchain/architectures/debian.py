@@ -3,12 +3,17 @@ GETH_PATH = '/bin/geth'
 
 def generate_geth_cmd(
         node, bootnode_config, wrkchain_id, listen_port, linebreak=False,
-        gopath='/root/.go'):
+        gopath='/root/.go', docker=False):
+
+    key_prefix = ''
+    if docker:
+        key_prefix = 'docker_'
 
     flags = []
 
     if bootnode_config['type'] == 'dedicated':
-        flags.append(f'--bootnodes "{bootnode_config["nodes"]["enode"]}"')
+        flags.append(f'--bootnodes '
+                     f'"{bootnode_config["nodes"][key_prefix + "enode"]}"')
     else:
         flags.append(f'--nodekey="/root/node_keys/{node["address"]}.key"')
 
@@ -33,7 +38,7 @@ def generate_geth_cmd(
         for api, use_api in node['rpc']['apis'].items():
             if use_api:
                 apis.append(api)
-        rpc_port = node["rpc"]["port"]
+        rpc_port = node["rpc"][key_prefix + "port"]
         rpcaddr = node["rpc"]["rpcaddr"]
         rpccorsdomain = node["rpc"]["rpccorsdomain"]
         rpcvhosts = node["rpc"]["rpcvhosts"]

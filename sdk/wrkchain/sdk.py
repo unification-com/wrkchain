@@ -84,8 +84,10 @@ def write_composition(build_dir, composition):
     write_build_file(build_dir + '/docker-compose.yml', composition)
 
 
-def write_static_nodes(build_dir, static_nodes):
+def write_static_nodes(build_dir, static_nodes, static_nodes_docker):
     write_build_file(build_dir + '/static-nodes.json', static_nodes)
+    write_build_file(build_dir + '/static-nodes-docker.json',
+                     static_nodes_docker)
 
 
 def write_generated_config(build_dir, config):
@@ -112,11 +114,13 @@ def check_oracle_address_funds(config):
 def generate_bootnode_info(build_dir, ip, port, docker_ip, docker_port,
                            public_address=''):
     node_info = {}
-    bootnode_key = BootnodeKey(build_dir, ip, port, public_address)
+    bootnode_key = BootnodeKey(build_dir, ip, port, docker_ip,
+                               docker_port, public_address)
     bootnode_address = bootnode_key.get_bootnode_address()
 
     node_info['address'] = bootnode_address
     node_info['enode'] = bootnode_key.get_enode()
+    node_info['docker_enode'] = bootnode_key.get_docker_enode()
     node_info['ip'] = ip
     node_info['port'] = port
     node_info['docker_ip'] = docker_ip
@@ -129,6 +133,7 @@ def configure_bootnode(build_dir, config):
     bootnode_config = {}
     nodes = {}
     static_addresses_list = []
+    static_addresses_list_docker = []
 
     for item in config['wrkchain']['nodes']:
         public_address = item['address']
@@ -143,6 +148,7 @@ def configure_bootnode(build_dir, config):
         nodes[public_address] = node_info
 
         static_addresses_list.append(node_info['enode'])
+        static_addresses_list_docker.append(node_info['docker_enode'])
 
     if config['wrkchain']['bootnode']['use']:
         ip = config['wrkchain']['bootnode']['ip']
@@ -158,8 +164,11 @@ def configure_bootnode(build_dir, config):
 
     rendered_static_nodes = json.dumps(
             static_addresses_list, indent=2, separators=(',', ':'))
+    rendered_static_nodes_docker = json.dumps(
+            static_addresses_list_docker, indent=2, separators=(',', ':'))
 
-    write_static_nodes(build_dir, rendered_static_nodes)
+    write_static_nodes(build_dir, rendered_static_nodes,
+                       rendered_static_nodes_docker)
 
     bootnode_config['type'] = bootnode_type
     bootnode_config['nodes'] = nodes

@@ -69,7 +69,8 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
         name = '-'.join(name_list)
 
         cmd = generate_geth_cmd(
-            validator, bootnode_config, wrkchain_id, validator['docker_listen_port'])
+            validator, bootnode_config, wrkchain_id,
+            validator['docker_listen_port'], docker=True)
 
         build_d = {
             'context': '..',

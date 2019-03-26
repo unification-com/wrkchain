@@ -27,7 +27,7 @@ ARG GETH_LISTEN_PORT
 
 ADD build/genesis.json /root/assets/genesis.json
 COPY build/node_keys /root/node_keys
-COPY build/static-nodes.json /root/.ethereum/static-nodes.json
+COPY build/static-nodes-docker.json /root/.ethereum/static-nodes.json
 
 RUN echo $WALLET_PASS > /root/.walletpassword
 RUN echo $PRIVATE_KEY > /root/.privatekey
