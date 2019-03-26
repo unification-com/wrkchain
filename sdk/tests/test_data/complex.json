@@ -1,97 +1,127 @@
 {
-    "wrkchain": {
-        "title": "Example WRKChain",
-        "ledger": {
-            "base": "geth",
-            "consensus": {
-                "type": "clique",
-                "period": 5,
-                "epoch": 30000
-            },
-            "permission": "public"
-        },
-        "bootnode": {
-            "use": true,
-            "ip": "172.25.0.2",
-            "port": 30304
-        },
-        "chaintest": {
-            "use": false,
-            "ip": "172.25.0.255"
-        },
-        "nodes": [
-            {
-                "title": "Validator UK",
-                "address": "0xA6ac533Bd51cc4c8BB0c72612669c62B35521578",
-                "private_key": "7deeb75a3bbaa57bc073380b77f47d701d7e2ef7551719f3767d4eee0a5fdffd",
-                "ip": "172.25.0.4",
-                "listen_port": 30302,
-                "is_validator": true,
-                "write_to_oracle": true,
-                "rpc": false
-            },
-            {
-                "title": "Validator US",
-                "address": "0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA",
-                "private_key": "b7459e3be8b6825ac1b606d5f4ac61652e04086f0645d7f768b5e1a176afffcf",
-                "ip": "172.25.0.5",
-                "listen_port": 30303,
-                "is_validator": true,
-                "write_to_oracle": true,
-                "rpc": false
-            },
-            {
-                "title": "JSON-RPC Node",
-                "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
-                "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
-                "ip": "172.25.0.6",
-                "listen_port": 30304,
-                "is_validator": false,
-                "write_to_oracle": false,
-                "rpc": {
-                    "port": 8547,
-                    "rpccorsdomain": "*",
-                    "rpcvhosts": "*",
-                    "rpcaddr": "0.0.0.0",
-                    "apis": {
-                        "eth": true,
-                        "web3": true,
-                        "net": true,
-                        "admin": true,
-                        "debug": true,
-                        "db": true,
-                        "personal": true,
-                        "miner": true
-                    }
-                }
-            }
-        ],
-        "coin": {
-            "symbol": "COIN",
-            "prefund": [
-                {
-                    "address": "0xfBf151E90436beC94DA59D0D4f434C9Ea6CC40Cd",
-                    "balance": "1000000000"
-                },
-                {
-                    "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
-                    "balance": "1000000"
-                },
-                {
-                    "address": "0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA",
-                    "balance": "1000"
-                }
-            ]
-        }
+  "wrkchain":{
+    "title":"Example WRKChain",
+    "oracle_write_frequency":60,
+    "wrkchain_network_id":6450628417,
+    "ledger":{
+      "base":"geth",
+      "consensus":{
+        "type":"clique",
+        "period":5,
+        "epoch":30000
+      },
+      "permission":"public"
     },
-    "mainchain": {
-        "network": "testnet",
-        "network_id": 50005,
-        "web3_provider": {
-            "type": "http",
-            "uri": "http://52.14.173.249:8101",
-            "host": "52.14.173.249",
-            "port": "8101"
+    "bootnode":{
+      "use":false,
+      "ip":"89.90.91.92",
+      "docker_ip":"172.25.0.2",
+      "port":30301,
+      "docker_port":30304,
+      "name":"bootnode"
+    },
+    "chaintest":{
+      "use":false,
+      "ip":"172.25.0.255"
+    },
+    "nodes":[
+      {
+        "title":"Validator UK",
+        "name":"wrkchain-node-1",
+        "address":"0xA6ac533Bd51cc4c8BB0c72612669c62B35521578",
+        "private_key":"7deeb75a3bbaa57bc073380b77f47d701d7e2ef7551719f3767d4eee0a5fdffd",
+        "ip":"93.94.95.96",
+        "docker_ip":"172.25.0.3",
+        "listen_port":30301,
+        "docker_listen_port":30305,
+        "is_validator":true,
+        "write_to_oracle":true,
+        "rpc":false
+      },
+      {
+        "title":"Validator & JSON RPC US",
+        "name":"wrkchain-node-2",
+        "address":"0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA",
+        "private_key":"b7459e3be8b6825ac1b606d5f4ac61652e04086f0645d7f768b5e1a176afffcf",
+        "ip":"97.98.99.100",
+        "docker_ip":"172.25.0.4",
+        "listen_port":30301,
+        "docker_listen_port":30306,
+        "is_validator":true,
+        "write_to_oracle":true,
+        "rpc":{
+          "port":8547,
+          "docker_port":8546,
+          "rpccorsdomain":"*",
+          "rpcvhosts":"*",
+          "rpcaddr":"0.0.0.0",
+          "apis":{
+            "admin":false,
+            "db":false,
+            "debug":false,
+            "eth":true,
+            "miner":false,
+            "net":true,
+            "personal":false,
+            "shh":false,
+            "txpool":false,
+            "web3":true
+          }
         }
+      },
+      {
+        "title":"Dedicated JSON-RPC Node",
+        "name":"wrkchain-node-3",
+        "address":"0x46eE44d01531371312c3BeC9198277e3F5474106",
+        "private_key":"d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
+        "ip":"101.102.103.104",
+        "docker_ip":"172.25.0.5",
+        "listen_port":30301,
+        "docker_listen_port":30307,
+        "is_validator":false,
+        "write_to_oracle":false,
+        "rpc":{
+          "port":8549,
+          "docker_port":8547,
+          "rpccorsdomain":"http://localhost",
+          "rpcvhosts":"http://127.0.0.1",
+          "rpcaddr":"127.0.0.1",
+          "apis":{
+            "admin":true,
+            "db":true,
+            "debug":true,
+            "eth":true,
+            "miner":false,
+            "net":true,
+            "personal":false,
+            "shh":false,
+            "txpool":false,
+            "web3":true
+          }
+        }
+      }
+    ],
+    "coin":{
+      "symbol":"COIN",
+      "prefund":[
+        {
+          "address":"0xfBf151E90436beC94DA59D0D4f434C9Ea6CC40Cd",
+          "balance":"1000000000"
+        }
+      ]
     }
+  },
+  "mainchain":{
+    "network":"testnet",
+    "network_id":50005,
+    "web3_provider":{
+      "type":"http",
+      "uri":"http://52.14.173.249:8101",
+      "host":"52.14.173.249",
+      "port":"8101"
+    }
+  },
+  "docker_network":{
+    "subnet":"172.25.0.0/24"
+  }
 }
