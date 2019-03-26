@@ -70,7 +70,7 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
 
         cmd = generate_geth_cmd(
             validator, bootnode_config, wrkchain_id,
-            validator['docker_listen_port'], docker=True)
+            validator['docker_listen_port'])
 
         build_d = {
             'context': '..',
