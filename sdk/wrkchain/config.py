@@ -254,6 +254,7 @@ class WRKChainConfig:
                         err = f'Config wrkchain.nodes[{node_num - 1}].ip ' \
                             f'error {data} is not a valid IP: {e}'
                         raise InvalidOverrideException(err)
+                    new_node[key] = data
                 else:
                     new_node[key] = data
 
@@ -311,15 +312,16 @@ class WRKChainConfig:
             self.__config['docker_network'][k] = v
 
     def __override_chaintest(self, chaintest):
-        for k, v in chaintest.items():
-            if k == 'ip':
-                try:
-                    IP(v)
-                except ValueError as e:
-                    err = f'Config wrkchain.chaintest.ip ' \
-                        f'error {v} is not a valid IP: {e}'
-                    raise InvalidOverrideException(err)
-            self.__config['wrkchain']['chaintest'][k] = v
+        if not isinstance(chaintest, bool):
+            for k, v in chaintest.items():
+                if k == 'ip':
+                    try:
+                        IP(v)
+                    except ValueError as e:
+                        err = f'Config wrkchain.chaintest.ip ' \
+                            f'error {v} is not a valid IP: {e}'
+                        raise InvalidOverrideException(err)
+                self.__config['wrkchain']['chaintest'][k] = v
 
     @staticmethod
     def __load_default_ledger():

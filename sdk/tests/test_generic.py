@@ -126,6 +126,9 @@ test_config = {
       "host":"52.14.173.249",
       "port":"8101"
     }
+  },
+  "docker_network":{
+    "subnet":"172.25.0.0/24"
   }
 }
 

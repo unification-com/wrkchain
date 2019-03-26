@@ -15,7 +15,10 @@
             "ip": "172.25.0.2",
             "port": 30304
         },
-        "chaintest": false,
+        "chaintest": {
+            "use": false,
+            "ip": "172.25.0.255"
+        },
         "nodes": [
             {
                 "title": "Validator UK",
