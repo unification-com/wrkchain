@@ -14,6 +14,7 @@ The WRKChain SDK will accept a configurable JSON, and generate for your WRKChain
 
 ## Configuring a WRKChain
 
+See the [WRKChain SDK Wiki](https://github.com/unification-com/wrkchain/wiki) for full documentation and configuration options
 
 ## Running a WRKChain
 
