@@ -37,9 +37,7 @@ ENV PYENV_ROOT /home/sdkuser/.pyenv
 RUN curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash && \
     /home/sdkuser/.pyenv/bin/pyenv install 3.7.2
 
-COPY sdk /home/sdkuser/sdk
-COPY templates /home/sdkuser/templates
-COPY wrkchain.json /home/sdkuser/wrkchain.json
+COPY sdk/requirements.txt /home/sdkuser/sdk/requirements.txt
 
 WORKDIR /home/sdkuser/sdk
 
@@ -51,6 +49,10 @@ ENV PYTHONPATH /home/sdkuser/sdk
 
 RUN pip install -r requirements.txt && \
     git clone https://github.com/unification-com/wrkchain-root-contract.git --depth 1
+
+COPY sdk /home/sdkuser/sdk
+COPY templates /home/sdkuser/templates
+COPY wrkchain.json /home/sdkuser/wrkchain.json
 
 RUN echo "py.test /home/sdkuser/src/tests" >> /home/sdkuser/.bash_history && \
     echo "python -m wrkchain.sdk generate_wrkchain /home/sdkuser/wrkchain.json /home/sdkuser/build" >> /home/sdkuser/.bash_history && \
