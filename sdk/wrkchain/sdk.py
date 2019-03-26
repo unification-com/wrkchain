@@ -188,10 +188,10 @@ def main():
 def generate_wrkchain(config_file, build_dir, clean=False):
     log.info(f'Generating environment from: {config_file}')
 
+    click.echo(f'Parsing {config_file}, and setting defaults')
     try:
         wrkchain_config = WRKChainConfig(config_file)
         config = wrkchain_config.get()
-        wrkchain_config.print()
     except MissingConfigOverrideException as e:
         click.echo("SDK ERROR:")
         click.echo(e)
@@ -207,28 +207,31 @@ def generate_wrkchain(config_file, build_dir, clean=False):
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
 
-    genesis_json, wrkchain_id = generate_genesis(config)
-    bootnode_config = configure_bootnode(build_dir, config)
+    write_generated_config(build_dir, config)
 
+    click.echo("Generating genesis.json")
+    genesis_json, wrkchain_id = generate_genesis(config)
     rendered_genesis = json.dumps(genesis_json, indent=2,
                                   separators=(',', ':'))
-
-    docker_composition = generate(config, bootnode_config, wrkchain_id)
-
-    write_generated_config(build_dir, config)
     write_genesis(build_dir, rendered_genesis)
+
+    click.echo("Generating bootnode")
+    bootnode_config = configure_bootnode(build_dir, config)
+
+    click.echo("Generating docker-compose.yml")
+    docker_composition = generate(config, bootnode_config, wrkchain_id)
     write_composition(build_dir, docker_composition)
 
+    click.echo("Generating Ansible")
     generate_ansible(build_dir, config)
 
+    click.echo("Generating documentation")
     documentation = generate_documentation(config, genesis_json,
                                            bootnode_config, build_dir)
     write_documentation(build_dir, documentation)
 
-    click.echo(documentation['md'])
-    click.echo(bootnode_config)
-    click.echo(rendered_genesis)
-    click.echo(docker_composition)
+    click.echo(f'Done. Build files located in {build_dir}')
+    click.echo(f'See {build_dir}/README.md')
 
 
 if __name__ == "__main__":

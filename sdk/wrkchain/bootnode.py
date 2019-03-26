@@ -26,10 +26,8 @@ class BootnodeKey:
 
     def generate_bootnode_key(self):
         if not self.have_key():
-
             cmd = [BIN_BOOTNODE, "-genkey", self.__bootnode_key_path]
-            result = self.__run(cmd)
-            print(result)
+            self.__run(cmd)
 
     def get_bootnode_address(self):
         if not self.have_key():
