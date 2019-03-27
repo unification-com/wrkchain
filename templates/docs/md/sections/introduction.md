@@ -1,3 +1,6 @@
+**Configured for `$__MAINCHAIN_NETWORK__`**
+
+$__TESTNET_WARNING__
 
 To Run your WRKChain, you will need to follow the steps below. Briefly, you
 will need to:

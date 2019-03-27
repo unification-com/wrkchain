@@ -17,15 +17,26 @@ class SectionIntroduction(DocSection):
         self.__consensus = consensus
 
     def generate(self):
+
+        testnet_warning = ''
+        if self.__network == 'testnet':
+            testnet_warning = self.__get_testnet_warning()
+
         d = {
             '__WRKCHAIN_NETWORK_ID__': self.__wrkchain_id,
             '__BUILD_DIR_STRUCTURE__': dir_tree(self.__build_dir),
             '__MAINCHAIN_NETWORK__': self.__network,
             '__BASE_CHAIN__': self.__base,
-            '__CONSENSUS__': self.__consensus
+            '__CONSENSUS__': self.__consensus,
+            '__TESTNET_WARNING__': testnet_warning
         }
         self.add_content(d, append=False)
         return self.get_contents()
+
+    def __get_testnet_warning(self):
+        testnet_md = f'{self.template_dir()}/sub/misc/intro_testnet_warning.md'
+        testnet_md_path = self.root_dir / testnet_md
+        return testnet_md_path.read_text()
 
 
 class SectionIntroductionBuilder:
