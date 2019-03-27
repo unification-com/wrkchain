@@ -41,5 +41,5 @@
     GOPATH: /home/{{ ansible_user }}/.go
 
 - name: create data directories
-  file: path=/home/{{ ansible_user }}/data state=directory owner={{ ansible_user }} group={{ ansible_user }}
+  file: path=/home/{{ ansible_user }}/.ethereum state=directory owner={{ ansible_user }} group={{ ansible_user }}
 ...
