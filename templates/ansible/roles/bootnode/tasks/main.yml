@@ -1,0 +1,12 @@
+---
+# Bootnode Role
+
+- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/bootnode
+  args:
+    chdir: /home/{{ ansible_user }}
+    creates: /home/{{ ansible_user }}/.go/bin/bootnode
+  environment:
+    GOROOT: /usr/local/go
+    GOPATH: /home/{{ ansible_user }}/.go
+
+...

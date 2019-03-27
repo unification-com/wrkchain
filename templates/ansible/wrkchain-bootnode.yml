@@ -5,6 +5,7 @@
   roles:
     - base
     - geth
+    - bootnode
 
   tasks:
     - hostname: name={{ name }}

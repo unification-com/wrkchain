@@ -32,14 +32,6 @@
     GOROOT: /usr/local/go
     GOPATH: /home/{{ ansible_user }}/.go
 
-- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/bootnode
-  args:
-    chdir: /home/{{ ansible_user }}
-    creates: /home/{{ ansible_user }}/.go/bin/bootnode
-  environment:
-    GOROOT: /usr/local/go
-    GOPATH: /home/{{ ansible_user }}/.go
-
 - name: create data directories
   file: path=/home/{{ ansible_user }}/.ethereum state=directory owner={{ ansible_user }} group={{ ansible_user }}
 ...
