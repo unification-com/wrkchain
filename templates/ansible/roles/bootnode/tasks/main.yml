@@ -9,4 +9,7 @@
     GOROOT: /usr/local/go
     GOPATH: /home/{{ ansible_user }}/.go
 
+- name: Copy Bootnode Key
+  copy: src=bootnode.key dest=/home/{{ ansible_user }}/.ethereum/node_keys/bootnode.key owner={{ ansible_user }} group={{ ansible_user }}
+
 ...

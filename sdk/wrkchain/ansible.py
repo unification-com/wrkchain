@@ -1,3 +1,4 @@
+from os import symlink, unlink
 from pathlib import Path
 from shutil import copy
 
@@ -37,6 +38,14 @@ class Bootnode:
             template = environment.get_template(str(relative))
             dest = target / str(relative)
             dest.write_text(template.render(self.context))
+
+    def link_bootnode_key(self, build_root):
+        if self.context['use']:
+            src = build_root / 'node_keys' / 'bootnode.key'
+            dst = build_root / 'ansible/roles/bootnode/files/bootnode.key'
+            if dst.exists():
+                unlink(dst)
+            symlink(src, dst)
 
 
 def template_map(source: Path, target: Path, maps: dict):
@@ -103,14 +112,18 @@ def generate_ansible(build_dir, config):
     workchain_cfg = config['wrkchain']
     bootnode_cfg = workchain_cfg['bootnode']
 
+    bootnode = Bootnode(bootnode_cfg)
     custom_roles = ['bash']
     validator_builder = Validators(workchain_cfg['nodes'], custom_roles)
 
     d = {
-        'wrkchain-bootnode.yml': Bootnode(bootnode_cfg),
+        'wrkchain-bootnode.yml': bootnode,
         'wrkchain-node.yml': validator_builder,
         'Vagrantfile': workchain_cfg
     }
     template_map(template_root() / 'ansible', ansible_dir, d)
     process_custom_roles(template_root(), ansible_dir,
                          transform_to_node_map(workchain_cfg))
+
+    # Post Processing
+    bootnode.link_bootnode_key(build_root)
