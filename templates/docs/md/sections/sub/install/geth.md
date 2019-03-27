@@ -1,5 +1,7 @@
 On each computer designated to run your network, you will need to install the 
-relevant software.
+relevant software:
+
+$__NODE_COMPUTERS__
 
 ### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Go and Geth
 

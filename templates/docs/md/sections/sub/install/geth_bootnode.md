@@ -1,9 +1,12 @@
-On the computer designated to run your bootnode, you will need to install the 
-following software.
 
 ### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Bootnode
 
-Follow the previos instructions for installing Go, and fetching the go-ethereum
+On the computer designated to run your bootnode, you will need to install the 
+following software.
+
+**Bootnode Computer:** $__BOOTNODE_IP__
+
+Follow the previous instructions for installing Go, and fetching the go-ethereum
 codebase, then install the bootnode binary:
 
 ```bash
