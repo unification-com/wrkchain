@@ -28,6 +28,13 @@ class Validators:
             }
             dest.write_text(template.render(eff))
 
+    def link_genesis(self, build_root):
+        src = build_root / 'genesis.json'
+        dst = build_root / 'ansible/roles/node/files/genesis.json'
+        if dst.exists():
+            unlink(dst)
+        symlink(src, dst)
+
 
 class Bootnode:
     def __init__(self, context):
@@ -132,3 +139,4 @@ def generate_ansible(build_dir, config):
 
     # Post Processing
     bootnode.link_bootnode_key(build_root)
+    validator_builder.link_genesis(build_root)

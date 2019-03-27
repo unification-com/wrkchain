@@ -25,14 +25,6 @@
     chdir: /home/{{ ansible_user }}/.go/src/github.com/ethereum
     creates: /home/{{ ansible_user }}/.go/src/github.com/ethereum/go-ethereum
 
-- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/geth
-  args:
-    chdir: /home/{{ ansible_user }}
-    creates: /home/{{ ansible_user }}/.go/bin/geth
-  environment:
-    GOROOT: /usr/local/go
-    GOPATH: /home/{{ ansible_user }}/.go
-
 - name: create node_keys
   file: path=/home/{{ ansible_user }}/.ethereum/node_keys state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
 ...
