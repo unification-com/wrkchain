@@ -1,4 +1,4 @@
-from os import symlink, unlink
+from os import path, symlink, unlink
 from pathlib import Path
 from shutil import copy
 
@@ -40,9 +40,11 @@ class Bootnode:
             dest.write_text(template.render(self.context))
 
     def link_bootnode_key(self, build_root):
+        build_root_full_path = Path(path.abspath(build_root))
         if self.context['use']:
-            src = build_root / 'node_keys' / 'bootnode.key'
-            dst = build_root / 'ansible/roles/bootnode/files/bootnode.key'
+            src = build_root_full_path / 'node_keys' / 'bootnode.key'
+            dst = build_root_full_path / 'ansible/roles/bootnode/files/' \
+                                         'bootnode.key'
             if dst.exists():
                 unlink(dst)
             symlink(src, dst)
