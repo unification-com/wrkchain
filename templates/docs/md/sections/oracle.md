@@ -21,8 +21,8 @@ go run $$GOPATH/src/github.com/unification-com/oracle/oracle.go \
 Where:
 
 `WRKCHAIN_WEB3_PROVIDER_URL` = a Web3 provider URL for your WRKChain, for example
-`http://localhost:8545`  
+**$__WRKCHAIN_WEB3_PROVIDER_URL__**  
 `PRIVATE_KEY_FOR_ORACLE_ADDRESS` = the private key for the Oracle Address which 
 will write to the WRKChain Root smart contract  
 `WRKCHAIN_ROOT_CONTRACT_ADDRESS` = the address of your deployed WRKChain Root
-smart contract on Mainchain
+smart contract on Mainchain, acquired during Section 2.2

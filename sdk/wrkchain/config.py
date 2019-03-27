@@ -1,18 +1,20 @@
 import json
 import pprint
 
+from random import SystemRandom
 from IPy import IP
 from web3 import Web3
 
 REQUIRED_OVERRIDES = ['wrkchain', 'mainchain']
 REQUIRED_WRKCHAIN_OVERRIDES = ['nodes']
-REQUIRED_WRKCHAIN_NODE_OVERRIDES = ['address']
+REQUIRED_WRKCHAIN_NODE_OVERRIDES = ['address', 'ip']
 REQUIRED_MAINCHAIN_OVERRIDES = ['network']
 VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet']
 VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
                   'shh', 'txpool', 'web3']
 
 GETH_START_PORT = 30304
+RPC_START_PORT = 8545
 
 
 class MissingConfigOverrideException(Exception):
@@ -51,6 +53,11 @@ class WRKChainConfig:
     def print_overrides(self):
         pprint.sorted = lambda x, key=None: x
         pprint.pprint(self.__overrides)
+
+    @staticmethod
+    def generate_wrkchain_id():
+        sys_random = SystemRandom()
+        return sys_random.randint(99999, 9999999999)
 
     def __check_overrides(self, config_file):
 
@@ -156,8 +163,15 @@ class WRKChainConfig:
         # WRKChain Network ID
         if 'wrkchain_network_id' in wrkchain_overrides:
             wrkchain_network_id = wrkchain_overrides['wrkchain_network_id']
+            if not wrkchain_network_id:
+                self.__config['wrkchain']['wrkchain_network_id'] = \
+                    self.generate_wrkchain_id()
+            else:
+                self.__config['wrkchain']['wrkchain_network_id'] = \
+                    wrkchain_network_id
+        else:
             self.__config['wrkchain']['wrkchain_network_id'] = \
-                wrkchain_network_id
+                self.generate_wrkchain_id()
 
         # Docker subnet
         if 'docker_network' in self.__overrides:
@@ -246,13 +260,14 @@ class WRKChainConfig:
                             f'address "{data}"" is not a valid address'
                         raise InvalidOverrideException(err)
                     new_node[key] = Web3.toChecksumAddress(data)
-                elif key == 'ip':
+                elif key == 'ip' or key == 'docker_ip':
                     try:
                         IP(data)
                     except ValueError as e:
                         err = f'Config wrkchain.nodes[{node_num - 1}].ip ' \
                             f'error {data} is not a valid IP: {e}'
                         raise InvalidOverrideException(err)
+                    new_node[key] = data
                 else:
                     new_node[key] = data
 
@@ -310,15 +325,16 @@ class WRKChainConfig:
             self.__config['docker_network'][k] = v
 
     def __override_chaintest(self, chaintest):
-        for k, v in chaintest.items():
-            if k == 'ip':
-                try:
-                    IP(v)
-                except ValueError as e:
-                    err = f'Config wrkchain.chaintest.ip ' \
-                        f'error {v} is not a valid IP: {e}'
-                    raise InvalidOverrideException(err)
-            self.__config['wrkchain']['chaintest'][k] = v
+        if not isinstance(chaintest, bool):
+            for k, v in chaintest.items():
+                if k == 'ip':
+                    try:
+                        IP(v)
+                    except ValueError as e:
+                        err = f'Config wrkchain.chaintest.ip ' \
+                            f'error {v} is not a valid IP: {e}'
+                        raise InvalidOverrideException(err)
+                self.__config['wrkchain']['chaintest'][k] = v
 
     @staticmethod
     def __load_default_ledger():
@@ -341,7 +357,9 @@ class WRKChainConfig:
         bootnode = {
             "use": False,
             "ip": subnet[2].strNormal(),
+            "docker_ip": subnet[2].strNormal(),
             "port": GETH_START_PORT,
+            "docker_port": GETH_START_PORT,
             "name": "bootnode"
         }
 
@@ -357,11 +375,14 @@ class WRKChainConfig:
             "address": "",
             "private_key": "",
             "ip": subnet[node_num + 2].strNormal(),
+            "docker_ip": subnet[node_num + 2].strNormal(),
             "listen_port": GETH_START_PORT + node_num,
+            "docker_listen_port": GETH_START_PORT + node_num,
             "is_validator": True,
             "write_to_oracle": True,
             "rpc": {
-                "port": 8545,
+                "port": RPC_START_PORT + (node_num - 1),
+                "docker_port": RPC_START_PORT + (node_num - 1),
                 "rpccorsdomain": "*",
                 "rpcvhosts": "*",
                 "rpcaddr": "0.0.0.0",

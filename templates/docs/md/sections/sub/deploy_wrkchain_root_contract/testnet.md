@@ -28,7 +28,6 @@ Modify the `.env` file in the `wrkchain-root-contract` directory
 adding the following:
 
 ```text
-
 MNEMONIC=CHANGE THIS TO YOUR MNEMONIC FOR ORACLE ADDRESS WALLET!
 ```
 
@@ -36,22 +35,7 @@ Then run:
 
 ```bash
 truffle compile
-truffle migrate --network development
-```
-
-**Configuring PrivateKeyProvider**
-
-Alternatively, edit the `.env`, adding the following:
-
-```text
-PRIVATE_KEY=CHANGE THIS TO PRIVATE KEY FOR ORACLE ADDRESS WALLET!
-```
-
-Then run:
-
-```bash
-truffle compile
-truffle migrate --network development-pk
+truffle migrate --network development_mnemonic
 ```
 
 **Post Deployment**
@@ -70,9 +54,16 @@ node abi.js addr $__MAINCHAIN_NETWORK_ID__
 Using your preferred method for Smart Contract compilation, compile
 `wrkchain-root-contract/contracts/WRKChainRoot.sol`
 
-When deploying, the `WRKChainRoot` constructor requires three arguments:
+The `WRKChainRoot` constructor requires three arguments:
 
-`genesis_block` is the web3.SHA3 result from the minified `genesis.json` content: `$__GENESIS_SHA3__`  
-`chain_id` is your WRKChain ID: `$__WRKCHAIN_NETWORK_ID__`
-`current_evs` is an array of the initial EVs' public addresses: `[$__WRKCHAIN_EVS__]`
+`genesis_block` is the `web3.SHA3` result from the minified `genesis.json` content: `$__GENESIS_SHA3__`  
+`chain_id` is your WRKChain ID: `$__WRKCHAIN_NETWORK_ID__`  
+`current_evs` is an array of the initial Validator's public addresses: `[$__WRKCHAIN_EVS__]`
 
+The following information can be used to determine where to deploy your 
+WRKCHainRoot smart contract:  
+
+**Mainchain RPC Host**: $__MAINCHAIN_RPC_HOST__  
+**Mainchain RPC Port**: $__MAINCHAIN_RPC_PORT__  
+**Mainchain Network ID**: $__MAINCHAIN_NETWORK_ID__  
+**Mainchain Web3 Provider URL**: $__MAINCHAIN_WEB3_PROVIDER_URL__  

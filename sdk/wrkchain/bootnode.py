@@ -5,9 +5,19 @@ import subprocess
 BIN_BOOTNODE = shutil.which("bootnode")
 
 
+class BootnodeNotFoundException(Exception):
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
+
+
 class BootnodeKey:
-    def __init__(self, build_dir, ip, port, key_prefix=''):
-        # Todo - throw exception if BIN_BOOTNODE not found/empty
+    def __init__(self, build_dir, ip, port, docker_ip, docker_port,
+                 key_prefix=''):
+
+        if not BIN_BOOTNODE:
+            raise BootnodeNotFoundException('bootnode executable not found. '
+                                            'Please install bootnode')
+
         if len(key_prefix) > 0:
             key_prefix = f'{key_prefix}'
         else:
@@ -20,13 +30,13 @@ class BootnodeKey:
         self.__bootnode_key_path = node_dir + f'/{key_prefix}.key'
         self.__ip = ip
         self.__port = port
+        self.__docker_ip = docker_ip
+        self.__docker_port = docker_port
 
     def generate_bootnode_key(self):
         if not self.have_key():
-
             cmd = [BIN_BOOTNODE, "-genkey", self.__bootnode_key_path]
-            result = self.__run(cmd)
-            print(result)
+            self.__run(cmd)
 
     def get_bootnode_address(self):
         if not self.have_key():
@@ -51,6 +61,13 @@ class BootnodeKey:
 
         return f'enode://{self.get_bootnode_address()}@{self.__ip}' \
             f':{self.__port}'
+
+    def get_docker_enode(self):
+        if not self.have_key():
+            self.generate_bootnode_key()
+
+        return f'enode://{self.get_bootnode_address()}@{self.__docker_ip}' \
+            f':{self.__docker_port}'
 
     def have_key(self):
         return os.path.exists(self.__bootnode_key_path)

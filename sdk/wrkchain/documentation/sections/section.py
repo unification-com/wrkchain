@@ -15,6 +15,8 @@ from wrkchain.documentation.sections.section_introduction \
     import SectionIntroductionBuilder
 from wrkchain.documentation.sections.section_glossary \
     import SectionGlossaryBuilder
+from wrkchain.documentation.sections.section_appendices \
+    import SectionAppendicesBuilder
 
 section_factory = SectionFactory()
 section_factory.register_builder(
@@ -30,3 +32,5 @@ section_factory.register_builder('__SECTION_INTRODUCTION__',
                                  SectionIntroductionBuilder())
 section_factory.register_builder('__SECTION_GLOSSARY__',
                                  SectionGlossaryBuilder())
+section_factory.register_builder('__SECTION_APPENDICES__',
+                                 SectionAppendicesBuilder())

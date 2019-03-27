@@ -9,11 +9,12 @@ to its WRKChainRoot smart contract on Mainchain.
 The WRKChain SDK will accept a configurable JSON, and generate for your WRKChain:
 
 - The genesis.json Genesis block
-- A Docker Composition for testing and deployment
+- A Docker Composition for testing
 - Full documentation on how to deploy in a production environment
 
 ## Configuring a WRKChain
 
+See the [WRKChain SDK Wiki](https://github.com/unification-com/wrkchain/wiki) for full documentation and configuration options
 
 ## Running a WRKChain
 
@@ -44,13 +45,24 @@ This will generate everything required in the `build` directory
 
 It is also possible to run the SDK without Docker.
 
-First, install the requirements:
+#### Dependencies
+
+The SDK is dependent upon
+go-ethereum's `bootnode` CMD, which can be installed as follows:
+
+1. install Go from <https://golang.org/doc/install>
+2. `go get github.com/ethereum/go-ethereum`
+3. `go install github.com/ethereum/go-ethereum/cmd/bootnode`
+
+Then, install the Python requirements:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Then, run:
+#### Running the SDK
+
+Once the dependencies are satisfied, the SDK can be run as follows:
 
 ```bash
 mkdir build

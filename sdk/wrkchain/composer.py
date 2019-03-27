@@ -14,22 +14,22 @@ def bootnode(config):
         'hostname': name,
         'container_name': name,
         'ports': [ServicePort(
-            published=config['port'], target=config['port'], protocol='udp',
-            mode=None, external_ip=None),
+            published=config['docker_port'], target=config['docker_port'],
+            protocol='udp', mode=None, external_ip=None),
         ],
         'networks': {
             'wrkchainnet': {
-                'ipv4_address': config['ip']
+                'ipv4_address': config['docker_ip']
             }
         },
         'build': {
             'context': '..',
             'dockerfile': 'Docker/bootnode/Dockerfile'
         },
-        'environment': [f'BOOTNODE_PORT={config["port"]}'],
+        'environment': [f'BOOTNODE_PORT={config["docker_port"]}'],
         'command': f'/root/.go/bin/bootnode -nodekey '
-        f'/root/node_keys/bootnode.key -verbosity 4 --addr :{config["port"]}',
-        'expose': [config["port"]]
+        f'/root/node_keys/bootnode.key -verbosity 4 --addr :{config["docker_port"]}',
+        'expose': [config["docker_port"]]
 
     }
 
@@ -69,7 +69,8 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
         name = '-'.join(name_list)
 
         cmd = generate_geth_cmd(
-            validator, bootnode_config, wrkchain_id, validator['listen_port'])
+            validator, bootnode_config, wrkchain_id,
+            validator['docker_listen_port'])
 
         build_d = {
             'context': '..',
@@ -77,21 +78,20 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
             'args': {
                 'WALLET_PASS': 'pass',
                 'PRIVATE_KEY': validator['private_key'],
-                'GETH_LISTEN_PORT': validator['listen_port'],
             },
         }
 
         ports = []
         expose_ports = []
         if validator['rpc']:
-            rpc_port = validator['rpc']['port']
+            rpc_port = validator['rpc']['docker_port']
             ports.append(ServicePort(
                 published=rpc_port, target=rpc_port, protocol=None,
                 mode=None, external_ip=None))
             expose_ports.append(rpc_port)
 
         if validator['is_validator']:
-            geth_listen_port = validator['listen_port']
+            geth_listen_port = validator['docker_listen_port']
             ports.append(ServicePort(
                 published=geth_listen_port, target=geth_listen_port,
                 protocol=None, mode=None, external_ip=None))
@@ -104,7 +104,7 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
             'ports': ports,
             'networks': {
                 'wrkchainnet': {
-                    'ipv4_address': validator['ip']
+                    'ipv4_address': validator['docker_ip']
                 }
             },
             'build': build_d,

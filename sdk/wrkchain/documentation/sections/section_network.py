@@ -16,7 +16,7 @@ class SectionNetwork(DocSection):
                     rpc_port = '8545'
                 else:
                     rpc_port = node["rpc"]["port"]
-                web3_urls += f'<http://{node["ip"]}:{rpc_port}>\n'
+                web3_urls += f'<http://{node["ip"]}:{rpc_port}>  \n'
 
         d = {
             '__JSON_RPC_URLS__': web3_urls

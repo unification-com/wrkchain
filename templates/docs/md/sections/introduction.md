@@ -1,7 +1,21 @@
 
+To Run your WRKChain, you will need to follow the steps below. Briefly, you
+will need to:
+
+1. Fund the public addresses used to write to your WRKChain Root smart 
+contract with UND  
+2. Deploy the WRKCHain Root smart contract  
+3. Install the required node software on each of the computers that will run
+your WRKCHain network  
+4. Run the Nodes  
+5. Run the WRKCHain Oracle software
+
 ### $__SECTION_NUMBER__.1 About your WRKChain
 
-**Your WRKChain Network ID:** $__WRKCHAIN_NETWORK_ID__
+**Your WRKChain Network ID:** $__WRKCHAIN_NETWORK_ID__  
+**This configuration is for:** $__MAINCHAIN_NETWORK__  
+**Your base blockchain:** $__BASE_CHAIN__  
+**Your Consensus algorithm:** $__CONSENSUS__
 
 ### $__SECTION_NUMBER__.1.1 Generated Files
 

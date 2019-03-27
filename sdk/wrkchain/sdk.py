@@ -5,12 +5,12 @@ import os
 
 from shutil import rmtree
 
-from wrkchain.bootnode import BootnodeKey
+from wrkchain.bootnode import BootnodeKey, BootnodeNotFoundException
 from wrkchain.composer import generate
 from wrkchain.config import (
     WRKChainConfig, MissingConfigOverrideException, InvalidOverrideException)
 from wrkchain.documentation.documentation import WRKChainDocumentation
-from wrkchain.genesis import build_genesis, generate_wrkchain_id
+from wrkchain.genesis import build_genesis
 from wrkchain.mainchain import UndMainchain
 from wrkchain.utils import write_build_file, get_oracle_addresses
 
@@ -29,6 +29,7 @@ def generate_documentation(config, genesis_json, bootnode_config, build_dir):
     mainchain_web3_provider = config['mainchain']['web3_provider']
     mainchain_network_id = config['mainchain']['network_id']
     oracle_write_frequency = config['wrkchain']['oracle_write_frequency']
+    consensus = config["wrkchain"]["ledger"]["consensus"]["type"]
 
     # from genesis.json
     wrkchain_id = genesis_json['config']['chainId']
@@ -37,7 +38,7 @@ def generate_documentation(config, genesis_json, bootnode_config, build_dir):
         wrkchain_name, nodes, mainchain_netork, ledger_base_type,
         oracle_addresses, mainchain_web3_provider, mainchain_network_id,
         wrkchain_id, bootnode_config, genesis_json, build_dir,
-        oracle_write_frequency)
+        oracle_write_frequency, consensus)
     wrkchain_documentation.generate()
 
     documentation = {
@@ -55,10 +56,7 @@ def generate_genesis(config):
 
     wrkchain_base = config['wrkchain']['ledger']['base']
     wrkchain_consensus = config['wrkchain']['ledger']['consensus']['type']
-    if 'wrkchain_network_id' in config['wrkchain']:
-        wrkchain_id = config['wrkchain']['wrkchain_network_id']
-    else:
-        wrkchain_id = generate_wrkchain_id()
+    wrkchain_id = config['wrkchain']['wrkchain_network_id']
 
     genesis_json = build_genesis(
         block_period=block_period, validators=nodes,
@@ -84,8 +82,10 @@ def write_composition(build_dir, composition):
     write_build_file(build_dir + '/docker-compose.yml', composition)
 
 
-def write_static_nodes(build_dir, static_nodes):
+def write_static_nodes(build_dir, static_nodes, static_nodes_docker):
     write_build_file(build_dir + '/static-nodes.json', static_nodes)
+    write_build_file(build_dir + '/static-nodes-docker.json',
+                     static_nodes_docker)
 
 
 def write_generated_config(build_dir, config):
@@ -109,15 +109,26 @@ def check_oracle_address_funds(config):
                        f'WRKchain Root smart contract')
 
 
-def generate_bootnode_info(build_dir, ip, port, public_address=''):
+def generate_bootnode_info(build_dir, ip, port, docker_ip, docker_port,
+                           public_address=''):
     node_info = {}
-    bootnode_key = BootnodeKey(build_dir, ip, port, public_address)
+    try:
+        bootnode_key = BootnodeKey(build_dir, ip, port, docker_ip,
+                               docker_port, public_address)
+    except BootnodeNotFoundException as e:
+        click.echo("SDK ERROR:")
+        click.echo(e)
+        exit()
+
     bootnode_address = bootnode_key.get_bootnode_address()
 
     node_info['address'] = bootnode_address
     node_info['enode'] = bootnode_key.get_enode()
+    node_info['docker_enode'] = bootnode_key.get_docker_enode()
     node_info['ip'] = ip
     node_info['port'] = port
+    node_info['docker_ip'] = docker_ip
+    node_info['docker_port'] = docker_port
 
     return node_info
 
@@ -126,23 +137,30 @@ def configure_bootnode(build_dir, config):
     bootnode_config = {}
     nodes = {}
     static_addresses_list = []
+    static_addresses_list_docker = []
 
     for item in config['wrkchain']['nodes']:
         public_address = item['address']
         ip = item['ip']
         port = item['listen_port']
+        docker_ip = item['docker_ip']
+        docker_port = item['docker_listen_port']
 
-        node_info = generate_bootnode_info(build_dir, ip, port,
-                                           public_address)
+        node_info = generate_bootnode_info(build_dir, ip, port, docker_ip,
+                                           docker_port, public_address)
 
         nodes[public_address] = node_info
 
         static_addresses_list.append(node_info['enode'])
+        static_addresses_list_docker.append(node_info['docker_enode'])
 
     if config['wrkchain']['bootnode']['use']:
         ip = config['wrkchain']['bootnode']['ip']
         port = config['wrkchain']['bootnode']['port']
-        node_info = generate_bootnode_info(build_dir, ip, port)
+        docker_ip = config['wrkchain']['bootnode']['docker_ip']
+        docker_port = config['wrkchain']['bootnode']['docker_port']
+        node_info = generate_bootnode_info(build_dir, ip, port, docker_ip,
+                                           docker_port)
         bootnode_type = 'dedicated'
         nodes = node_info
     else:
@@ -150,8 +168,11 @@ def configure_bootnode(build_dir, config):
 
     rendered_static_nodes = json.dumps(
             static_addresses_list, indent=2, separators=(',', ':'))
+    rendered_static_nodes_docker = json.dumps(
+            static_addresses_list_docker, indent=2, separators=(',', ':'))
 
-    write_static_nodes(build_dir, rendered_static_nodes)
+    write_static_nodes(build_dir, rendered_static_nodes,
+                       rendered_static_nodes_docker)
 
     bootnode_config['type'] = bootnode_type
     bootnode_config['nodes'] = nodes
@@ -170,10 +191,10 @@ def main():
 def generate_wrkchain(config_file, build_dir, clean=False):
     log.info(f'Generating environment from: {config_file}')
 
+    click.echo(f'Parsing {config_file}, and setting defaults')
     try:
         wrkchain_config = WRKChainConfig(config_file)
         config = wrkchain_config.get()
-        wrkchain_config.print()
     except MissingConfigOverrideException as e:
         click.echo("SDK ERROR:")
         click.echo(e)
@@ -189,28 +210,31 @@ def generate_wrkchain(config_file, build_dir, clean=False):
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
 
-    genesis_json, wrkchain_id = generate_genesis(config)
-    bootnode_config = configure_bootnode(build_dir, config)
+    write_generated_config(build_dir, config)
 
+    click.echo("Generating genesis.json")
+    genesis_json, wrkchain_id = generate_genesis(config)
     rendered_genesis = json.dumps(genesis_json, indent=2,
                                   separators=(',', ':'))
-
-    docker_composition = generate(config, bootnode_config, wrkchain_id)
-
-    write_generated_config(build_dir, config)
     write_genesis(build_dir, rendered_genesis)
+
+    click.echo("Generating bootnode")
+    bootnode_config = configure_bootnode(build_dir, config)
+
+    click.echo("Generating docker-compose.yml")
+    docker_composition = generate(config, bootnode_config, wrkchain_id)
     write_composition(build_dir, docker_composition)
 
+    click.echo("Generating Ansible")
     generate_ansible(build_dir, config)
 
+    click.echo("Generating documentation")
     documentation = generate_documentation(config, genesis_json,
                                            bootnode_config, build_dir)
     write_documentation(build_dir, documentation)
 
-    click.echo(documentation['md'])
-    click.echo(bootnode_config)
-    click.echo(rendered_genesis)
-    click.echo(docker_composition)
+    click.echo(f'Done. Build files located in {build_dir}')
+    click.echo(f'See {build_dir}/README.md')
 
 
 if __name__ == "__main__":

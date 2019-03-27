@@ -53,16 +53,22 @@ test_config = {
     "bootnode":{
       "use":True,
       "ip":"172.25.0.2",
-      "port":30304
+      "docker_ip":"172.25.0.2",
+      "port":30304,
+      "docker_port":30304
     },
-    "chaintest":False,
+    "chaintest":{"use": True,
+                 "ip": '172.25.0.255'
+                 },
     "nodes":[
       {
         "title":"Validator UK",
         "address":"0xA6ac533Bd51cc4c8BB0c72612669c62B35521578",
         "private_key":"7deeb75a3bbaa57bc073380b77f47d701d7e2ef7551719f3767d4eee0a5fdffd",
         "ip":"172.25.0.4",
+        "docker_ip":"172.25.0.4",
         "listen_port":30302,
+        "docker_listen_port":30302,
         "is_validator":True,
         "write_to_oracle":True,
         "rpc":False
@@ -72,7 +78,9 @@ test_config = {
         "address":"0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA",
         "private_key":"b7459e3be8b6825ac1b606d5f4ac61652e04086f0645d7f768b5e1a176afffcf",
         "ip":"172.25.0.5",
+        "docker_ip":"172.25.0.5",
         "listen_port":30303,
+        "docker_listen_port":30303,
         "is_validator":True,
         "write_to_oracle":True,
         "rpc":False
@@ -82,11 +90,14 @@ test_config = {
         "address":"0x46eE44d01531371312c3BeC9198277e3F5474106",
         "private_key":"d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
         "ip":"172.25.0.6",
+        "docker_ip":"172.25.0.6",
         "listen_port":30304,
+        "docker_listen_port":30304,
         "is_validator":False,
         "write_to_oracle":False,
         "rpc":{
           "port":8545,
+          "docker_port":8545,
           "rpccorsdomain": "*",
           "rpcvhosts": "*",
           "rpcaddr": "0.0.0.0",
@@ -124,6 +135,9 @@ test_config = {
       "host":"52.14.173.249",
       "port":"8101"
     }
+  },
+  "docker_network":{
+    "subnet":"172.25.0.0/24"
   }
 }
 
@@ -219,7 +233,7 @@ def test_invalid_workchain_configs():
     from wrkchain.config import WRKChainConfig, \
         InvalidOverrideException
 
-    config_files = fail_examples('workchain_')
+    config_files = fail_examples('wrkchain_')
     assert len(config_files) > 0
 
     for f in config_files:

@@ -12,7 +12,7 @@ class WRKChainDocumentation:
     def __init__(self, wrkchain_name, nodes, mainchain_netork,
                  ledger_base_type, oracle_addresses, mainchain_web3_provider,
                  mainchain_network_id, wrkchain_id, bootnode_config,
-                 genesis_json, build_dir, oracle_write_frequency):
+                 genesis_json, build_dir, oracle_write_frequency, consensus):
 
         self.__doc_params = {
             'wrkchain_name': wrkchain_name,
@@ -29,7 +29,8 @@ class WRKChainDocumentation:
             'mainchain_network_id': mainchain_network_id,
             'genesis_json': json.dumps(genesis_json, separators=(',', ':')),
             'build_dir': build_dir,
-            'oracle_write_frequency': oracle_write_frequency
+            'oracle_write_frequency': oracle_write_frequency,
+            'consensus': consensus
         }
 
         # Section order is also defined here, by order of the elements in dict
@@ -61,6 +62,10 @@ class WRKChainDocumentation:
             '__SECTION_NETWORK__': {
                 'content': '',
                 'title': 'Connecting to your Network'
+            },
+            '__SECTION_APPENDICES__': {
+                'content': '',
+                'title': 'Appendices'
             },
             '__SECTION_GLOSSARY__': {
                 'content': '',
@@ -158,6 +163,7 @@ class WRKChainDocumentation:
                 title = ' '.join(title_words)
                 uri = '-'.join(
                     [uri_regex.sub('', word) for word in title_words]).lower()
+                uri = uri.replace('--', '-')
                 contents += f'{leading_spaces}{section_number} [{title}]' \
                     f'(#{uri})  \n'
 

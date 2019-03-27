@@ -1,10 +1,18 @@
 
-Copy the generated `/PATH/TO/GENERATED/bootnode.key` to the computer assigned to run the `bootnode`
+**Copy the required files**
+
+Copy the generated `$__BUILD_DIR__/node_keys/bootnode.key` to  `~/.ethereum` on the 
+computer assigned to run the `bootnode`
+
+
+**Run the bootnode**
+
+Run the bootnode with the following command:
 
 ```bash
-bootnode -nodekey /path/to/bootnode.key -verbosity 4 --addr :$__BOOTNODE_PORT
+$$GOPATH/bin/bootnode -nodekey ~/.ethereum/node_keys/bootnode.key -verbosity 4 --addr :$__BOOTNODE_PORT
 ```
 
-Your bootnode `enode` address is:
+For reference, your bootnode's `enode` address is:
 
 `$__BOOTNODE_ENODE`
