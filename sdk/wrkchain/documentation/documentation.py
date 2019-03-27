@@ -9,7 +9,7 @@ from wrkchain.utils import repo_root
 
 
 class WRKChainDocumentation:
-    def __init__(self, wrkchain_name, nodes, mainchain_netork,
+    def __init__(self, wrkchain_name, nodes, mainchain_network,
                  ledger_base_type, oracle_addresses, mainchain_web3_provider,
                  mainchain_network_id, wrkchain_id, bootnode_config,
                  genesis_json, build_dir, oracle_write_frequency, consensus):
@@ -19,7 +19,7 @@ class WRKChainDocumentation:
             'wrkchain_id': wrkchain_id,
             'bootnode_config': bootnode_config,
             'nodes': nodes,
-            'network': mainchain_netork,
+            'network': mainchain_network,
             'base': ledger_base_type,
             'oracle_addresses': oracle_addresses,
             'mainchain_rpc_host': mainchain_web3_provider['host'],
@@ -57,7 +57,7 @@ class WRKChainDocumentation:
             },
             '__SECTION_ORACLE__': {
                 'content': '',
-                'title': 'Running your WRKChain Oracle'
+                'title': f'Running your WRKChain Oracle on {mainchain_network}'
             },
             '__SECTION_NETWORK__': {
                 'content': '',

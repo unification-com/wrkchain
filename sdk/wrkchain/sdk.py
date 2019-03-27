@@ -23,7 +23,7 @@ def generate_documentation(config, genesis_json, bootnode_config, build_dir):
     # derived from config
     wrkchain_name = config['wrkchain']['title']
     nodes = config['wrkchain']['nodes']
-    mainchain_netork = config["mainchain"]["network"]
+    mainchain_network = config["mainchain"]["network"]
     ledger_base_type = config["wrkchain"]["ledger"]["base"]
     oracle_addresses = get_oracle_addresses(config)
     mainchain_web3_provider = config['mainchain']['web3_provider']
@@ -35,7 +35,7 @@ def generate_documentation(config, genesis_json, bootnode_config, build_dir):
     wrkchain_id = genesis_json['config']['chainId']
 
     wrkchain_documentation = WRKChainDocumentation(
-        wrkchain_name, nodes, mainchain_netork, ledger_base_type,
+        wrkchain_name, nodes, mainchain_network, ledger_base_type,
         oracle_addresses, mainchain_web3_provider, mainchain_network_id,
         wrkchain_id, bootnode_config, genesis_json, build_dir,
         oracle_write_frequency, consensus)
