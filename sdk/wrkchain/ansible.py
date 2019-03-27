@@ -7,6 +7,33 @@ from jinja2 import DebugUndefined, Environment, FileSystemLoader
 from wrkchain.utils import template_root
 
 
+def relative_symlink(build_root, src_dir: str, dst_dir: str, filename):
+    """
+
+    :param src_dir: Directory path fragment. Use / for none.
+    :param dst_dir: Directory path fragment. Use / for none.
+    :return:
+    """
+    build_root_full_path = Path(path.abspath(build_root))
+    if src_dir != '/':
+        src_dir = build_root_full_path / src_dir
+    else:
+        src_dir = build_root_full_path
+
+    if dst_dir != '/':
+        dst_dir = build_root_full_path / dst_dir
+    else:
+        dst_dir = build_root_full_path
+
+    rel_src_dir = Path(path.relpath(src_dir, dst_dir))
+    dst = dst_dir / filename
+    src = rel_src_dir / filename
+
+    if dst.exists():
+        unlink(dst)
+    symlink(src, dst)
+
+
 class Validators:
     def __init__(self, context, custom_roles):
         self.context = context
@@ -29,16 +56,8 @@ class Validators:
             dest.write_text(template.render(eff))
 
     def link_genesis(self, build_root):
-        build_root_full_path = Path(path.abspath(build_root))
-        src_dir = build_root_full_path
-        dst_dir = build_root_full_path / 'ansible/roles/node/files/'
-        rel_src_dir = Path(path.relpath(src_dir, dst_dir))
-        dst = dst_dir / 'genesis.json'
-        src = rel_src_dir / 'genesis.json'
-
-        if dst.exists():
-            unlink(dst)
-        symlink(src, dst)
+        relative_symlink(
+            build_root, '/', 'ansible/roles/node/files/', 'genesis.json')
 
 
 class Bootnode:
@@ -52,17 +71,10 @@ class Bootnode:
             dest.write_text(template.render(self.context))
 
     def link_bootnode_key(self, build_root):
-        build_root_full_path = Path(path.abspath(build_root))
         if self.context['use']:
-            src_dir = build_root_full_path / 'node_keys'
-            dst_dir = build_root_full_path / 'ansible/roles/bootnode/files/'
-            rel_src_dir = Path(path.relpath(src_dir, dst_dir))
-            dst = dst_dir / 'bootnode.key'
-            src = rel_src_dir / 'bootnode.key'
-
-            if dst.exists():
-                unlink(dst)
-            symlink(src, dst)
+            relative_symlink(
+                build_root, 'node_keys', 'ansible/roles/node/files/',
+                'bootnode.key')
 
 
 def template_map(source: Path, target: Path, maps: dict):
