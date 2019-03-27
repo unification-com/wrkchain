@@ -4,7 +4,7 @@
 
   roles:
     - base
-    - geth
+    - ethereum
     - node
 
   tasks:
