@@ -32,6 +32,6 @@
     GOROOT: /usr/local/go
     GOPATH: /home/{{ ansible_user }}/.go
 
-- name: create data directories
-  file: path=/home/{{ ansible_user }}/.ethereum state=directory owner={{ ansible_user }} group={{ ansible_user }}
+- name: create node_keys
+  file: path=/home/{{ ansible_user }}/.ethereum/node_keys state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
 ...
