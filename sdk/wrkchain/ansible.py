@@ -42,9 +42,12 @@ class Bootnode:
     def link_bootnode_key(self, build_root):
         build_root_full_path = Path(path.abspath(build_root))
         if self.context['use']:
-            src = build_root_full_path / 'node_keys' / 'bootnode.key'
-            dst = build_root_full_path / 'ansible/roles/bootnode/files/' \
-                                         'bootnode.key'
+            src_dir = build_root_full_path / 'node_keys'
+            dst_dir = build_root_full_path / 'ansible/roles/bootnode/files/'
+            rel_src_dir = Path(path.relpath(src_dir, dst_dir))
+            dst = dst_dir / 'bootnode.key'
+            src = rel_src_dir / 'bootnode.key'
+
             if dst.exists():
                 unlink(dst)
             symlink(src, dst)
