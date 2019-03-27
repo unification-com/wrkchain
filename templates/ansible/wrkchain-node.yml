@@ -1,5 +1,5 @@
 ---
-- hosts: {{ name }}
+- hosts: {{ validator.name }}
   gather_facts: no
 
   roles:
