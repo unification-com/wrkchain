@@ -5,7 +5,7 @@ from wrkchain.architectures.debian import generate_geth_cmd
 class SectionNodes(DocSection):
     def __init__(self, section_number, title, nodes, wrkchain_id,
                  bootnode_config, build_dir):
-        path_to_md = 'nodes.md'
+        path_to_md = 'node.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
         self.__nodes = nodes
