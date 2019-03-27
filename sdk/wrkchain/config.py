@@ -360,7 +360,7 @@ class WRKChainConfig:
             "docker_ip": subnet[2].strNormal(),
             "port": GETH_START_PORT,
             "docker_port": GETH_START_PORT,
-            "name": "bootnode"
+            "name": "wrkchain-bootnode"
         }
 
         return bootnode
