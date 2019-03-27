@@ -29,8 +29,13 @@ class Validators:
             dest.write_text(template.render(eff))
 
     def link_genesis(self, build_root):
-        src = build_root / 'genesis.json'
-        dst = build_root / 'ansible/roles/node/files/genesis.json'
+        build_root_full_path = Path(path.abspath(build_root))
+        src_dir = build_root_full_path
+        dst_dir = build_root_full_path / 'ansible/roles/node/files/'
+        rel_src_dir = Path(path.relpath(src_dir, dst_dir))
+        dst = dst_dir / 'genesis.json'
+        src = rel_src_dir / 'genesis.json'
+
         if dst.exists():
             unlink(dst)
         symlink(src, dst)
