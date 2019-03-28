@@ -1,2 +1,4 @@
-Welcome to {{ name }}
+Welcome to the WRKCHain Node: {{ title }}
+identified by: {{ name }}
+
 
