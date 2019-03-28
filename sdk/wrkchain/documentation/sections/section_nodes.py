@@ -1,3 +1,5 @@
+from string import Template
+
 from wrkchain.documentation.sections.doc_section import DocSection
 from wrkchain.architectures.debian import generate_geth_cmd
 
@@ -14,7 +16,6 @@ class SectionNodes(DocSection):
         self.__build_dir = build_dir
 
     def generate(self):
-
         doc_build_dir = self.__build_dir.replace('../', '')
 
         for i in range(len(self.__nodes)):
@@ -24,14 +25,12 @@ class SectionNodes(DocSection):
             public_address = node['address']
             listen_port = node['listen_port']
             node_ip = node['ip']
-            copy_static_nodes_json = ''
-            copy_node_key = ''
+            copy_static_files = ''
 
             if self.__bootnode_config['type'] == 'static':
-                copy_static_nodes_json = f'2. `{doc_build_dir}/' \
-                    f'static-nodes.json` to `~/.ethereum`'
-                copy_node_key = f'3. `{doc_build_dir}/node_keys/' \
-                    f'{public_address}.key` to `~/.ethereum/node_keys`'
+                copy_static_files = \
+                    self.__static_bootnode_file_copy(doc_build_dir,
+                                                     public_address)
 
             geth_cmd = generate_geth_cmd(
                 node, self.__bootnode_config, self.__wrkchain_id, listen_port,
@@ -48,14 +47,25 @@ class SectionNodes(DocSection):
                  '__GETH_COMMAND__': geth_cmd,
                  '__NODE_TYPE__': ' & '.join(node_types),
                  '__NODE_TITLE__': node['title'],
-                 '__COPY_STATIC_NODES_JSON__': copy_static_nodes_json,
+                 '__COPY_STATIC_FILES__': copy_static_files,
                  '__NODE_IP__': node_ip,
-                 '__BUILD_DIR__': doc_build_dir,
-                 '__COPY_NODE_KEY__': copy_node_key
+                 '__BUILD_DIR__': doc_build_dir
                  }
             self.add_content(d, append=True)
 
         return self.get_contents()
+
+    def __static_bootnode_file_copy(self, doc_build_dir, public_address):
+
+        file_md = f'{self.template_dir()}/sub/misc/' \
+            f'nodes_static_bootnode_file_copy.md'
+        file_md_path = self.root_dir / file_md
+        file = file_md_path.read_text()
+        t = Template(file)
+        contents = t.substitute(
+            {'__BOOTNODE_KEY_FILE__': public_address,
+             '__BUILD_DIR__': doc_build_dir})
+        return contents
 
 
 class SectionNodesBuilder:

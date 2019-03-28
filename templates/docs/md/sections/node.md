@@ -9,8 +9,7 @@
 Copy the following files to the computer you will be running "**$__NODE_TITLE__**"
 
 1. `$__BUILD_DIR__/genesis.json` to `~/.ethereum/genesis.json`
-$__COPY_NODE_KEY__
-$__COPY_STATIC_NODES_JSON__
+$__COPY_STATIC_FILES__
 
 **Initialising the Node**
 
@@ -23,6 +22,10 @@ the following:
 $$GOPATH/bin/geth init ~/.ethereum/genesis.json
 $$GOPATH/bin/geth account import --password 'YOUR_WALLET_PASSWORD' PRIVATE_KEY_FOR_$__EV_PUBLIC_ADDRESS__
 ```
+
+The `geth account import` command will create a new wallet file in `~/.ethereum`,
+locking it with the value input for `YOUR_WALLET_PASSWORD`. Set a secure password,
+and remember it for the next step.
 
 **Running the Node**
 
