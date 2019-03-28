@@ -63,7 +63,7 @@ class SectionAppendices(DocSection):
         return contents
 
     def __appendix_4(self):
-        md_file = 'sub/appendices/appendix5.md'
+        md_file = 'sub/appendices/appendix4.md'
         t = self.load_sub_section_template(md_file)
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
