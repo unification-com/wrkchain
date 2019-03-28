@@ -20,11 +20,16 @@ class SectionInstallation(DocSection):
         if self.__base == 'geth':
             install_node = self.__install_geth()
             install_bootnode = self.__install_geth_bootnode()
+
+        node_computers = ''
+        for node in self.__nodes:
+            node_computers += f'**{node["title"]}**: {node["ip"]}  \n'
         
         d = {
             '__INSTALL_NODES__': install_node,
             '__INSTALL_BOOTNODE__': install_bootnode,
-            '__INSTALL_WRKCHAIN_ORACLE__': self.__install_wrkchain_oracle()
+            '__INSTALL_WRKCHAIN_ORACLE__': self.__install_wrkchain_oracle(),
+            '__NODE_COMPUTERS__': node_computers
         }
         self.add_content(d, append=False)
         return self.get_contents()
@@ -33,14 +38,9 @@ class SectionInstallation(DocSection):
         md_file = 'sub/install/geth.md'
         t = self.load_sub_section_template(md_file)
 
-        node_computers = ''
-        for node in self.__nodes:
-            node_computers += f'**{node["title"]}**: {node["ip"]}  \n'
-
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
-             '__SUB_SECTION_NUMBER__': self.__sub_section_number,
-             '__NODE_COMPUTERS__': node_computers
+             '__SUB_SECTION_NUMBER__': self.__sub_section_number
              }
         )
         self.__sub_section_number += 1
