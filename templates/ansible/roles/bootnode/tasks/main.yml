@@ -1,0 +1,21 @@
+---
+# Bootnode Role
+
+- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/bootnode
+  args:
+    chdir: /home/{{ ansible_user }}
+    creates: /home/{{ ansible_user }}/.go/bin/bootnode
+  environment:
+    GOROOT: /usr/local/go
+    GOPATH: /home/{{ ansible_user }}/.go
+
+- name: Copy Bootnode Key
+  copy: src=bootnode.key dest=/home/{{ ansible_user }}/.ethereum/node_keys/bootnode.key owner={{ ansible_user }} group={{ ansible_user }}
+
+- name: .bashrc
+  copy: src=.bashrc dest=/home/{{ ansible_user }}/.bashrc owner={{ ansible_user }} group={{ ansible_user }}
+
+- name: motd
+  copy: src=motd dest=/etc/motd owner=root group=root
+  become: yes
+...

@@ -1,24 +1,29 @@
 
 ### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Appendix 2: Production Deployment via Ansible
 
-To help deploy a production WRKChain, Ansible scripts also generated and 
-deposited into the `build/ansible` directory. These Ansible scripts have been 
-tested against a CentOS 7 machine. They should be generic enough to be run on 
-any Linux variation.
+Ansible is an IT automation framework supported by RedHat. To help deploy a 
+production WRKChain, Ansible scripts also generated and deposited into the 
+`build/ansible` directory. These Ansible scripts have been tested against a 
+CentOS 7 machine. They should be generic enough to be run on any Linux 
+variation.
 
-Instructions how to set up Ansible can be obtained here:
-<https://www.ansible.com>
+Instructions how to set up and use Ansible can be obtained here:
+<https://www.ansible.com/resources/get-started>
+
+These scripts can optionally be tested with Vagrant, and then deployed to 
+production machines.
 
 #### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__.1 Vagrant Testing
 
-The Ansible scripts can be tested via Vagrant by running:
+Testing the Ansible script via Vagrant can simply be started by:
 
 ```bash
 cd build/ansible
 vagrant up
 ```
+
 Instruction how to set up Vagrant can be found here:
-<https://www.vagrantup.com>
+<https://www.vagrantup.com/intro/index.html>
 
 #### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__.2 Production Deployment
 

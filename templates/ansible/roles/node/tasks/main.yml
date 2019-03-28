@@ -1,0 +1,15 @@
+---
+# Node Role
+
+- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/geth
+  args:
+    chdir: /home/{{ ansible_user }}
+    creates: /home/{{ ansible_user }}/.go/bin/geth
+  environment:
+    GOROOT: /usr/local/go
+    GOPATH: /home/{{ ansible_user }}/.go
+
+- name: Copy Genesis File
+  copy: src=genesis.json dest=/home/{{ ansible_user }}/.ethereum/genesis.json owner={{ ansible_user }} group={{ ansible_user }}
+
+...

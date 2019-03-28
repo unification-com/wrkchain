@@ -74,13 +74,36 @@ class SectionSetup(DocSection):
         if self.__network == 'testnet':
             deploy_content = self.__deply_contract_testnet(t)
         elif self.__network == 'mainnet':
-            deploy_content = ''
+            deploy_content = self.__deply_contract_mainnet(t)
         else:
             deploy_content = ''
 
         return deploy_content
 
     def __deply_contract_testnet(self, t):
+
+        genesis_sha3_bytes = \
+            Web3.sha3(text=f'{self.__genesis_json.encode("utf-8")}')
+        genesis_sha3 = genesis_sha3_bytes.hex()
+
+        d = {
+            '__SECTION_NUMBER__': self.__section_number,
+            '__MAINCHAIN_RPC_HOST__': self.__mainchain_rpc_host,
+            '__MAINCHAIN_RPC_PORT__': self.__mainchain_rpc_port,
+            '__MAINCHAIN_NETWORK_ID__': self.__mainchain_network_id,
+            '__MAINCHAIN_WEB3_PROVIDER_URL__': self.__mainchain_rpc_uri,
+            '__WRKCHAIN_GENESIS__': self.__genesis_json,
+            '__WRKCHAIN_NETWORK_ID__': self.__wrkchain_id,
+            '__WRKCHAIN_EVS__': (', '.join('"' + item + '"' for item in
+                                            self.__oracle_addresses)),
+            '__GENESIS_SHA3__': genesis_sha3
+        }
+
+        deploy_content = t.substitute(d)
+
+        return deploy_content
+
+    def __deply_contract_mainnet(self, t):
 
         genesis_sha3_bytes = \
             Web3.sha3(text=f'{self.__genesis_json.encode("utf-8")}')

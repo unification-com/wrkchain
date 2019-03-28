@@ -1,11 +1,11 @@
-Ensure the following addresses have UND on the Mainchain, since they will
-be used to send data to the WRKChain Root Smart Contract:
+Ensure the following addresses have UND on the Mainchain **`$__MAINCHAIN_NETWORK__`**,
+since they will be used to send data to the WRKChain Root Smart Contract:
 
 ```text
 $__ORACLE_ADDRESSES__
 ```
 
-One each computer responsible for running the WRKChain Oracle (usually one or
+On each computer responsible for running the WRKChain Oracle (usually one or
 more Validator nodes), run:
 
 ```bash

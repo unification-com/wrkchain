@@ -1,13 +1,17 @@
 ---
-- hosts: {{ name }}
+- hosts: {{ validator.name }}
   gather_facts: no
 
   roles:
     - base
-    - geth
+    - ethereum
+    - node
+{%- for r in roles %}
+    - {{ r }}
+{%- endfor %}
 
   tasks:
-    - hostname: name={{ name }}
+    - hostname: name={{ validator.name }}
       become: yes
 
     - name: upgrade all packages

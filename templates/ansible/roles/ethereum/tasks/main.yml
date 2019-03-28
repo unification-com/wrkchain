@@ -1,5 +1,5 @@
 ---
-# Install geth
+# Install Go Ethereum
 
 - name: install yum dependencies
   yum:
@@ -14,6 +14,7 @@
     src: https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz
     dest: /usr/local
     remote_src: yes
+    creates: /usr/local/go
   become: yes
 
 - name: create ethereum go directory
@@ -24,22 +25,6 @@
     chdir: /home/{{ ansible_user }}/.go/src/github.com/ethereum
     creates: /home/{{ ansible_user }}/.go/src/github.com/ethereum/go-ethereum
 
-- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/geth
-  args:
-    chdir: /home/{{ ansible_user }}
-    creates: /home/{{ ansible_user }}/.go/bin/geth
-  environment:
-    GOROOT: /usr/local/go
-    GOPATH: /home/{{ ansible_user }}/.go
-
-- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/bootnode
-  args:
-    chdir: /home/{{ ansible_user }}
-    creates: /home/{{ ansible_user }}/.go/bin/bootnode
-  environment:
-    GOROOT: /usr/local/go
-    GOPATH: /home/{{ ansible_user }}/.go
-
-- name: create data directories
-  file: path=/home/{{ ansible_user }}/data state=directory owner={{ ansible_user }} group={{ ansible_user }}
+- name: create node_keys
+  file: path=/home/{{ ansible_user }}/.ethereum/node_keys state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
 ...
