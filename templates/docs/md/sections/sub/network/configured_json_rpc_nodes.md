@@ -5,4 +5,5 @@ based on your configured JSON RPC Nodes:
 
 $__WEB3_PROVIDERS__
 
-Ensure the respective ports are open and available on the comuters running the nodes
+Ensure the respective ports are open and available on the computers 
+running the nodes
