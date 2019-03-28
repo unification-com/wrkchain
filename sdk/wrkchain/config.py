@@ -5,6 +5,8 @@ from random import SystemRandom
 from IPy import IP
 from web3 import Web3
 
+from wrkchain.utils import dict_key_exists
+
 REQUIRED_OVERRIDES = ['wrkchain', 'mainchain']
 REQUIRED_WRKCHAIN_OVERRIDES = ['nodes']
 REQUIRED_WRKCHAIN_NODE_OVERRIDES = ['address', 'ip']
@@ -12,6 +14,8 @@ REQUIRED_MAINCHAIN_OVERRIDES = ['network']
 VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet']
 VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
                   'shh', 'txpool', 'web3']
+VALID_LEDGERS = ['geth']
+VALID_GETH_CONSENSUS = ['clique']
 
 GETH_START_PORT = 30304
 RPC_START_PORT = 8545
@@ -98,7 +102,8 @@ class WRKChainConfig:
                 f'{", ".join(VALID_MAINCHAIN_NETWORKS)}'
             raise MissingConfigOverrideException(err)
 
-        if 'wrkchain_network_id' in self.__overrides['wrkchain']:
+        if dict_key_exists(self.__overrides,
+                           'wrkchain', 'wrkchain_network_id'):
             wrkchain_network_id = \
                 self.__overrides['wrkchain']['wrkchain_network_id']
             if not isinstance(wrkchain_network_id, int):
@@ -107,7 +112,8 @@ class WRKChainConfig:
                     f'as string'
                 raise InvalidOverrideException(err)
 
-        if 'oracle_write_frequency' in self.__overrides['wrkchain']:
+        if dict_key_exists(self.__overrides,
+                           'wrkchain', 'oracle_write_frequency'):
             oracle_write_frequency = \
                 self.__overrides['wrkchain']['oracle_write_frequency']
             if not isinstance(oracle_write_frequency, int):
@@ -116,20 +122,26 @@ class WRKChainConfig:
                     f'as string'
                 raise InvalidOverrideException(err)
 
-        if 'docker_network' in self.__overrides:
-            if 'subnet' in self.__overrides['docker_network']:
-                subnet = self.__overrides['docker_network']['subnet']
-
-                try:
-                    docker_subnet = IP(subnet)
-                    if len(docker_subnet) <= 1:
-                        err = f'Docker subnet error ({subnet}): ' \
-                            f'must be IP range, e.g. {subnet}/24'
-                        raise InvalidOverrideException(err)
-
-                except ValueError as e:
-                    err = f'Docker subnet error ({subnet}): {e}'
+        if dict_key_exists(self.__overrides, 'docker_network', 'subnet'):
+            subnet = self.__overrides['docker_network']['subnet']
+            try:
+                docker_subnet = IP(subnet)
+                if len(docker_subnet) <= 1:
+                    err = f'Docker subnet error ({subnet}): ' \
+                        f'must be IP range, e.g. {subnet}/24'
                     raise InvalidOverrideException(err)
+
+            except ValueError as e:
+                err = f'Docker subnet error ({subnet}): {e}'
+                raise InvalidOverrideException(err)
+
+        if dict_key_exists(self.__overrides, 'wrkchain', 'ledger', 'consensus',
+                           'type'):
+            consensus = \
+                self.__overrides['wrkchain']['ledger']['consensus']['type']
+            if consensus not in VALID_GETH_CONSENSUS:
+                err = f'Invalid consensus method "{consensus}"'
+                raise InvalidOverrideException(err)
 
     def __load_basic_defaults(self):
         basic_default = {
