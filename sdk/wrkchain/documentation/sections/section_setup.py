@@ -1,7 +1,7 @@
 from web3 import Web3
-from wrkchain.documentation.sections.doc_section import DocSection
 
-TESTNET_FAUCET_URL = 'http://52.14.173.249/sendtx?to='
+from wrkchain import constants
+from wrkchain.documentation.sections.doc_section import DocSection
 
 
 class SectionSetup(DocSection):
@@ -46,14 +46,15 @@ class SectionSetup(DocSection):
     def __fund_testnet(self, t):
         faucet_urls = ''
         for address in self.__oracle_addresses:
-            faucet_urls += f'<{TESTNET_FAUCET_URL}{address}>  \n'
+            faucet_urls += f'<{constants.TESTNET_FAUCET_URL}{address}>  \n'
         fund_content = t.substitute({'__FAUCET_URLS___': faucet_urls})
 
         return fund_content
 
     def __fund_mainnet(self, t):
         d = {
-            '__ORACLE_ADDRESSES__': '\n'.join(self.__oracle_addresses)
+            '__ORACLE_ADDRESSES__': '\n'.join(self.__oracle_addresses),
+            '__MAINNET_UND_FUND_URL__': constants.MAINNET_UND_FUND_URL
         }
         fund_content = t.substitute(d)
 
