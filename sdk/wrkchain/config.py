@@ -219,7 +219,6 @@ class WRKChainConfig:
         # Todo - load according to selected base (geth, etc.)
         new_conf = self.__load_default_ledger()
         for key, data in ledger.items():
-            # Todo - check and clean consensus
             new_conf[key] = data
         self.__config['wrkchain']['ledger'] = new_conf
 
@@ -244,50 +243,52 @@ class WRKChainConfig:
         node_num = 1
         for node in nodes:
             new_node = self.__load_default_node(node_num)
-
-            # Todo - WAAAY too many levels...
             for key, data in node.items():
-                if key == 'rpc':
-                    if isinstance(data, bool):
-                        if not data:
-                            new_node[key] = False
-                        else:
-                            # defaults already loaded
-                            continue
-                    else:
-                        for k, d in data.items():
-                            if k == 'apis':
-                                apis = {}
-                                for api in VALID_RPC_APIS:
-                                    if api in data[k]:
-                                        apis[api] = data[k][api]
-                                    else:
-                                        apis[api] = False
-                                new_node[key][k] = apis
-                            else:
-                                new_node[key][k] = d
-                elif key == 'address':
-                    if not Web3.isAddress(data):
-                        err = f'wrkchain -> nodes -> {node_num - 1} -> ' \
-                            f'address "{data}"" is not a valid address'
-                        raise InvalidOverrideException(err)
-                    new_node[key] = Web3.toChecksumAddress(data)
-                elif key == 'ip' or key == 'docker_ip':
-                    try:
-                        IP(data)
-                    except ValueError as e:
-                        err = f'Config wrkchain.nodes[{node_num - 1}].ip ' \
-                            f'error {data} is not a valid IP: {e}'
-                        raise InvalidOverrideException(err)
-                    new_node[key] = data
-                else:
-                    new_node[key] = data
-
+                new_node[key] = self.__handle_node_override(key, data,
+                                                            node_num)
             node_num += 1
-
             defined_nodes.append(new_node)
-
         self.__config['wrkchain']['nodes'] = defined_nodes
+
+    def __handle_node_override(self, key, data, node_num):
+        if key == 'rpc':
+            new_node_data = self.__handle_rpc_node_overrides(data, node_num)
+        elif key == 'address':
+            if not Web3.isAddress(data):
+                err = f'wrkchain -> nodes -> {node_num - 1} -> ' \
+                    f'address "{data}"" is not a valid address'
+                raise InvalidOverrideException(err)
+            new_node_data = Web3.toChecksumAddress(data)
+        elif key == 'ip' or key == 'docker_ip':
+            try:
+                IP(data)
+            except ValueError as e:
+                err = f'Config wrkchain.nodes[{node_num - 1}].ip ' \
+                    f'error {data} is not a valid IP: {e}'
+                raise InvalidOverrideException(err)
+            new_node_data = data
+        else:
+            new_node_data = data
+        return new_node_data
+
+    def __handle_rpc_node_overrides(self, data, node_num):
+        new_node_data = self.__load_default_node(node_num, rpc_only=True)
+        if isinstance(data, bool):
+            if not data:
+                new_node_data = False
+        else:
+            for k, d in data.items():
+                if k == 'apis':
+                    apis = {}
+                    for api in VALID_RPC_APIS:
+                        if api in data[k]:
+                            apis[api] = data[k][api]
+                        else:
+                            apis[api] = False
+                    new_node_data[k] = apis
+                else:
+                    new_node_data[k] = d
+        return new_node_data
 
     def __override_coin(self, coin):
         if 'symbol' in coin:
@@ -377,7 +378,7 @@ class WRKChainConfig:
 
         return bootnode
 
-    def __load_default_node(self, node_num):
+    def __load_default_node(self, node_num, rpc_only=False):
 
         subnet = self.__get_docker_subnet()
 
@@ -412,7 +413,10 @@ class WRKChainConfig:
                 }
             }
         }
-        return node
+        if rpc_only:
+            return node['rpc']
+        else:
+            return node
 
     @staticmethod
     def __load_default_coin():
