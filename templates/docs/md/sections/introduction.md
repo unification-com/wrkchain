@@ -20,7 +20,7 @@ your WRKCHain network
 **Your base blockchain:** $__BASE_CHAIN__  
 **Your Consensus algorithm:** $__CONSENSUS__
 
-### $__SECTION_NUMBER__.1.1 Generated Files
+#### $__SECTION_NUMBER__.1.1 Generated Files
 
 The `build` directory contains everything you need to get a WRKChain running:
 
