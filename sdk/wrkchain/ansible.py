@@ -4,6 +4,7 @@ from shutil import copy
 
 from jinja2 import DebugUndefined, Environment, FileSystemLoader
 
+from wrkchain.constants import GO_VERSION
 from wrkchain.utils import template_root
 
 
@@ -146,6 +147,7 @@ def generate_ansible(build_dir, config):
     validator_builder = Validators(workchain_cfg['nodes'], custom_roles)
 
     d = {
+        'roles/ethereum/tasks/main.yml': {'go_version': GO_VERSION},
         'wrkchain-bootnode.yml': bootnode,
         'wrkchain-node.yml': validator_builder,
         'Vagrantfile': workchain_cfg
