@@ -2,6 +2,7 @@ from compose.config.config import Config
 from compose.config.serialize import serialize_config
 from compose.config.types import ServicePort
 
+from wrkchain import constants
 from wrkchain.architectures.debian import generate_geth_cmd
 
 COMPOSE_VERSION = '3.3'
@@ -24,7 +25,10 @@ def bootnode(config):
         },
         'build': {
             'context': '..',
-            'dockerfile': 'Docker/bootnode/Dockerfile'
+            'dockerfile': 'Docker/bootnode/Dockerfile',
+            'args': {
+                'GO_VERSION': constants.GO_VERSION,
+            },
         },
         'environment': [f'BOOTNODE_PORT={config["docker_port"]}'],
         'command': f'/root/.go/bin/bootnode -nodekey '
@@ -48,6 +52,9 @@ def chaintest(config):
         'build': {
             'context': '..',
             'dockerfile': 'Docker/chaintest/Dockerfile',
+            'args': {
+                'GO_VERSION': constants.GO_VERSION,
+            },
         }
     }
 
@@ -78,6 +85,7 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
             'args': {
                 'WALLET_PASS': 'pass',
                 'PRIVATE_KEY': validator['private_key'],
+                'GO_VERSION': constants.GO_VERSION,
             },
         }
 

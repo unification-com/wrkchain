@@ -4,11 +4,11 @@
 The recommended way to install geth is installing Go and then installing Geth
 using Go.
 
-First, install Go version 10.3:
+First, install Go version $__GO_VERSION__:
 
 ```bash
-wget https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.10.3.linux-amd64.tar.gz
+wget https://dl.google.com/go/go1.$__GO_VERSION__.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.$__GO_VERSION__.linux-amd64.tar.gz
 mkdir ~/.go
 ```
 

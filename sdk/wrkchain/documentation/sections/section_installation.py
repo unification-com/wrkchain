@@ -1,3 +1,4 @@
+from wrkchain import constants
 from wrkchain.documentation.sections.doc_section import DocSection
 
 
@@ -40,7 +41,8 @@ class SectionInstallation(DocSection):
 
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
-             '__SUB_SECTION_NUMBER__': self.__sub_section_number
+             '__SUB_SECTION_NUMBER__': self.__sub_section_number,
+             '__GO_VERSION__': constants.GO_VERSION
              }
         )
         self.__sub_section_number += 1
