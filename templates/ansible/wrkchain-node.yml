@@ -6,6 +6,9 @@
     - base
     - ethereum
     - node
+{%- for r in roles %}
+    - {{ r }}
+{%- endfor %}
 
   tasks:
     - hostname: name={{ validator.name }}
