@@ -7,6 +7,11 @@ fi
 
 ll='ls -la'
 
+export GOROOT="/usr/local/go"
+export GOPATH="/home/vagrant/.go"
+
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
