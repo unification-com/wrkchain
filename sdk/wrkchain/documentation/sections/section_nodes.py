@@ -56,12 +56,9 @@ class SectionNodes(DocSection):
         return self.get_contents()
 
     def __static_bootnode_file_copy(self, doc_build_dir, public_address):
+        md_file = 'sub/misc/nodes_static_bootnode_file_copy.md'
+        t = self.load_sub_section_template(md_file)
 
-        file_md = f'{self.template_dir()}/sub/misc/' \
-            f'nodes_static_bootnode_file_copy.md'
-        file_md_path = self.root_dir / file_md
-        file = file_md_path.read_text()
-        t = Template(file)
         contents = t.substitute(
             {'__BOOTNODE_KEY_FILE__': public_address,
              '__BUILD_DIR__': doc_build_dir})

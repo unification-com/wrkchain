@@ -33,11 +33,8 @@ class SectionSetup(DocSection):
         return self.get_contents()
 
     def __fund(self):
-        fund_md = f'{self.template_dir()}/sub/fund/' \
-            f'{self.__network}.md'
-        fund_template_path = self.root_dir / fund_md
-        fund_template = fund_template_path.read_text()
-        t = Template(fund_template)
+        md_file = f'sub/fund/{self.__network}.md'
+        t = self.load_sub_section_template(md_file)
 
         if self.__network == 'testnet':
             fund_content = self.__fund_testnet(t)
@@ -65,11 +62,8 @@ class SectionSetup(DocSection):
         return fund_content
 
     def __deply_contract(self):
-        deploy_md = f'{self.template_dir()}/sub/' \
-            f'deploy_wrkchain_root_contract/{self.__network}.md'
-        deploy_template_path = self.root_dir / deploy_md
-        deploy_template = deploy_template_path.read_text()
-        t = Template(deploy_template)
+        md_file = f'sub/deploy_wrkchain_root_contract/{self.__network}.md'
+        t = self.load_sub_section_template(md_file)
 
         if self.__network == 'testnet':
             deploy_content = self.__deply_contract_testnet(t)

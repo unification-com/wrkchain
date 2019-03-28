@@ -34,10 +34,8 @@ class SectionAppendices(DocSection):
         return self.get_contents()
 
     def __appendix_1(self):
-        appendix_md = f'{self.template_dir()}/sub/appendices/appendix1.md'
-        appendix_md_path = self.root_dir / appendix_md
-        appendix = appendix_md_path.read_text()
-        t = Template(appendix)
+        md_file = 'sub/appendices/appendix1.md'
+        t = self.load_sub_section_template(md_file)
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
              '__SUB_SECTION_NUMBER__': self.__sub_section_number})
@@ -45,10 +43,8 @@ class SectionAppendices(DocSection):
         return contents
 
     def __appendix_2(self):
-        appendix_md = f'{self.template_dir()}/sub/appendices/appendix2.md'
-        appendix_md_path = self.root_dir / appendix_md
-        appendix = appendix_md_path.read_text()
-        t = Template(appendix)
+        md_file = 'sub/appendices/appendix2.md'
+        t = self.load_sub_section_template(md_file)
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
              '__SUB_SECTION_NUMBER__': self.__sub_section_number})
@@ -56,10 +52,8 @@ class SectionAppendices(DocSection):
         return contents
 
     def __appendix_3(self):
-        appendix_md = f'{self.template_dir()}/sub/appendices/appendix3.md'
-        appendix_md_path = self.root_dir / appendix_md
-        appendix = appendix_md_path.read_text()
-        t = Template(appendix)
+        md_file = 'sub/appendices/appendix3.md'
+        t = self.load_sub_section_template(md_file)
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
              '__SUB_SECTION_NUMBER__': self.__sub_section_number,
@@ -71,10 +65,8 @@ class SectionAppendices(DocSection):
         return contents
 
     def __appendix_4(self):
-        appendix_md = f'{self.template_dir()}/sub/appendices/appendix4.md'
-        appendix_md_path = self.root_dir / appendix_md
-        appendix = appendix_md_path.read_text()
-        t = Template(appendix)
+        md_file = 'sub/appendices/appendix5.md'
+        t = self.load_sub_section_template(md_file)
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
              '__SUB_SECTION_NUMBER__': self.__sub_section_number})
@@ -82,10 +74,8 @@ class SectionAppendices(DocSection):
         return contents
 
     def __appendix_5(self):
-        appendix_md = f'{self.template_dir()}/sub/appendices/appendix5.md'
-        appendix_md_path = self.root_dir / appendix_md
-        appendix = appendix_md_path.read_text()
-        t = Template(appendix)
+        md_file = 'sub/appendices/appendix5.md'
+        t = self.load_sub_section_template(md_file)
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
              '__SUB_SECTION_NUMBER__': self.__sub_section_number})

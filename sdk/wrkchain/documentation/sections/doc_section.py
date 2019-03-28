@@ -40,3 +40,9 @@ class DocSection:
             self.contents += content
         else:
             self.contents = content
+
+    def load_sub_section_template(self, md_file):
+        md = f'{self.template_dir()}/{md_file}'
+        md_path = self.root_dir / md
+        md_content = md_path.read_text()
+        return Template(md_content)
