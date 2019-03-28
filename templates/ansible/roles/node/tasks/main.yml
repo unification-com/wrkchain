@@ -9,6 +9,13 @@
     GOROOT: /usr/local/go
     GOPATH: /home/{{ ansible_user }}/.go
 
+- command: /usr/local/go/bin/go get github.com/unification-com/oracle
+  args:
+    creates: /home/{{ ansible_user }}/.go/src/github.com/unification-com/oracle
+  environment:
+    GOROOT: /usr/local/go
+    GOPATH: /home/{{ ansible_user }}/.go
+
 - name: Copy Genesis File
   copy: src=genesis.json dest=/home/{{ ansible_user }}/.ethereum/genesis.json owner={{ ansible_user }} group={{ ansible_user }}
 
