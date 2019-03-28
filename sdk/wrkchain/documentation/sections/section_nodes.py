@@ -35,7 +35,7 @@ class SectionNodes(DocSection):
             geth_cmd = generate_geth_cmd(
                 node, self.__bootnode_config, self.__wrkchain_id, listen_port,
                 linebreak=True, gopath='$GOPATH', docker=False,
-                path_to='~/ethereum')
+                path_to='~/.ethereum')
 
             if node['is_validator']:
                 node_types.append('Validator')
