@@ -61,7 +61,7 @@ The `WRKChainRoot` constructor requires three arguments:
 `current_evs` is an array of the initial Validator's public addresses: `[$__WRKCHAIN_EVS__]`
 
 The following information can be used to determine where to deploy your 
-WRKCHainRoot smart contract:  
+WRKChain Root smart contract:  
 
 **Mainchain RPC Host**: $__MAINCHAIN_RPC_HOST__  
 **Mainchain RPC Port**: $__MAINCHAIN_RPC_PORT__  

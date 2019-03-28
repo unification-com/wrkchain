@@ -1,5 +1,3 @@
-from string import Template
-
 from web3 import Web3
 from wrkchain.documentation.sections.doc_section import DocSection
 
