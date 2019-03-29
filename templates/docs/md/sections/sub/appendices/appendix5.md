@@ -1,5 +1,5 @@
 
-### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Appendix 5: Setting up a local Mainchain JSON RPC Node
+### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Appendix 5: Setting up a local Mainchain $__MAINCHAIN_NETWORK__ JSON RPC Node
 
 It is possible to set up a local JSON RPC node for Unification's Mainchain 
 `$__MAINCHAIN_NETWORK__`

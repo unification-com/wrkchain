@@ -4,7 +4,7 @@ from wrkchain.utils import dir_tree
 
 class SectionIntroduction(DocSection):
     def __init__(self, section_number, title, wrkchain_id, build_dir,
-                 network, base, consensus):
+                 network, base, consensus, mainchain_rpc_uri):
         path_to_md = 'introduction.md'
         DocSection.__init__(self, path_to_md, section_number, title)
 
@@ -13,6 +13,7 @@ class SectionIntroduction(DocSection):
         self.__network = network
         self.__base = base
         self.__consensus = consensus
+        self.__mainchain_rpc_uri = mainchain_rpc_uri
 
     def generate(self):
 
@@ -26,7 +27,8 @@ class SectionIntroduction(DocSection):
             '__MAINCHAIN_NETWORK__': self.__network,
             '__BASE_CHAIN__': self.__base,
             '__CONSENSUS__': self.__consensus,
-            '__TESTNET_WARNING__': testnet_warning
+            '__TESTNET_WARNING__': testnet_warning,
+            '__MAINCHAIN_WEB3_PROVIDER_URL__': self.__mainchain_rpc_uri
         }
         self.add_content(d, append=False)
         return self.get_contents()
@@ -42,10 +44,11 @@ class SectionIntroductionBuilder:
         self.__instance = None
 
     def __call__(self, section_number, title, wrkchain_id, build_dir, network,
-                 base, consensus, **_ignored):
+                 base, consensus, mainchain_rpc_uri, **_ignored):
 
         if not self.__instance:
             self.__instance = SectionIntroduction(section_number, title,
                                                   wrkchain_id, build_dir,
-                                                  network, base, consensus)
+                                                  network, base, consensus,
+                                                  mainchain_rpc_uri)
         return self.__instance
