@@ -74,7 +74,7 @@ class WRKChainDocumentation:
         }
 
         self.__documentation = {
-            'path': 'templates/docs/md/README.md',
+            'path': 'templates/docs/md/documentation.md',
             'content': '',
             'template': None
         }
@@ -94,7 +94,7 @@ class WRKChainDocumentation:
                     section_contents
                 section_number += 1
 
-        self.__generate_readme()
+        self.__generate_documentation()
 
     def get_md(self):
         return self.__documentation['content']
@@ -131,7 +131,7 @@ class WRKChainDocumentation:
         self.__documentation['template'] = \
             template_path.read_text()
 
-    def __generate_readme(self):
+    def __generate_documentation(self):
         template = Template(self.__documentation['template'])
         d = {}
 

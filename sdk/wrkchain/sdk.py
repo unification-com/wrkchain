@@ -3,7 +3,8 @@ import json
 import logging
 import os
 
-from shutil import rmtree
+from pathlib import Path
+from shutil import rmtree, copyfile
 
 from wrkchain.bootnode import BootnodeKey, BootnodeNotFoundException
 from wrkchain.composer import generate
@@ -12,7 +13,7 @@ from wrkchain.config import (
 from wrkchain.documentation.documentation import WRKChainDocumentation
 from wrkchain.genesis import build_genesis
 from wrkchain.mainchain import UndMainchain
-from wrkchain.utils import write_build_file, get_oracle_addresses
+from wrkchain.utils import write_build_file, get_oracle_addresses, repo_root
 
 from wrkchain.ansible import generate_ansible
 
@@ -73,7 +74,7 @@ def write_genesis(build_dir, genesis_json):
 
 
 def write_documentation(build_dir, documentation):
-    write_build_file(build_dir + '/README.md', documentation['md'])
+    write_build_file(build_dir + '/documentation.md', documentation['md'])
     write_build_file(build_dir + '/documentation.html',
                      documentation['html'])
 
@@ -91,6 +92,12 @@ def write_static_nodes(build_dir, static_nodes, static_nodes_docker):
 def write_generated_config(build_dir, config):
     rendered_config = json.dumps(config, indent=2, separators=(',', ':'))
     write_build_file(build_dir + '/generated_config.json', rendered_config)
+
+
+def copy_readme(build_dir):
+    readme_src = repo_root() / 'templates' / 'docs' / 'md' / 'README.md'
+    readme_dst = Path(build_dir) / 'README.md'
+    copyfile(readme_src, readme_dst)
 
 
 def check_oracle_address_funds(config):
@@ -209,6 +216,8 @@ def generate_wrkchain(config_file, build_dir, clean=False):
 
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
+
+    copy_readme(build_dir)
 
     write_generated_config(build_dir, config)
 
