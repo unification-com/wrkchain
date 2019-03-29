@@ -1,7 +1,8 @@
 FROM ubuntu:xenial
 
 ARG HOST_UID
-RUN groupadd -r sdkuser && useradd -r -u $HOST_UID -g sdkuser sdkuser
+ARG HOST_GID
+RUN groupadd -g $HOST_GID -r sdkuser && useradd -r -u $HOST_UID -g sdkuser sdkuser
 
 RUN apt-get update && \
     apt-get -y install \
@@ -64,6 +65,8 @@ COPY wrkchain.json /home/sdkuser/wrkchain.json
 
 RUN py.test /home/sdkuser/sdk/tests
 
+ENV HOST_BUILD_DIR=""
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-CMD ["python", "-m", "wrkchain.sdk", "generate_wrkchain", "/home/sdkuser/wrkchain.json", "/home/sdkuser/build"]
+CMD ["python", "-m", "wrkchain.sdk", "generate_wrkchain", "/home/sdkuser/wrkchain.json", "/home/sdkuser/build", "--host_build_dir=${HOST_BUILD_DIR}"]
