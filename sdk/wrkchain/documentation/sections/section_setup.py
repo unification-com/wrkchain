@@ -14,6 +14,7 @@ class SectionSetup(DocSection):
         self.__network = network
         self.__oracle_addresses = oracle_addresses
         self.__section_number = section_number
+        self.__sub_section_number = 1
         self.__wrkchain_id = wrkchain_id
         self.__mainchain_rpc_host = mainchain_rpc_host
         self.__mainchain_rpc_port = mainchain_rpc_port
@@ -61,26 +62,28 @@ class SectionSetup(DocSection):
         return fund_content
 
     def __deply_contract(self):
-        md_file = f'sub/deploy_wrkchain_root_contract/{self.__network}.md'
-        t = self.load_sub_section_template(md_file)
-
         if self.__network == 'testnet':
-            deploy_content = self.__deply_contract_testnet(t)
+            deploy_content = self.__deploy_truffle()
+            deploy_content += self.__deploy_oracle_deploy()
+            deploy_content += self.__deploy_manual()
         elif self.__network == 'mainnet':
-            deploy_content = self.__deply_contract_mainnet(t)
+            deploy_content = self.__deploy_oracle_deploy()
+            deploy_content += self.__deploy_manual()
         else:
             deploy_content = ''
 
         return deploy_content
 
-    def __deply_contract_testnet(self, t):
-
+    def __deploy_truffle(self):
+        md_file = f'sub/deploy_wrkchain_root_contract/truffle.md'
+        t = self.load_sub_section_template(md_file)
         genesis_sha3_bytes = \
             Web3.sha3(text=f'{self.__genesis_json.encode("utf-8")}')
         genesis_sha3 = genesis_sha3_bytes.hex()
 
         d = {
             '__SECTION_NUMBER__': self.__section_number,
+            '__SUB_SECTION_NUMBER__': self.__sub_section_number,
             '__MAINCHAIN_RPC_HOST__': self.__mainchain_rpc_host,
             '__MAINCHAIN_RPC_PORT__': self.__mainchain_rpc_port,
             '__MAINCHAIN_NETWORK_ID__': self.__mainchain_network_id,
@@ -88,22 +91,26 @@ class SectionSetup(DocSection):
             '__WRKCHAIN_GENESIS__': self.__genesis_json,
             '__WRKCHAIN_NETWORK_ID__': self.__wrkchain_id,
             '__WRKCHAIN_EVS__': (', '.join('"' + item + '"' for item in
-                                            self.__oracle_addresses)),
+                                           self.__oracle_addresses)),
             '__GENESIS_SHA3__': genesis_sha3
         }
+
+        self.__sub_section_number += 1
 
         deploy_content = t.substitute(d)
 
         return deploy_content
 
-    def __deply_contract_mainnet(self, t):
-
+    def __deploy_manual(self):
+        md_file = f'sub/deploy_wrkchain_root_contract/manual.md'
+        t = self.load_sub_section_template(md_file)
         genesis_sha3_bytes = \
             Web3.sha3(text=f'{self.__genesis_json.encode("utf-8")}')
         genesis_sha3 = genesis_sha3_bytes.hex()
 
         d = {
             '__SECTION_NUMBER__': self.__section_number,
+            '__SUB_SECTION_NUMBER__': self.__sub_section_number,
             '__MAINCHAIN_RPC_HOST__': self.__mainchain_rpc_host,
             '__MAINCHAIN_RPC_PORT__': self.__mainchain_rpc_port,
             '__MAINCHAIN_NETWORK_ID__': self.__mainchain_network_id,
@@ -111,9 +118,36 @@ class SectionSetup(DocSection):
             '__WRKCHAIN_GENESIS__': self.__genesis_json,
             '__WRKCHAIN_NETWORK_ID__': self.__wrkchain_id,
             '__WRKCHAIN_EVS__': (', '.join('"' + item + '"' for item in
-                                            self.__oracle_addresses)),
+                                           self.__oracle_addresses)),
             '__GENESIS_SHA3__': genesis_sha3
         }
+
+        self.__sub_section_number += 1
+
+        deploy_content = t.substitute(d)
+
+        return deploy_content
+
+    def __deploy_oracle_deploy(self):
+        md_file = f'sub/deploy_wrkchain_root_contract/oracle_deploy.md'
+        t = self.load_sub_section_template(md_file)
+        genesis_sha3_bytes = \
+            Web3.sha3(text=f'{self.__genesis_json.encode("utf-8")}')
+        genesis_sha3 = genesis_sha3_bytes.hex()
+
+        d = {
+            '__SECTION_NUMBER__': self.__section_number,
+            '__SUB_SECTION_NUMBER__': self.__sub_section_number,
+            '__MAINCHAIN_NETWORK_ID__': self.__mainchain_network_id,
+            '__MAINCHAIN_WEB3_PROVIDER_URL__': self.__mainchain_rpc_uri,
+            '__WRKCHAIN_GENESIS__': self.__genesis_json,
+            '__WRKCHAIN_NETWORK_ID__': self.__wrkchain_id,
+            '__WRKCHAIN_EVS__': (', '.join('"' + item + '"' for item in
+                                           self.__oracle_addresses)),
+            '__GENESIS_SHA3__': genesis_sha3
+        }
+
+        self.__sub_section_number += 1
 
         deploy_content = t.substitute(d)
 

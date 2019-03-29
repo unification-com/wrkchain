@@ -1,4 +1,11 @@
-#### $__SECTION_NUMBER__.2.1 Manual Deployment
+
+#### $__SECTION_NUMBER__.2.$__SUB_SECTION_NUMBER__ Manual Deployment
+
+Clone the WRKChain Root smart contract repo into a suitable directory:
+
+```bash
+git clone https://github.com/unification-com/wrkchain-root-contract
+```
 
 Using your preferred method for Smart Contract compilation, compile
 `wrkchain-root-contract/contracts/WRKChainRoot.sol`

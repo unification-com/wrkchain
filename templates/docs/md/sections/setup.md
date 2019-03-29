@@ -7,12 +7,6 @@ $__FUND_ORACLE_ADDRESSES__
 
 ### $__SECTION_NUMBER__.2 Deploying the WRKChain Root smart contract on $__MAINCHAIN_NETWORK__
 
-Clone the WRKChain Root smart contract repo into a suitable directory:
-
-```bash
-git clone https://github.com/unification-com/wrkchain-root-contract
-```
-
-Once cloned, you have several options for deploying the smart contract on $__MAINCHAIN_NETWORK__
+You have several options for deploying the smart contract on $__MAINCHAIN_NETWORK__
 
 $__DEPLOY_WRKCHAIN_ROOT_CONTRACT__
