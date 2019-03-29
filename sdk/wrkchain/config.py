@@ -421,7 +421,7 @@ class WRKChainConfig:
     @staticmethod
     def __load_default_coin():
         coin = {
-            "symbol": "COIN",
+            "symbol": "WRK",
             "prefund": []
         }
         return coin
