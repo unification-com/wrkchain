@@ -112,7 +112,7 @@ class WRKChainDocumentation:
             html_body = pypandoc.convert_text(
                 self.__documentation['content'],
                 'html',
-                format='markdown_github+lists_without_preceding_blankline')
+                format='markdown')
             t = Template(html_template)
 
             data = {
@@ -148,7 +148,7 @@ class WRKChainDocumentation:
         header_regex = \
             re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
 
-        uri_regex = re.compile('([^-\s\w]|_)+')
+        uri_regex = re.compile('([^-.\s\w]|_)+')
 
         contents = ''
         for section_key, section_content in d.items():
@@ -165,7 +165,7 @@ class WRKChainDocumentation:
                 title = ' '.join(title_words)
                 uri = '-'.join(
                     [uri_regex.sub('', word) for word in title_words]).lower()
-                uri = uri.replace('--', '-')
+                uri = uri.replace('--', '-').replace('.', '-')
                 contents += f'{leading_spaces}{section_number} [{title}]' \
                     f'(#{uri})  \n'
 
