@@ -19,8 +19,11 @@ the following:
 **Note:** this only needs to be run _once_.
 
 ```bash
+export WALLET_PASSWORD="YOUR_WALLET_PASSWORD"
+export PRIVATE_KEY="PRIVATE_KEY_FOR_$__EV_PUBLIC_ADDRESS__"
+
 $$GOPATH/bin/geth init ~/.ethereum/genesis.json
-$$GOPATH/bin/geth account import --password 'YOUR_WALLET_PASSWORD' PRIVATE_KEY_FOR_$__EV_PUBLIC_ADDRESS__
+$$GOPATH/bin/geth account import --password $$WALLET_PASSWORD $$PRIVATE_KEY
 ```
 
 The `geth account import` command will create a new wallet file in `~/.ethereum`,
