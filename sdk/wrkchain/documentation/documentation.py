@@ -112,7 +112,9 @@ class WRKChainDocumentation:
             html_body = pypandoc.convert_text(
                 self.__documentation['content'],
                 'html',
-                format='markdown')
+                format='markdown',
+                extra_args=['--section-divs']
+            )
             t = Template(html_template)
 
             data = {
@@ -137,36 +139,16 @@ class WRKChainDocumentation:
                 self.__documentation_sections.items():
             d[section_key] = section_data['content']
 
-        d['__CONTENTS__'] = self.__generate_contents(d)
-        d['__DOCUMENTATION_TITLE__'] = f'# "' \
+        doc_title = f'"' \
             f'{self.__doc_params["wrkchain_name"]}" Documentation'
+        doc_title += f'\n{"=" * len(doc_title)}\n\n' \
+            f'# Contents\n'
 
-        self.__documentation['content'] = template.substitute(d)
+        documentation_content = template.substitute(d)
 
-    @staticmethod
-    def __generate_contents(d):
-        header_regex = \
-            re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
+        documentation = pypandoc.convert(
+            documentation_content,
+            'md', format='md',
+            extra_args=['-s', '--toc', '--toc-depth=4', '--atx-headers'])
 
-        uri_regex = re.compile('([^-.\s\w]|_)+')
-
-        contents = ''
-        for section_key, section_content in d.items():
-            section_titles = header_regex.findall(section_content)
-            for section_title in section_titles:
-                leading_spaces = ''
-                if section_title[1] == '###':
-                    leading_spaces = '    '
-                elif section_title[1] == '####':
-                    leading_spaces = '        '
-
-                title_words = section_title[2].lstrip().split(' ')
-                section_number = title_words.pop(0)  # get rid of leading #.#
-                title = ' '.join(title_words)
-                uri = '-'.join(
-                    [uri_regex.sub('', word) for word in title_words]).lower()
-                uri = uri.replace('--', '-').replace('.', '-')
-                contents += f'{leading_spaces}{section_number} [{title}]' \
-                    f'(#{uri})  \n'
-
-        return contents
+        self.__documentation['content'] = doc_title + documentation
