@@ -1,9 +1,7 @@
-from string import Template
-
 from web3 import Web3
-from wrkchain.documentation.sections.doc_section import DocSection
 
-TESTNET_FAUCET_URL = 'http://52.14.173.249/sendtx?to='
+from wrkchain import constants
+from wrkchain.documentation.sections.doc_section import DocSection
 
 
 class SectionSetup(DocSection):
@@ -33,11 +31,8 @@ class SectionSetup(DocSection):
         return self.get_contents()
 
     def __fund(self):
-        fund_md = f'{self.template_dir()}/sub/fund/' \
-            f'{self.__network}.md'
-        fund_template_path = self.root_dir / fund_md
-        fund_template = fund_template_path.read_text()
-        t = Template(fund_template)
+        md_file = f'sub/fund/{self.__network}.md'
+        t = self.load_sub_section_template(md_file)
 
         if self.__network == 'testnet':
             fund_content = self.__fund_testnet(t)
@@ -51,25 +46,23 @@ class SectionSetup(DocSection):
     def __fund_testnet(self, t):
         faucet_urls = ''
         for address in self.__oracle_addresses:
-            faucet_urls += f'<{TESTNET_FAUCET_URL}{address}>  \n'
+            faucet_urls += f'<{constants.TESTNET_FAUCET_URL}{address}>  \n'
         fund_content = t.substitute({'__FAUCET_URLS___': faucet_urls})
 
         return fund_content
 
     def __fund_mainnet(self, t):
         d = {
-            '__ORACLE_ADDRESSES__': '\n'.join(self.__oracle_addresses)
+            '__ORACLE_ADDRESSES__': '\n'.join(self.__oracle_addresses),
+            '__MAINNET_UND_FUND_URL__': constants.MAINNET_UND_FUND_URL
         }
         fund_content = t.substitute(d)
 
         return fund_content
 
     def __deply_contract(self):
-        deploy_md = f'{self.template_dir()}/sub/' \
-            f'deploy_wrkchain_root_contract/{self.__network}.md'
-        deploy_template_path = self.root_dir / deploy_md
-        deploy_template = deploy_template_path.read_text()
-        t = Template(deploy_template)
+        md_file = f'sub/deploy_wrkchain_root_contract/{self.__network}.md'
+        t = self.load_sub_section_template(md_file)
 
         if self.__network == 'testnet':
             deploy_content = self.__deply_contract_testnet(t)

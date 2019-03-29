@@ -1,8 +1,8 @@
 
 ### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Appendix 3: WRKChain Block Validator
 
-Unification Foundation has released a simple WRKChain Validator application, which
-can be downloaded and run on any computer:
+Unification Foundation has released a simple WRKChain Validator application, 
+which can be downloaded and run on any computer:
 
 ```bash
 git clone https://github.com/unification-com/wrkchain-validator

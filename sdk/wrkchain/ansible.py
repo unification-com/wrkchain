@@ -4,6 +4,7 @@ from shutil import copy
 
 from jinja2 import DebugUndefined, Environment, FileSystemLoader
 
+from wrkchain.constants import GO_VERSION
 from wrkchain.utils import template_root
 
 
@@ -101,9 +102,9 @@ def template_map(source: Path, target: Path, maps: dict):
             copy(str(path), str(dest))
 
 
-def transform_to_node_map(workchain_cfg):
+def transform_to_node_map(wrkchain_cfg):
     ret = {}
-    for node in workchain_cfg['nodes']:
+    for node in wrkchain_cfg['nodes']:
         ret[node['name']] = node
     return ret
 
@@ -138,21 +139,22 @@ def generate_ansible(build_dir, config):
     build_root = Path(build_dir)
     ansible_dir = build_root / 'ansible'
 
-    workchain_cfg = config['wrkchain']
-    bootnode_cfg = workchain_cfg['bootnode']
+    wrkchain_cfg = config['wrkchain']
+    bootnode_cfg = wrkchain_cfg['bootnode']
 
     bootnode = Bootnode(bootnode_cfg)
     custom_roles = ['bash']
-    validator_builder = Validators(workchain_cfg['nodes'], custom_roles)
+    validator_builder = Validators(wrkchain_cfg['nodes'], custom_roles)
 
     d = {
+        'roles/ethereum/tasks/main.yml': {'go_version': GO_VERSION},
         'wrkchain-bootnode.yml': bootnode,
         'wrkchain-node.yml': validator_builder,
-        'Vagrantfile': workchain_cfg
+        'Vagrantfile': wrkchain_cfg
     }
     template_map(template_root() / 'ansible', ansible_dir, d)
     process_custom_roles(template_root(), ansible_dir,
-                         transform_to_node_map(workchain_cfg))
+                         transform_to_node_map(wrkchain_cfg))
 
     # Post Processing
     bootnode.link_bootnode_key(build_root)

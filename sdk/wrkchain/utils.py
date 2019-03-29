@@ -78,3 +78,25 @@ def dir_tree(directory, max_depth=1):
             else:
                 tree += f'{spacer}+ {path.name}\n'
     return tree
+
+
+def dict_key_exists(element, *keys):
+    """
+        Check if *keys (nested) exists in `element` (dict)
+        :param element: dict to check.
+        :param *keys: key nest
+        :return: bool
+    """
+    if type(element) is not dict:
+        raise AttributeError('keys_exists() expects dict as first argument.')
+    if len(keys) == 0:
+        raise AttributeError(
+            'keys_exists() expects at least two arguments, one given.')
+
+    _element = element
+    for key in keys:
+        try:
+            _element = _element[key]
+        except KeyError:
+            return False
+    return True

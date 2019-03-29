@@ -8,7 +8,7 @@ fi
 ll='ls -la'
 
 export GOROOT="/usr/local/go"
-export GOPATH="/home/vagrant/.go"
+export GOPATH="/home/{{ ansible_user }}/.go"
 
 export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
 

@@ -1,5 +1,3 @@
-import os
-
 from wrkchain.documentation.sections.doc_section import DocSection
 from wrkchain.utils import dir_tree
 

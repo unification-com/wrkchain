@@ -1,4 +1,4 @@
 
-You can connect to your WRKChain network using the following Web3 Provider URLs:
+$__CONFIGURED_JSON_RPC_NODES__
 
-$__JSON_RPC_URLS__
+$__RUNNING_LOCAL_JSON_RPC_NODE__

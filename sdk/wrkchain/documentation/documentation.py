@@ -106,11 +106,13 @@ class WRKChainDocumentation:
             html_template_path = root / 'templates/docs/html/index.html'
             html_template = html_template_path.read_text()
 
-            css_template_path = root / 'templates/docs/html/bare.min.css'
+            css_template_path = root / \
+                'templates/docs/html/github-markdown.css'
 
             html_body = pypandoc.convert_text(
                 self.__documentation['content'],
-                'html', format='md')
+                'html',
+                format='markdown_github+lists_without_preceding_blankline')
             t = Template(html_template)
 
             data = {
@@ -154,9 +156,9 @@ class WRKChainDocumentation:
             for section_title in section_titles:
                 leading_spaces = ''
                 if section_title[1] == '###':
-                    leading_spaces = '  '
-                elif section_title[1] == '####':
                     leading_spaces = '    '
+                elif section_title[1] == '####':
+                    leading_spaces = '        '
 
                 title_words = section_title[2].lstrip().split(' ')
                 section_number = title_words.pop(0)  # get rid of leading #.#

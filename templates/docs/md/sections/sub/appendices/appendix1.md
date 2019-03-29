@@ -1,7 +1,7 @@
 
 ### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Appendix 1: Docker Test-net
 
-A Docker composition is generated to support the testing of the workchain.
+A Docker composition is generated to support the testing of the WRKChain.
 
 From the root of the repository, the composition can be brought up with:
 ```bash
