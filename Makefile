@@ -26,6 +26,7 @@ info:
 	@echo "ROOT_DIR      : $(ROOT_DIR)"
 	@echo "BUILD_DIR     : $(BUILD_DIR)"
 	@echo "HOST_UID      : $(HOST_UID)"
+	@echo "HOST_GID      : $(HOST_GID)"
 
 # Remove generated files and build env
 clean:
