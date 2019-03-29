@@ -11,6 +11,8 @@ RUN apt-get update && \
 WORKDIR "/root"
 
 ARG GO_VERSION
+ARG PRIVATE_KEY
+ARG WALLET_PASS
 
 RUN wget https://dl.google.com/go/go1.$GO_VERSION.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf go1.$GO_VERSION.linux-amd64.tar.gz && \
@@ -23,9 +25,6 @@ ENV PATH="/usr/local/go/bin:${PATH}"
 
 RUN go get github.com/ethereum/go-ethereum
 RUN go install github.com/ethereum/go-ethereum/cmd/geth
-
-ARG WALLET_PASS
-ARG PRIVATE_KEY
 
 ADD build/genesis.json /root/assets/genesis.json
 COPY build/node_keys /root/node_keys
