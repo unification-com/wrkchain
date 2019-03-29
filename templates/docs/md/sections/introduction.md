@@ -20,7 +20,7 @@ This documentation uses the Unification public JSON RPC Node
 any interaction with Unification's Mainchain `$__MAINCHAIN_NETWORK__`. To set
 up your own local JSON RPC node (the preferred method for interacting
 with Mainchain), please see 
-[Appendix 5: Setting up a local Mainchain JSON RPC Node](#appendix-5-setting-up-a-local-mainchain-json-rpc-node).
+[Appendix 5: Setting up a local Mainchain JSON RPC Node](#appendix-5-setting-up-a-local-mainchain-testnet-json-rpc-node).
 
 To use your own local JSON RPC node follow the instructions in Appendix 5,
  then replace any instance of 
