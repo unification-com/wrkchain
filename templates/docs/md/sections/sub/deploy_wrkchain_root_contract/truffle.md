@@ -1,5 +1,5 @@
 
-#### $__SECTION_NUMBER__.2.$__SUB_SECTION_NUMBER__ Using Truffle
+### $__SECTION_NUMBER__.2.$__SUB_SECTION_NUMBER__ Using Truffle
 
 Clone the WRKChain Root smart contract repo into a suitable directory:
 

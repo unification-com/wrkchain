@@ -1,4 +1,5 @@
-### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Golang
+
+## $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Golang
 
 The recommended way to install many of the packages used in this SDK
 is to first install Go, then use `go get`.

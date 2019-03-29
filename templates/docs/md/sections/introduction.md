@@ -28,14 +28,14 @@ To use your own local JSON RPC node follow the instructions in Appendix 5,
 **http://localhost:8551**
 
 
-### $__SECTION_NUMBER__.1 About your WRKChain
+## $__SECTION_NUMBER__.1 About your WRKChain
 
 **Your WRKChain Network ID:** $__WRKCHAIN_NETWORK_ID__  
 **This configuration is for:** $__MAINCHAIN_NETWORK__  
 **Your base blockchain:** $__BASE_CHAIN__  
 **Your Consensus algorithm:** $__CONSENSUS__
 
-#### $__SECTION_NUMBER__.1.1 Generated Files
+### $__SECTION_NUMBER__.1.1 Generated Files
 
 The `build` directory contains everything you need to get a WRKChain running:
 

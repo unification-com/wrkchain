@@ -1,5 +1,5 @@
 
-### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Geth (go-ethereum)
+## $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Geth (go-ethereum)
 
 Fetch the `go-ethereum` codebase:
 

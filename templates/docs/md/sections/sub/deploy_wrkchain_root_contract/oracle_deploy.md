@@ -1,5 +1,5 @@
 
-#### $__SECTION_NUMBER__.2.$__SUB_SECTION_NUMBER__ WRKChain Oracle Deploy
+### $__SECTION_NUMBER__.2.$__SUB_SECTION_NUMBER__ WRKChain Oracle Deploy
 
 The WRKChain Oracle contains a pre-compiled version of the WRKChain Root smart
 contract, which can be easily be deployed. On _**one**_ of the hosts

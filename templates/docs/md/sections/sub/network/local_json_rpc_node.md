@@ -1,4 +1,4 @@
-### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Running a local WRKChain JSON RPC Node
+## $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Running a local WRKChain JSON RPC Node
 
 It is also possible to install and run a local JSON RPC node, to which you can send
 transactions and queries for your WRKChain. This is the preferred method, since

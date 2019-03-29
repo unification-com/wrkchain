@@ -1,8 +1,3 @@
-$__DOCUMENTATION_TITLE__
-
-## Contents
-
-$__CONTENTS__ 
 
 $__SECTION_INTRODUCTION__
 

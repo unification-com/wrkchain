@@ -1,5 +1,5 @@
 
-### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Appendix 1: Docker Test-net
+## $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Appendix 1: Docker Test-net
 
 A Docker composition is generated to support the testing of the WRKChain.
 

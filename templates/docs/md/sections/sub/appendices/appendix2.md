@@ -1,5 +1,5 @@
 
-### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Appendix 2: Production Deployment via Ansible
+## $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Appendix 2: Production Deployment via Ansible
 
 Ansible is an IT automation framework supported by RedHat. To help deploy a 
 production WRKChain, Ansible scripts also generated and deposited into the 
@@ -13,7 +13,7 @@ Instructions how to set up and use Ansible can be obtained here:
 These scripts can optionally be tested with Vagrant, and then deployed to 
 production machines.
 
-#### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__.1 Vagrant Testing
+### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__.1 Vagrant Testing
 
 Testing the Ansible script via Vagrant can simply be started by:
 
@@ -25,7 +25,7 @@ vagrant up
 Instruction how to set up Vagrant can be found here:
 <https://www.vagrantup.com/intro/index.html>
 
-#### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__.2 Production Deployment
+### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__.2 Production Deployment
 
 Add each of the node names to `/etc/ansible/hosts`
 

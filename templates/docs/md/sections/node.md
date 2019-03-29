@@ -1,4 +1,4 @@
-### $__SECTION_NUMBER__.$__NODE_NUM__ Node $__NODE_NUM__: $__NODE_TITLE__: $__NODE_IP__
+## $__SECTION_NUMBER__.$__NODE_NUM__ Node $__NODE_NUM__: $__NODE_TITLE__: $__NODE_IP__
 
 **Node Type:** $__NODE_TYPE__  
 **Node IP:** $__NODE_IP__  
