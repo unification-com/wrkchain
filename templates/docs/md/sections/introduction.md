@@ -5,11 +5,11 @@ $__TESTNET_WARNING__
 To Run your WRKChain, you will need to follow the steps below. Briefly, you
 will need to:
 
-1. Fund the public addresses used to write to your WRKChain Root smart 
+1. Install the required node software on each of the hosts that will run
+your WRKChain network 
+2. Fund the public addresses used to write to your WRKChain Root smart 
 contract with UND  
-2. Deploy the WRKCHain Root smart contract  
-3. Install the required node software on each of the hosts that will run
-your WRKChain network  
+3. Deploy the WRKCHain Root smart contract   
 4. Run the Nodes  
 5. Run the WRKCHain Oracle software
 
