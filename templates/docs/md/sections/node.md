@@ -13,15 +13,17 @@ $__COPY_STATIC_FILES__
 
 **Initialising the Node**
 
-The first time you run the node, you will need to initialise it by running
-the following:
+The first time you run the node, you will need to initialise it by both
+initialising the genesis block and creating a wallet file:
 
 **Note:** this only needs to be run _once_.
 
+First, initialise the genesis block:
 ```bash
 $$GOPATH/bin/geth init ~/.ethereum/genesis.json
 ```
 
+Next, create a new wallet file:
 ```bash
 export PRIVATE_KEY="PRIVATE_KEY_FOR_$__EV_PUBLIC_ADDRESS__"
 
@@ -33,7 +35,8 @@ rm ~/.privatekey
 
 The `geth account import` command will create a new wallet file in `~/.ethereum`,
 locking it with the value input for `YOUR_WALLET_PASSWORD`. Set a secure password,
-and remember it for the next step.
+and remember it for the next step. Remember to delete the `.privatekey` file
+from the file system after creating the wallet.
 
 **Running the Node**
 
