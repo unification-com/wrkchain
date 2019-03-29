@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: clean help info init-prepare sdk
+.PHONY: clean help info init-prepare sdk test
 
 # Set some variables
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
@@ -15,6 +15,9 @@ sdk:
 	@mkdir -p `pwd`/$(BUILD_DIR)
 	docker build -f Docker/sdk/sdk.Dockerfile --build-arg HOST_UID=$(HOST_UID) --build-arg HOST_GID=$(HOST_GID) -t sdk .
 	docker run -v `pwd`/$(BUILD_DIR):/home/sdkuser/build --env HOST_UID=$(HOST_UID) --env HOST_BUILD_DIR=$(BUILD_DIR) sdk
+
+test:
+	@cd sdk && py.test tests
 
 init-prepare:
 	$(MAKE) check-config
