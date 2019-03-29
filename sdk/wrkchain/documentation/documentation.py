@@ -39,13 +39,13 @@ class WRKChainDocumentation:
                 'content': '',
                 'title': 'Introduction'
             },
-            '__SECTION_SETUP__': {
-                'content': '',
-                'title': 'Setup'
-            },
             '__SECTION_INSTALLATION__': {
                 'content': '',
                 'title': 'Installation'
+            },
+            '__SECTION_SETUP__': {
+                'content': '',
+                'title': 'Setup'
             },
             '__SECTION_BOOTNODE__': {
                 'content': '',
