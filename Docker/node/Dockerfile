@@ -9,10 +9,12 @@ RUN apt-get update && \
         wget
 
 WORKDIR "/root"
+
 ARG GO_VERSION
 
 RUN wget https://dl.google.com/go/go1.$GO_VERSION.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf go1.$GO_VERSION.linux-amd64.tar.gz && \
+    rm go1.$GO_VERSION.linux-amd64.tar.gz && \
     mkdir ~/.go
 
 ENV GOPATH="/root/.go"
