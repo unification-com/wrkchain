@@ -9,7 +9,7 @@
     GOROOT: /usr/local/go
     GOPATH: /home/{{ ansible_user }}/.go
 
-- command: /usr/local/go/bin/go get -d github.com/unification-com/oracle
+- command: /usr/local/go/bin/go get github.com/unification-com/oracle
   args:
     creates: /home/{{ ansible_user }}/.go/src/github.com/unification-com/oracle
   environment:

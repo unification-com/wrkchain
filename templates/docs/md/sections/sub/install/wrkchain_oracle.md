@@ -7,5 +7,5 @@ $__ASSIGNED_ORACLE_HOSTS__
 Install the WRKChain Oracle software:
 
 ```bash
-go get -d github.com/unification-com/oracle
+go get github.com/unification-com/oracle
 ```
