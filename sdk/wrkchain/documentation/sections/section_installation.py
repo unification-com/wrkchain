@@ -85,8 +85,27 @@ class SectionInstallation(DocSection):
 
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
-             '__SUB_SECTION_NUMBER__': self.__sub_section_number})
+             '__SUB_SECTION_NUMBER__': self.__sub_section_number,
+             '__ASSIGNED_ORACLE_HOSTS__': self.__assigned_oracle_hosts()
+             })
         self.__sub_section_number += 1
+        return contents
+
+    def __assigned_oracle_hosts(self):
+        ip_col_len = 17
+        contents = '| Host IP         | ' \
+                   'Public Address                             |\n' \
+                   '|-----------------|' \
+                   '--------------------------------------------|\n'
+
+        for node in self.__nodes:
+            if node['write_to_oracle']:
+                ip = node['ip']
+                public_address = node['address']
+                ip_len = len(ip)
+                ip_pad = ip_col_len - ip_len - 1
+                contents += f'| {ip}{" " * ip_pad}| {public_address} |\n'
+
         return contents
 
 
