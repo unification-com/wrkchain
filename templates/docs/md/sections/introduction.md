@@ -8,8 +8,8 @@ will need to:
 1. Fund the public addresses used to write to your WRKChain Root smart 
 contract with UND  
 2. Deploy the WRKCHain Root smart contract  
-3. Install the required node software on each of the computers that will run
-your WRKCHain network  
+3. Install the required node software on each of the hosts that will run
+your WRKChain network  
 4. Run the Nodes  
 5. Run the WRKCHain Oracle software
 

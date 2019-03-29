@@ -2,7 +2,7 @@
 
 It is also possible to install and run a local JSON RPC node, to which you can send
 transactions and queries for your WRKChain. This is the preferred method, since
-it is more secure, and is only available to the computer running the node.
+it is more secure, and is only available to the host running the node.
 
 **Install geth**
 

@@ -6,7 +6,7 @@
 
 **Copying the required files**
 
-Copy the following files to the computer you will be running "**$__NODE_TITLE__**"
+Copy the following files to the host you will be running "**$__NODE_TITLE__**"
 
 1. `$__BUILD_DIR__/genesis.json` to `~/.ethereum/genesis.json`
 $__COPY_STATIC_FILES__
