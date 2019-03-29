@@ -9,11 +9,11 @@ from shutil import rmtree, copyfile
 from wrkchain.bootnode import BootnodeKey, BootnodeNotFoundException
 from wrkchain.composer import generate
 from wrkchain.config import (
-    WRKChainConfig, MissingConfigOverrideException, InvalidOverrideException)
+    InvalidOverrideException, MissingConfigOverrideException, WRKChainConfig)
 from wrkchain.documentation.documentation import WRKChainDocumentation
 from wrkchain.genesis import build_genesis
 from wrkchain.mainchain import UndMainchain
-from wrkchain.utils import write_build_file, get_oracle_addresses, repo_root
+from wrkchain.utils import get_oracle_addresses, repo_root, write_build_file
 
 from wrkchain.ansible import generate_ansible
 

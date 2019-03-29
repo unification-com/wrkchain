@@ -1,5 +1,5 @@
 import json
-import re
+
 from string import Template
 
 import pypandoc

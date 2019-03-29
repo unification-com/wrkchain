@@ -1,22 +1,23 @@
-from wrkchain.documentation.sections.section_factory import SectionFactory
+from wrkchain.documentation.sections.section_appendices \
+    import SectionAppendicesBuilder
 from wrkchain.documentation.sections.section_bootnode \
     import SectionBootNodesBuilder
+from wrkchain.documentation.sections.section_factory import SectionFactory
+from wrkchain.documentation.sections.section_glossary \
+    import SectionGlossaryBuilder
 from wrkchain.documentation.sections.section_installation \
     import SectionInstallationBuilder
+from wrkchain.documentation.sections.section_introduction \
+    import SectionIntroductionBuilder
 from wrkchain.documentation.sections.section_network \
     import SectionNetworkBuilder
+from wrkchain.documentation.sections.section_nodes \
+    import SectionNodesBuilder
 from wrkchain.documentation.sections.section_oracle \
     import SectionOracleBuilder
 from wrkchain.documentation.sections.section_setup \
     import SectionSetupBuilder
-from wrkchain.documentation.sections.section_nodes \
-    import SectionNodesBuilder
-from wrkchain.documentation.sections.section_introduction \
-    import SectionIntroductionBuilder
-from wrkchain.documentation.sections.section_glossary \
-    import SectionGlossaryBuilder
-from wrkchain.documentation.sections.section_appendices \
-    import SectionAppendicesBuilder
+
 
 section_factory = SectionFactory()
 section_factory.register_builder(
