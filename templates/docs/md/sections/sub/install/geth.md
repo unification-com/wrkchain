@@ -1,32 +1,7 @@
 
-### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Go and Geth
+### $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Geth (go-ethereum)
 
-The recommended way to install geth is installing Go and then installing Geth
-using Go.
-
-First, install Go version $__GO_VERSION__:
-
-```bash
-wget https://dl.google.com/go/go1.$__GO_VERSION__.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.$__GO_VERSION__.linux-amd64.tar.gz
-mkdir ~/.go
-```
-
-Then set your GOPATH and GOROOT
-
-```bash
-export GOPATH="$$HOME/.go"
-export GOROOT="/usr/local/go"
-export PATH=$$PATH:$$GOROOT/bin:$$GOPATH/bin
-```
-
-**Note:** it's advisable to permanently set these environment variables
- in your shell's `rc`, for example `~/.bashrc`.
-
-The latest documentation regarding installing Go can be found here
-<https://golang.org/doc/install>
-
-Next, fetch the go-ethereum codebase:
+Fetch the `go-ethereum` codebase:
 
 `go get -d github.com/ethereum/go-ethereum`
 

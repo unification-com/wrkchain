@@ -18,6 +18,8 @@ class SectionInstallation(DocSection):
         install_node = ''
         install_bootnode = ''
 
+        install_golang = self.__install_golang()
+
         if self.__base == 'geth':
             install_node = self.__install_geth()
             install_bootnode = self.__install_geth_bootnode()
@@ -27,6 +29,7 @@ class SectionInstallation(DocSection):
             node_computers += f'**{node["title"]}**: {node["ip"]}  \n'
         
         d = {
+            '__INSTALL_GO__': install_golang,
             '__INSTALL_NODES__': install_node,
             '__INSTALL_BOOTNODE__': install_bootnode,
             '__INSTALL_WRKCHAIN_ORACLE__': self.__install_wrkchain_oracle(),
@@ -35,14 +38,26 @@ class SectionInstallation(DocSection):
         self.add_content(d, append=False)
         return self.get_contents()
 
-    def __install_geth(self):
-        md_file = 'sub/install/geth.md'
+    def __install_golang(self):
+        md_file = 'sub/install/go.md'
         t = self.load_sub_section_template(md_file)
 
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
              '__SUB_SECTION_NUMBER__': self.__sub_section_number,
              '__GO_VERSION__': constants.GO_VERSION
+             }
+        )
+        self.__sub_section_number += 1
+        return contents
+
+    def __install_geth(self):
+        md_file = 'sub/install/geth.md'
+        t = self.load_sub_section_template(md_file)
+
+        contents = t.substitute(
+            {'__SECTION_NUMBER__': self.__section_number,
+             '__SUB_SECTION_NUMBER__': self.__sub_section_number
              }
         )
         self.__sub_section_number += 1
