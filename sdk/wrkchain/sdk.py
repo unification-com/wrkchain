@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 from shutil import rmtree, copyfile
 
+from wrkchain.ansible_generator import generate_ansible
 from wrkchain.bootnode import BootnodeKey, BootnodeNotFoundException
 from wrkchain.composer import generate
 from wrkchain.config import (
@@ -15,7 +16,6 @@ from wrkchain.genesis import build_genesis
 from wrkchain.mainchain import UndMainchain
 from wrkchain.utils import get_oracle_addresses, repo_root, write_build_file
 
-from wrkchain.ansible import generate_ansible
 
 log = logging.getLogger(__name__)
 
