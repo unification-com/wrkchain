@@ -2,6 +2,11 @@
 - hosts: {{ validator.name }}
   gather_facts: no
 
+  vars:
+{%- for v in vars %}
+    {{ v }}
+{%- endfor %}
+
   roles:
     - base
     - ethereum
