@@ -2,11 +2,9 @@
 set -e
 
 CURRENT_UID=${HOST_UID:-9999}
-CURRENT_GID=${HOST_UID:-9999}
 
 # Notify user about the UID selected
 echo "Current UID : $CURRENT_UID"
-echo "Current GID : $CURRENT_GID"
 echo "Host build DIR : $HOST_BUILD_DIR"
 # Set "HOME" ENV variable for user's home directory
 export HOME=/home/sdkuser

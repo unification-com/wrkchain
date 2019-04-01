@@ -4,7 +4,6 @@
 # Set some variables
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 HOST_UID=$(shell id -u)
-HOST_GID=$(shell id -g)
 
 ifndef BUILD_DIR
     BUILD_DIR:=build
@@ -13,7 +12,7 @@ endif
 sdk:
 	$(MAKE) init-prepare
 	@mkdir -p `pwd`/$(BUILD_DIR)
-	docker build -f Docker/sdk/sdk.Dockerfile --build-arg HOST_UID=$(HOST_UID) --build-arg HOST_GID=$(HOST_GID) -t sdk .
+	docker build -f Docker/sdk/sdk.Dockerfile --build-arg HOST_UID=$(HOST_UID) -t sdk .
 	docker run -v `pwd`/$(BUILD_DIR):/home/sdkuser/build --env HOST_UID=$(HOST_UID) --env HOST_BUILD_DIR=$(BUILD_DIR) sdk
 
 test:
@@ -29,7 +28,6 @@ info:
 	@echo "ROOT_DIR      : $(ROOT_DIR)"
 	@echo "BUILD_DIR     : $(BUILD_DIR)"
 	@echo "HOST_UID      : $(HOST_UID)"
-	@echo "HOST_GID      : $(HOST_GID)"
 
 # Remove generated files and build env
 clean:

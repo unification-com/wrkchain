@@ -2,7 +2,7 @@ FROM ubuntu:xenial
 
 ARG HOST_UID
 ARG HOST_GID
-RUN groupadd -g $HOST_GID -r sdkuser && useradd -r -u $HOST_UID -g sdkuser sdkuser
+RUN groupadd -r sdkuser && useradd -r -u $HOST_UID -g sdkuser sdkuser
 
 RUN apt-get update && \
     apt-get -y install \
