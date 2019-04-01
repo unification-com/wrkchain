@@ -2,10 +2,15 @@ from os import path, symlink, unlink
 from pathlib import Path
 from shutil import copy
 
+from ansible.parsing.dataloader import DataLoader
+from ansible.parsing.vault import FileVaultSecret, VaultLib
 from jinja2 import DebugUndefined, Environment, FileSystemLoader
 
 from wrkchain.constants import GO_VERSION
 from wrkchain.utils import template_root
+
+
+PASSWORD_FILE = '.passwordfile'
 
 
 def relative_symlink(build_root, src_dir: str, dst_dir: str, filename):
@@ -35,8 +40,30 @@ def relative_symlink(build_root, src_dir: str, dst_dir: str, filename):
     symlink(src, dst)
 
 
+def encrypt_string(passwordfile, var_name, plain_text):
+    loader = DataLoader()
+    secret = FileVaultSecret(
+        filename=passwordfile, encoding='utf8', loader=loader)
+    secret.load()
+
+    encrypt_vault_id = 'default'
+    encrypt_secret = secret
+
+    vault_secrets = [(encrypt_vault_id, encrypt_secret)]
+
+    vault = VaultLib(vault_secrets)
+    b_vaulttext = vault.encrypt(
+        plain_text, secret=secret, vault_id=encrypt_vault_id)
+    code = b_vaulttext.decode()
+
+    code = code.replace("\n", "\n      ")
+
+    return f"{var_name}: !vault |\n      {code}"
+
+
 class Validators:
-    def __init__(self, context, custom_roles):
+    def __init__(self, build_dir, context, custom_roles):
+        self.build_dir = build_dir
         self.context = context
         self.custom_roles = custom_roles
 
@@ -49,7 +76,12 @@ class Validators:
             base, ext = str(relative).split('.')
             dest = target / f'{base}-{index + 1}.{ext}'
 
+            ts = [("private_key", validator['private_key'])]
+            password_file = self.build_dir / 'ansible' / PASSWORD_FILE
+
             eff = {
+                'vars': [
+                    encrypt_string(password_file, x[0], x[1]) for x in ts],
                 'roles': [self.role_name(x, validator['name']) for x in
                           self.custom_roles],
                 'validator': validator
@@ -144,7 +176,8 @@ def generate_ansible(build_dir, config):
 
     bootnode = Bootnode(bootnode_cfg)
     custom_roles = ['bash']
-    validator_builder = Validators(wrkchain_cfg['nodes'], custom_roles)
+    validator_builder = Validators(
+        build_root, wrkchain_cfg['nodes'], custom_roles)
 
     d = {
         'roles/ethereum/tasks/main.yml': {'go_version': GO_VERSION},
