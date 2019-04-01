@@ -3,6 +3,8 @@ relevant software.
 
 $__NODE_COMPUTERS__
 
+$__INSTALL_GO__
+
 $__INSTALL_NODES__
 
 $__INSTALL_BOOTNODE__

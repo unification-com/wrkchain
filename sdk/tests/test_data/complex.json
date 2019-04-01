@@ -102,7 +102,7 @@
       }
     ],
     "coin":{
-      "symbol":"COIN",
+      "symbol":"CPLX",
       "prefund":[
         {
           "address":"0xfBf151E90436beC94DA59D0D4f434C9Ea6CC40Cd",

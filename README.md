@@ -6,20 +6,24 @@ WRKChains are rooted on Mainchain with their own WRKChainRoot smart contract, an
 WRKChain Oracle, which periodically reads the WRKChain's block headers, and writes the hashes/merkle roots
 to its WRKChainRoot smart contract on Mainchain.
 
-The WRKChain SDK will accept a configurable JSON, and generate for your WRKChain:
+The WRKChain SDK will accept a configurable JSON, and generate for your 
+WRKChain:
 
-- The genesis.json Genesis block
-- A Docker Composition for testing
-- Full documentation on how to deploy in a production environment
+- The WRKChain's `genesis.json` Genesis block
+- Node keys and associated files
+- A Docker Composition for testing purposes
+- An Ansible configuration to aid production deployment
+- Full customised documentation on how to deploy and run your WRKChain
 
 ## Configuring a WRKChain
 
-See the [WRKChain SDK Wiki](https://github.com/unification-com/wrkchain/wiki) for full documentation and configuration options
+See the [WRKChain SDK Wiki](https://github.com/unification-com/wrkchain/wiki) 
+for full documentation and configuration options
 
-## Running a WRKChain
+## Generating a WRKChain
 
-Once the configuration options have been set and saved in a `config.json`, the WRKChain environment can be 
-generated.
+Once the configuration options have been set and saved in a `config.json`, 
+the WRKChain environment can be generated using one of the following methods.
 
 ### Docker
 
@@ -39,7 +43,7 @@ Edit as `wrkchain.json` required, then run:
 make sdk
 ```
 
-This will generate everything required in the `build` directory
+This will generate everything required in the `build` directory.
 
 ### Running the Python script directly
 
@@ -65,7 +69,6 @@ pip install -r requirements.txt
 Once the dependencies are satisfied, the SDK can be run as follows:
 
 ```bash
-mkdir build
 cd sdk
 python -m wrkchain.sdk generate_wrkchain /path/to/config.json ../build
 ```

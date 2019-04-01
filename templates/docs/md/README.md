@@ -1,23 +1,7 @@
-$__DOCUMENTATION_TITLE__
+WRKChain SDK
+============
 
-## Contents
+This directory contains everything required to get started running a WRKChain
 
-$__CONTENTS__ 
-
-$__SECTION_INTRODUCTION__
-
-$__SECTION_SETUP__
-
-$__SECTION_INSTALLATION__
-
-$__SECTION_BOOTNODE__
-
-$__SECTION_NODES__
-
-$__SECTION_ORACLE__
-
-$__SECTION_NETWORK__
-
-$__SECTION_APPENDICES__
-
-$__SECTION_GLOSSARY__
+Please refer to either the generated `documentation.html` or `documentation.md` 
+located in this directory for further information on running your WRKChain.

@@ -29,7 +29,7 @@ class DocSection:
         return self.__template_dir
 
     def set_title(self, section_number, title):
-        self.title = f'## {section_number}. {title}'
+        self.title = f'# {section_number}. {title}'
 
     def add_content(self, d, append=True):
         # inject section number

@@ -1,5 +1,5 @@
 import json
-import re
+
 from string import Template
 
 import pypandoc
@@ -39,13 +39,13 @@ class WRKChainDocumentation:
                 'content': '',
                 'title': 'Introduction'
             },
-            '__SECTION_SETUP__': {
-                'content': '',
-                'title': 'Setup'
-            },
             '__SECTION_INSTALLATION__': {
                 'content': '',
                 'title': 'Installation'
+            },
+            '__SECTION_SETUP__': {
+                'content': '',
+                'title': 'Setup'
             },
             '__SECTION_BOOTNODE__': {
                 'content': '',
@@ -74,7 +74,7 @@ class WRKChainDocumentation:
         }
 
         self.__documentation = {
-            'path': 'templates/docs/md/README.md',
+            'path': 'templates/docs/md/documentation.md',
             'content': '',
             'template': None
         }
@@ -94,7 +94,7 @@ class WRKChainDocumentation:
                     section_contents
                 section_number += 1
 
-        self.__generate_readme()
+        self.__generate_documentation()
 
     def get_md(self):
         return self.__documentation['content']
@@ -112,7 +112,9 @@ class WRKChainDocumentation:
             html_body = pypandoc.convert_text(
                 self.__documentation['content'],
                 'html',
-                format='markdown_github+lists_without_preceding_blankline')
+                format='markdown',
+                extra_args=['--section-divs']
+            )
             t = Template(html_template)
 
             data = {
@@ -129,7 +131,7 @@ class WRKChainDocumentation:
         self.__documentation['template'] = \
             template_path.read_text()
 
-    def __generate_readme(self):
+    def __generate_documentation(self):
         template = Template(self.__documentation['template'])
         d = {}
 
@@ -137,36 +139,16 @@ class WRKChainDocumentation:
                 self.__documentation_sections.items():
             d[section_key] = section_data['content']
 
-        d['__CONTENTS__'] = self.__generate_contents(d)
-        d['__DOCUMENTATION_TITLE__'] = f'# "' \
+        doc_title = f'"' \
             f'{self.__doc_params["wrkchain_name"]}" Documentation'
+        doc_title += f'\n{"=" * len(doc_title)}\n\n' \
+            f'# Contents\n'
 
-        self.__documentation['content'] = template.substitute(d)
+        documentation_content = template.substitute(d)
 
-    @staticmethod
-    def __generate_contents(d):
-        header_regex = \
-            re.compile(r'(^|\n)(?P<level>#{1,6})(?P<header>.*?)#*(\n|$)')
+        documentation = pypandoc.convert(
+            documentation_content,
+            'md', format='md',
+            extra_args=['-s', '--toc', '--toc-depth=4', '--atx-headers'])
 
-        uri_regex = re.compile('([^-\s\w]|_)+')
-
-        contents = ''
-        for section_key, section_content in d.items():
-            section_titles = header_regex.findall(section_content)
-            for section_title in section_titles:
-                leading_spaces = ''
-                if section_title[1] == '###':
-                    leading_spaces = '    '
-                elif section_title[1] == '####':
-                    leading_spaces = '        '
-
-                title_words = section_title[2].lstrip().split(' ')
-                section_number = title_words.pop(0)  # get rid of leading #.#
-                title = ' '.join(title_words)
-                uri = '-'.join(
-                    [uri_regex.sub('', word) for word in title_words]).lower()
-                uri = uri.replace('--', '-')
-                contents += f'{leading_spaces}{section_number} [{title}]' \
-                    f'(#{uri})  \n'
-
-        return contents
+        self.__documentation['content'] = doc_title + documentation

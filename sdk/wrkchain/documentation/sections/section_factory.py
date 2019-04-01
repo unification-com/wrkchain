@@ -1,4 +1,3 @@
-
 class SectionFactory:
     def __init__(self):
         self._builders = {}

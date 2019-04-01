@@ -2,6 +2,7 @@ import json
 import pprint
 
 from random import SystemRandom
+
 from IPy import IP
 from web3 import Web3
 
@@ -421,7 +422,7 @@ class WRKChainConfig:
     @staticmethod
     def __load_default_coin():
         coin = {
-            "symbol": "COIN",
+            "symbol": "WRK",
             "prefund": []
         }
         return coin

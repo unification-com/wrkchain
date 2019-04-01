@@ -1,8 +1,8 @@
 
-**Copy the required files**
+**Copy the required file**
 
 Copy the generated `$__BUILD_DIR__/node_keys/bootnode.key` to  `~/.ethereum/node_keys/bootnode.key` on the
-computer assigned to run the `bootnode`
+host assigned to run the `bootnode`
 
 
 **Run the bootnode**

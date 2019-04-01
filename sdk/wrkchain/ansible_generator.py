@@ -74,7 +74,7 @@ class Bootnode:
     def link_bootnode_key(self, build_root):
         if self.context['use']:
             relative_symlink(
-                build_root, 'node_keys', 'ansible/roles/node/files/',
+                build_root, 'node_keys', 'ansible/roles/bootnode/files/',
                 'bootnode.key')
 
 
