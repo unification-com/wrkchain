@@ -1,4 +1,5 @@
-Ensure the following addresses have UND on the Mainchain **`$__MAINCHAIN_NETWORK__`**,
+Ensure the following addresses have sufficient funds on your selected
+network: **$__MAINCHAIN_NETWORK_TITLE__** (See section [3. Setup](#setup)),
 since they will be used to send data to the WRKChain Root Smart Contract:
 
 ```text
