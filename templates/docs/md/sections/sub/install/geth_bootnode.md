@@ -1,5 +1,5 @@
 
-## $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Bootnode
+## $__SECTION_NUMBER__.$__SUB_SECTION_NUMBER__ Install Bootnode for WRKChain
 
 On the host designated to run your bootnode, you will need to install the 
 following software.
