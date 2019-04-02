@@ -6,12 +6,8 @@ from ansible.parsing.dataloader import DataLoader
 from ansible.parsing.vault import FileVaultSecret, VaultLib
 from jinja2 import DebugUndefined, Environment, FileSystemLoader
 
-from wrkchain.constants import GO_VERSION
+from wrkchain.constants import GO_VERSION, WALLET_PASSWORD, PASSWORD_FILE
 from wrkchain.utils import template_root
-
-
-PASSWORD_FILE = '.passwordfile'
-GETH_ACCOUNT_PASSWORD = 'password'
 
 
 def relative_symlink(build_root, src_dir: str, dst_dir: str, filename):
@@ -80,7 +76,7 @@ class Validators:
 
             ps = sorted([
                 ("private_key", validator['private_key']),
-                ("password", GETH_ACCOUNT_PASSWORD)
+                ("password", WALLET_PASSWORD)
             ])
             password_file = self.build_dir / 'ansible' / PASSWORD_FILE
 
