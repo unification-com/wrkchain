@@ -148,7 +148,7 @@ class WRKChainConfig:
         basic_default = {
             'wrkchain': {
                 'title': 'My WRKChain',
-                'oracle_write_frequency': 10,
+                'oracle_write_frequency': 3600,
                 'wrkchain_network_id': False,
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
