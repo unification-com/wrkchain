@@ -180,6 +180,10 @@ def generate_ansible(build_dir, config):
     validator_builder = Validators(
         build_root, wrkchain_cfg['nodes'], custom_roles)
 
+    # copy the password file before all else
+    password_file = template_root() / 'ansible' / PASSWORD_FILE
+    copy(str(password_file), str(ansible_dir))
+
     d = {
         'roles/ethereum/tasks/main.yml': {'go_version': GO_VERSION},
         'wrkchain-bootnode.yml': bootnode,
