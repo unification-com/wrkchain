@@ -86,6 +86,8 @@ class SectionSetup(DocSection):
         elif self.__network == 'mainnet':
             deploy_content = self.__deploy_oracle_deploy()
             deploy_content += self.__deploy_manual()
+        elif self.__network == 'eth':
+            deploy_content = self.__deploy_eth_mainnet()
         else:
             deploy_content = ''
 
@@ -162,6 +164,20 @@ class SectionSetup(DocSection):
             '__WRKCHAIN_EVS__': (', '.join('"' + item + '"' for item in
                                            self.__oracle_addresses)),
             '__GENESIS_SHA3__': genesis_sha3
+        }
+
+        self.__sub_section_number += 1
+
+        deploy_content = t.substitute(d)
+
+        return deploy_content
+
+    def __deploy_eth_mainnet(self):
+        md_file = f'sub/deploy_wrkchain_root_contract/ethereum.md'
+        t = self.load_sub_section_template(md_file)
+        d = {
+            '__SECTION_NUMBER__': self.__section_number,
+            '__SUB_SECTION_NUMBER__': self.__sub_section_number
         }
 
         self.__sub_section_number += 1
