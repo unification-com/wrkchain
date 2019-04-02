@@ -182,7 +182,10 @@ def generate_ansible(build_dir, config):
 
     # copy the password file before all else
     password_file = template_root() / 'ansible' / PASSWORD_FILE
-    copy(str(password_file), str(ansible_dir))
+    if not ansible_dir.exists():
+        ansible_dir.mkdir(parents=True)
+
+    copy(str(password_file), str(ansible_dir / PASSWORD_FILE))
 
     d = {
         'roles/ethereum/tasks/main.yml': {'go_version': GO_VERSION},
