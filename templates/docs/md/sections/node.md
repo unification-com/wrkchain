@@ -25,11 +25,10 @@ $$GOPATH/bin/geth init ~/.ethereum/genesis.json
 
 Next, create a new wallet file:
 ```bash
-export WALLET_PASSWORD="YOUR_WALLET_PASSWORD"
-
-echo "Enter the private key. CTRL-D to end"
+echo "Enter the private key for PRIVATE_KEY_FOR_$__EV_PUBLIC_ADDRESS__. CTRL-D to end"
 cp /dev/stdin  ~/.privatekey
-$$GOPATH/bin/geth account import --password $$WALLET_PASSWORD ~/.privatekey
+
+$$GOPATH/bin/geth account import ~/.privatekey
 rm ~/.privatekey
 ```
 
