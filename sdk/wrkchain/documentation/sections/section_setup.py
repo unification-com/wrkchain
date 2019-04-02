@@ -26,10 +26,17 @@ class SectionSetup(DocSection):
         d = {
             '__FUND_ORACLE_ADDRESSES__': self.__fund(),
             '__DEPLOY_WRKCHAIN_ROOT_CONTRACT__': self.__deply_contract(),
-            '__MAINCHAIN_NETWORK__': self.__network
+            '__MAINCHAIN_NETWORK__': self.__network_title()
         }
         self.add_content(d, append=False)
         return self.get_contents()
+
+    def __network_title(self):
+        if self.__network == 'eth':
+            network_title = 'Ethereum mainnet'
+        else:
+            network_title = f'UND {self.__network}'
+        return network_title
 
     def __fund(self):
         md_file = f'sub/fund/{self.__network}.md'
@@ -39,6 +46,8 @@ class SectionSetup(DocSection):
             fund_content = self.__fund_testnet(t)
         elif self.__network == 'mainnet':
             fund_content = self.__fund_mainnet(t)
+        elif self.__network == 'eth':
+            fund_content = self.__fund_eth(t)
         else:
             fund_content = ''
 
@@ -56,6 +65,14 @@ class SectionSetup(DocSection):
         d = {
             '__ORACLE_ADDRESSES__': '\n'.join(self.__oracle_addresses),
             '__MAINNET_UND_FUND_URL__': constants.MAINNET_UND_FUND_URL
+        }
+        fund_content = t.substitute(d)
+
+        return fund_content
+
+    def __fund_eth(self, t):
+        d = {
+            '__ORACLE_ADDRESSES__': '\n'.join(self.__oracle_addresses)
         }
         fund_content = t.substitute(d)
 
