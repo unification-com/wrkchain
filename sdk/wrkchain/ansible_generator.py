@@ -56,6 +56,7 @@ def encrypt_string(passwordfile, var_name, plain_text):
         plain_text, secret=secret, vault_id=encrypt_vault_id)
     code = b_vaulttext.decode()
 
+    code = code.rstrip()
     code = code.replace("\n", "\n      ")
 
     return f"{var_name}: !vault |\n      {code}"
