@@ -1,0 +1,36 @@
+---
+# Account imports
+
+- name: create node_keys directory
+  file: path=/home/{{ ansible_user }}/.ethereum/node_keys state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
+
+- name: Copy Genesis File
+  copy: src=genesis.json dest=/home/{{ ansible_user }}/.ethereum/genesis.json owner={{ ansible_user }} group={{ ansible_user }}
+
+- name: Initialize the genesis file
+  command: /home/{{ ansible_user }}/.go/bin/geth init /home/{{ ansible_user }}/.ethereum/genesis.json
+  args:
+    creates: /home/{{ ansible_user }}/.ethereum/geth/chaindata
+
+- name: Write the privatekey
+  copy: content="{{ private_key }}" dest=/home/{{ ansible_user }}/.privatekey
+  no_log: true
+
+- name: Write the password file
+  copy: content="{{ password }}" dest=/home/{{ ansible_user }}/.password
+  no_log: true
+
+- name: Import the account
+  command: /home/{{ ansible_user }}/.go/bin/geth account import --password /home/{{ ansible_user }}/.password /home/{{ ansible_user }}/.privatekey
+
+- name: Delete the privatekey
+  file:
+    state: absent
+    path: /home/{{ ansible_user }}/.privatekey
+
+- name: Delete the password file
+  file:
+    state: absent
+    path: /home/{{ ansible_user }}/.password
+
+...
