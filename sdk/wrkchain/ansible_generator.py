@@ -11,6 +11,7 @@ from wrkchain.utils import template_root
 
 
 PASSWORD_FILE = '.passwordfile'
+GETH_ACCOUNT_PASSWORD = 'password'
 
 
 def relative_symlink(build_root, src_dir: str, dst_dir: str, filename):
@@ -77,12 +78,15 @@ class Validators:
             base, ext = str(relative).split('.')
             dest = target / f'{base}-{index + 1}.{ext}'
 
-            ts = [("private_key", validator['private_key'])]
+            ps = sorted([
+                ("private_key", validator['private_key']),
+                ("password", GETH_ACCOUNT_PASSWORD)
+            ])
             password_file = self.build_dir / 'ansible' / PASSWORD_FILE
 
             eff = {
                 'vars': [
-                    encrypt_string(password_file, x[0], x[1]) for x in ts],
+                    encrypt_string(password_file, x[0], x[1]) for x in ps],
                 'roles': [self.role_name(x, validator['name']) for x in
                           self.custom_roles],
                 'validator': validator
