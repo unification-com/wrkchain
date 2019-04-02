@@ -36,7 +36,7 @@ ENV WRKCHAIN_ROOT_CONTRACT_ADDRESS=""
 ENV WRKCHAIN_ROOT_WRITE_TIMEOUT=""
 ENV WRKCHAIN_NETWORK_ID=""
 
-RUN echo "go run /root/.go/src/github.com/unification-com/oracle/oracle.go" >> /root/.bash_history && \
+RUN echo "go run /root/.go/src/github.com/unification-com/oracle/cmd/oracle/main.go" >> /root/.bash_history && \
     echo "alias ll='ls -la'" >> /root/.bashrc
 
-CMD go run /root/.go/src/github.com/unification-com/oracle/oracle.go "$WRKCHAIN_WEB3_PROVIDER_URL" "$MAINCHAIN_WEB3_PROVIDER_URL" "$PRIVATE_KEY" "$WRKCHAIN_ROOT_CONTRACT_ADDRESS" $WRKCHAIN_ROOT_WRITE_TIMEOUT $WRKCHAIN_NETWORK_ID 2>&1 | tee /root/oracle_log.txt
+CMD go run /root/.go/src/github.com/unification-com/oracle/cmd/oracle/main.go "$WRKCHAIN_WEB3_PROVIDER_URL" "$MAINCHAIN_WEB3_PROVIDER_URL" "$PRIVATE_KEY" "$WRKCHAIN_ROOT_CONTRACT_ADDRESS" $WRKCHAIN_ROOT_WRITE_TIMEOUT $WRKCHAIN_NETWORK_ID 2>&1 | tee /root/oracle_log.txt
