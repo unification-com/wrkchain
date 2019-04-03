@@ -83,8 +83,9 @@ class Validators:
             eff = {
                 'vars': [
                     encrypt_string(password_file, x[0], x[1]) for x in ps],
-                'roles': [self.role_name(x, validator['name']) for x in
+                'custom_roles': [self.role_name(x, validator['name']) for x in
                           self.custom_roles],
+                'optional_roles': ['oracle'] if validator['write_to_oracle'] else [],
                 'validator': validator
             }
             dest.write_text(template.render(eff))

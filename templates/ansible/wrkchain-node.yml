@@ -11,7 +11,10 @@
     - base
     - ethereum
     - node
-{%- for r in roles %}
+{%- for r in optional_roles %}
+    - {{ r }}
+{%- endfor %}
+{%- for r in custom_roles %}
     - {{ r }}
 {%- endfor %}
 
