@@ -10,7 +10,7 @@ First, install Unification's Mainchain software:
 
 ```bash
 go get github.com/unification-com/mainchain
-go install github.com/unification-com/mainchain/cmd/geth
+go install github.com/unification-com/mainchain/cmd/und
 ```
 
 **Initialisation**
@@ -18,7 +18,7 @@ go install github.com/unification-com/mainchain/cmd/geth
 Initialise the client with the `$__MAINCHAIN_NETWORK__`'s `genesis` block:
 
 ```bash
-geth init $$GOPATH/src/github.com/unification-com/haiku-core/native/mainchain/Docker/assets/genesis.json
+und init $$GOPATH/src/github.com/unification-com/haiku-core/native/mainchain/Docker/assets/genesis.json
 ```
 
 Copy the `$__MAINCHAIN_NETWORK__` static nodes:
@@ -40,7 +40,7 @@ cp $$GOPATH/src/github.com/unification-com/haiku-core/native/mainchain/Docker/va
 Run your local Mainchain JSON RPC Node:
 
 ```bash
-$$GOPATH/bin/geth --networkid $__MAINCHAIN_NETWORK_ID__ \
+$$GOPATH/bin/und --networkid $__MAINCHAIN_NETWORK_ID__ \
 --rpc \
 --rpcapi "eth,personal,web3" \
 --rpcport "8551" \
