@@ -6,4 +6,5 @@ Jinja2==2.10
 pypandoc==1.4
 pytest==3.5.1
 PyYAML==4.2b1
+toml==0.10.0
 web3==4.8.2
