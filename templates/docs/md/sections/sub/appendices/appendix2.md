@@ -34,8 +34,10 @@ Add name resolution to the node names. The simplest is to add mappings to
 
 Run each of the Ansible playbooks generated:
 ```bash
-ansible-playbook wrkchain-node-1.yml
+ansible-playbook -u <REMOTE_USER> wrkchain-node-1.yml
 ```
+
+For example, on a standard AWS host, the REMOTE_USER is ec2-user.
 
 Once these machines are provisioned, read the specific sections on how
 to either provision a Bootnode or a Validator Node in the previous sections.
