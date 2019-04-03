@@ -1,4 +1,4 @@
-GETH_PATH = '/bin/geth'
+from wrkchain.constants import GETH_PATH
 
 
 def generate_geth_cmd(
