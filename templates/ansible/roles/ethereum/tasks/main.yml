@@ -19,12 +19,16 @@
 
 - name: create ethereum go directory
   file: path=/home/{{ ansible_user }}/.go/src/github.com/ethereum state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
+  become_user: deploy
 
 - command: git clone https://github.com/ethereum/go-ethereum --depth 1
   args:
     chdir: /home/{{ ansible_user }}/.go/src/github.com/ethereum
     creates: /home/{{ ansible_user }}/.go/src/github.com/ethereum/go-ethereum
+  become_user: deploy
 
 - name: create node_keys
   file: path=/home/{{ ansible_user }}/.ethereum/node_keys state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
+  become_user: deploy
+
 ...
