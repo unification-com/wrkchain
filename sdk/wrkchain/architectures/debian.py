@@ -1,4 +1,4 @@
-from wrkchain.constants import GETH_PATH
+from wrkchain.constants import DEFAULT_WRKCHAIN_DATA_DIR, GETH_PATH
 
 
 def generate_geth_cmd(
@@ -15,13 +15,16 @@ def generate_geth_cmd(
         flags.append(f'--bootnodes '
                      f'"{bootnode_config["nodes"][key_prefix + "enode"]}"')
     else:
-        flags.append(f'--nodekey="{path_to}/node_keys/{node["address"]}.key"')
+        flags.append(f'--nodekey="{path_to}/{DEFAULT_WRKCHAIN_DATA_DIR}/'
+                     f'node_keys/{node["address"]}.key"')
 
     flags = flags + [
         f'--port {listen_port}',
         f'--networkid {wrkchain_id}',
         f'--syncmode=full',
-        f'--verbosity=4'
+        f'--verbosity=4',
+        f'--datadir={path_to}/{DEFAULT_WRKCHAIN_DATA_DIR}',
+        f'--identity="{node["title"]}"'
     ]
 
     if docker:
@@ -35,7 +38,7 @@ def generate_geth_cmd(
             f'--etherbase {node["address"]}',
             f'--password {wallet_password}',
             f'--mine',
-            f'--unlock {node["address"]}',
+            f'--unlock {node["address"]}'
         ]
 
     if node['rpc']:
