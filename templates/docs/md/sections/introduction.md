@@ -31,12 +31,14 @@ $__BUILD_DIR_STRUCTURE__
 ```
 
 **README.md**: Quick info  
+**ansible**: Directory containing Ansible configuration  
+**docker**: Docker specific assets for testing
+**docker-compose.yml**: Docker composition for testnet  
 **documentation.md**: Markdown version of your documentation  
 **documentation.html**: HTML version of your documentation  
 **generated_config.json**: Full generated configuration file, with your overrides, 
 which can be modified and used again with the SDK  
 **genesis.json**: Your WRKChain's `genesis` block  
-**docker-compose.yml**: Docker composition for testnet  
-**static-nodes.json**: Static nodes file, used when no `bootnode` is configured  
 **node_keys**: Directory containing your bootnode key, or keys for your static nodes  
-**ansible**: Directory containing Ansible configuration
+**ssh_keys**: SSH keys for Ansible  
+**static-nodes.json**: Static nodes file, used when no `bootnode` is configured  
