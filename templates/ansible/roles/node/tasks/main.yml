@@ -10,7 +10,7 @@
     GOPATH: /home/{{ ansible_user }}/.go
 
 - stat:
-    path: /home/{{ ansible_user }}/.ethereum/geth/chaindata/CURRENT
+    path: /home/{{ ansible_user }}/{{ wrkchain_data_dir }}/geth/chaindata/CURRENT
   register: st
 
 - name: Import accounts

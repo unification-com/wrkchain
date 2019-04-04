@@ -2,15 +2,15 @@
 # Account imports
 
 - name: create node_keys directory
-  file: path=/home/{{ ansible_user }}/.ethereum/node_keys state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
+  file: path=/home/{{ ansible_user }}/{{ wrkchain_data_dir }}/node_keys state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
 
 - name: Copy Genesis File
-  copy: src=genesis.json dest=/home/{{ ansible_user }}/.ethereum/genesis.json owner={{ ansible_user }} group={{ ansible_user }}
+  copy: src=genesis.json dest=/home/{{ ansible_user }}/{{ wrkchain_data_dir }}/genesis.json owner={{ ansible_user }} group={{ ansible_user }}
 
 - name: Initialize the genesis file
-  command: /home/{{ ansible_user }}/.go/bin/geth init /home/{{ ansible_user }}/.ethereum/genesis.json
+  command: /home/{{ ansible_user }}/.go/bin/geth --datadir=/home/{{ ansible_user }}/{{ wrkchain_data_dir }} init /home/{{ ansible_user }}/{{ wrkchain_data_dir }}/genesis.json
   args:
-    creates: /home/{{ ansible_user }}/.ethereum/geth/chaindata
+    creates: /home/{{ ansible_user }}/{{ wrkchain_data_dir }}/geth/chaindata
 
 - name: Write the privatekey
   copy: content="{{ private_key }}" dest=/home/{{ ansible_user }}/.privatekey
@@ -21,7 +21,7 @@
   no_log: true
 
 - name: Import the account
-  command: /home/{{ ansible_user }}/.go/bin/geth account import --password /home/{{ ansible_user }}/.password /home/{{ ansible_user }}/.privatekey
+  command: /home/{{ ansible_user }}/.go/bin/geth --datadir=/home/{{ ansible_user }}/{{ wrkchain_data_dir }} account import --password /home/{{ ansible_user }}/.password /home/{{ ansible_user }}/.privatekey
 
 - name: Delete the privatekey
   file:

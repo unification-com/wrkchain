@@ -6,7 +6,8 @@ from ansible.parsing.dataloader import DataLoader
 from ansible.parsing.vault import FileVaultSecret, VaultLib
 from jinja2 import DebugUndefined, Environment, FileSystemLoader
 
-from wrkchain.constants import GO_VERSION, WALLET_PASSWORD, PASSWORD_FILE
+from wrkchain.constants import GO_VERSION, WALLET_PASSWORD, PASSWORD_FILE, \
+    DEFAULT_WRKCHAIN_DATA_DIR
 from wrkchain.keys import generate_ssh_keys
 from wrkchain.utils import template_root
 
@@ -209,7 +210,15 @@ def generate_ansible(build_dir, config):
     copy(str(password_file), str(ansible_dir / PASSWORD_FILE))
 
     d = {
-        'roles/ethereum/tasks/main.yml': {'go_version': GO_VERSION},
+        'roles/ethereum/tasks/main.yml': {'go_version': GO_VERSION,
+                                          'wrkchain_data_dir':
+                                              DEFAULT_WRKCHAIN_DATA_DIR},
+        'roles/node/tasks/account.yml': {'wrkchain_data_dir':
+                                              DEFAULT_WRKCHAIN_DATA_DIR},
+        'roles/node/tasks/main.yml': {'wrkchain_data_dir':
+                                              DEFAULT_WRKCHAIN_DATA_DIR},
+        '/roles/bootnode/tasks/main.yml': {'wrkchain_data_dir':
+                                              DEFAULT_WRKCHAIN_DATA_DIR},
         'wrkchain-bootnode.yml': bootnode,
         'wrkchain-node.yml': validator_builder,
         'Vagrantfile': wrkchain_cfg
