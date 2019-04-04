@@ -7,6 +7,7 @@ from ansible.parsing.vault import FileVaultSecret, VaultLib
 from jinja2 import DebugUndefined, Environment, FileSystemLoader
 
 from wrkchain.constants import GO_VERSION, WALLET_PASSWORD, PASSWORD_FILE
+from wrkchain.keys import generate_ssh_keys
 from wrkchain.utils import template_root
 
 
@@ -84,8 +85,9 @@ class Validators:
                 'vars': [
                     encrypt_string(password_file, x[0], x[1]) for x in ps],
                 'custom_roles': [self.role_name(x, validator['name']) for x in
-                          self.custom_roles],
-                'optional_roles': ['oracle'] if validator['write_to_oracle'] else [],
+                                 self.custom_roles],
+                'optional_roles': ['oracle'] if validator[
+                    'write_to_oracle'] else [],
                 'validator': validator
             }
             dest.write_text(template.render(eff))
@@ -169,8 +171,22 @@ def apply_custom_role(
     template_map(custom_role_dir, dest, d)
 
 
+def write_keys(build_root: Path, name: str):
+    private_key, public_key = generate_ssh_keys()
+
+    target_private = build_root / 'ssh_keys' / f'{name}_root'
+    if not target_private.parent.exists():
+        target_private.parent.mkdir(parents=True)
+
+    target_private.write_bytes(private_key)
+
+    target_public = build_root / 'ssh_keys' / f'{name}_root.pub'
+    target_public.write_bytes(public_key)
+
+
 def generate_ansible(build_dir, config):
     build_root = Path(build_dir)
+
     ansible_dir = build_root / 'ansible'
 
     wrkchain_cfg = config['wrkchain']
@@ -185,6 +201,10 @@ def generate_ansible(build_dir, config):
     password_file = template_root() / 'ansible' / PASSWORD_FILE
     if not ansible_dir.exists():
         ansible_dir.mkdir(parents=True)
+
+    # Generate some keys pairs
+    write_keys(build_root, 'id_rsa')
+    write_keys(build_root, 'id_rsa_deploy')
 
     copy(str(password_file), str(ansible_dir / PASSWORD_FILE))
 
