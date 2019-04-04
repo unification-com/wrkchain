@@ -33,13 +33,18 @@ class SectionOracle(DocSection):
             if len(web3_providers) > 1:
                 wrkchain_web3_provider = 'one of ' + wrkchain_web3_provider
 
+        if self.__network == 'eth':
+            network_title = 'Ethereum mainnet'
+        else:
+            network_title = f'UND {self.__network}'
+
         d = {
             '__ORACLE_ADDRESSES__': '\n'.join(self.__oracle_addresses),
             '__WRKCHAIN_NETWORK_ID__': self.__wrkchain_id,
             '__MAINCHAIN_WEB3_PROVIDER_URL__': self.__mainchain_rpc_uri,
             '__ORACLE_WRITE_FREQUENCY__': self.__oracle_write_frequency,
             '__WRKCHAIN_WEB3_PROVIDER_URL__': wrkchain_web3_provider,
-            '__MAINCHAIN_NETWORK__': self.__network
+            '__MAINCHAIN_NETWORK_TITLE__': network_title
         }
         self.add_content(d, append=False)
         return self.get_contents()

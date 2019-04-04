@@ -26,10 +26,17 @@ class SectionSetup(DocSection):
         d = {
             '__FUND_ORACLE_ADDRESSES__': self.__fund(),
             '__DEPLOY_WRKCHAIN_ROOT_CONTRACT__': self.__deply_contract(),
-            '__MAINCHAIN_NETWORK__': self.__network
+            '__MAINCHAIN_NETWORK__': self.__network_title()
         }
         self.add_content(d, append=False)
         return self.get_contents()
+
+    def __network_title(self):
+        if self.__network == 'eth':
+            network_title = 'Ethereum mainnet'
+        else:
+            network_title = f'UND {self.__network}'
+        return network_title
 
     def __fund(self):
         md_file = f'sub/fund/{self.__network}.md'
@@ -39,6 +46,8 @@ class SectionSetup(DocSection):
             fund_content = self.__fund_testnet(t)
         elif self.__network == 'mainnet':
             fund_content = self.__fund_mainnet(t)
+        elif self.__network == 'eth':
+            fund_content = self.__fund_eth(t)
         else:
             fund_content = ''
 
@@ -61,6 +70,14 @@ class SectionSetup(DocSection):
 
         return fund_content
 
+    def __fund_eth(self, t):
+        d = {
+            '__ORACLE_ADDRESSES__': '\n'.join(self.__oracle_addresses)
+        }
+        fund_content = t.substitute(d)
+
+        return fund_content
+
     def __deply_contract(self):
         if self.__network == 'testnet':
             deploy_content = self.__deploy_truffle()
@@ -69,6 +86,8 @@ class SectionSetup(DocSection):
         elif self.__network == 'mainnet':
             deploy_content = self.__deploy_oracle_deploy()
             deploy_content += self.__deploy_manual()
+        elif self.__network == 'eth':
+            deploy_content = self.__deploy_eth_mainnet()
         else:
             deploy_content = ''
 
@@ -145,6 +164,20 @@ class SectionSetup(DocSection):
             '__WRKCHAIN_EVS__': (', '.join('"' + item + '"' for item in
                                            self.__oracle_addresses)),
             '__GENESIS_SHA3__': genesis_sha3
+        }
+
+        self.__sub_section_number += 1
+
+        deploy_content = t.substitute(d)
+
+        return deploy_content
+
+    def __deploy_eth_mainnet(self):
+        md_file = f'sub/deploy_wrkchain_root_contract/ethereum.md'
+        t = self.load_sub_section_template(md_file)
+        d = {
+            '__SECTION_NUMBER__': self.__section_number,
+            '__SUB_SECTION_NUMBER__': self.__sub_section_number
         }
 
         self.__sub_section_number += 1

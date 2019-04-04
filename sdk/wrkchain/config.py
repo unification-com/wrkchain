@@ -12,7 +12,7 @@ REQUIRED_OVERRIDES = ['wrkchain', 'mainchain']
 REQUIRED_WRKCHAIN_OVERRIDES = ['nodes']
 REQUIRED_WRKCHAIN_NODE_OVERRIDES = ['address', 'ip']
 REQUIRED_MAINCHAIN_OVERRIDES = ['network']
-VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet']
+VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet', 'eth']
 VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
                   'shh', 'txpool', 'web3']
 VALID_LEDGERS = ['geth']
@@ -148,7 +148,7 @@ class WRKChainConfig:
         basic_default = {
             'wrkchain': {
                 'title': 'My WRKChain',
-                'oracle_write_frequency': 10,
+                'oracle_write_frequency': 3600,
                 'wrkchain_network_id': False,
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
@@ -445,6 +445,8 @@ class WRKChainConfig:
             return 50000
         elif network == 'testnet':
             return 50005
+        elif network == 'eth':
+            return 1
         else:
             # default to AWS Testnet
             return 50005
@@ -465,6 +467,13 @@ class WRKChainConfig:
                 "uri": "http://52.14.173.249:8101",
                 "host": "52.14.173.249",
                 "port": "8101"
+            }
+        elif network == 'eth':
+            web3_provider = {
+                "type": "http",
+                "uri": "https://mainnet.infura.io/API_KEY",
+                "host": "mainnet.infura.io",
+                "port": "443"
             }
         else:
             # default to AWS Testnet

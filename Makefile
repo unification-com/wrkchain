@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: clean help info init-prepare sdk test
+.PHONY: check-config clean help info init-prepare sdk test
 
 # Set some variables
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))

@@ -1,2 +1,2 @@
-2. `$__BUILD_DIR__/node_keys/$__BOOTNODE_KEY_FILE__` to `~/.ethereum/node_keys/$__BOOTNODE_KEY_FILE__`    
-3. `$__BUILD_DIR__/static-nodes.json` to `~/.ethereum/static-nodes.json`
+2. `$__BUILD_DIR__/node_keys/$__BOOTNODE_KEY_FILE__.key` to `~/$__WRKCHAIN_DATA_DIR__/node_keys/$__BOOTNODE_KEY_FILE__.key`    
+3. `$__BUILD_DIR__/static-nodes.json` to `~/$__WRKCHAIN_DATA_DIR__/static-nodes.json`

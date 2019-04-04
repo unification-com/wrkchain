@@ -13,13 +13,13 @@ Follow the instructions to install `geth` on the computer you would like to
 
 Copy the following files to the computer
 
-1. `$__BUILD_DIR__/genesis.json` to `~/.ethereum/genesis.json`
+1. `$__BUILD_DIR__/genesis.json` to `~/$__WRKCHAIN_DATA_DIR__/genesis.json`
 $__COPY_STATIC_FILES__
 
 **Initialise the node**
 
 ```bash
-$$GOPATH/bin/geth init ~/.ethereum/genesis.json
+$$GOPATH/bin/geth --datadir=~/$__WRKCHAIN_DATA_DIR__ init ~/$__WRKCHAIN_DATA_DIR__/genesis.json
 ```
 
 **Running the Node**

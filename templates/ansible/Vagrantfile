@@ -9,6 +9,7 @@ Vagrant.configure("2") do |config|
       bootnode.vm.provision "ansible" do |ansible|
         ansible.verbose = "v"
         ansible.playbook = "{{ bootnode.name }}.yml"
+        ansible.ask_vault_pass = true
       end
   end
 {%- endif %}
@@ -19,6 +20,7 @@ Vagrant.configure("2") do |config|
       node.vm.provision "ansible" do |ansible|
         ansible.verbose = "v"
         ansible.playbook = "{{ n.name }}.yml"
+        ansible.ask_vault_pass = true
       end
   end
 {% endfor %}

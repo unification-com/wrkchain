@@ -21,4 +21,17 @@
       - vim
     state: latest
   become: yes
+
+- name: Ensure group deploy exists
+  group:
+    name: deploy
+    state: present
+  become: yes
+
+- name: Add the user 'deploy'
+  user:
+    name: deploy
+    comment: The Deployment User
+    groups: deploy
+  become: yes
 ...

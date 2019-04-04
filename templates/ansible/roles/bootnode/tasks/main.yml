@@ -10,7 +10,7 @@
     GOPATH: /home/{{ ansible_user }}/.go
 
 - name: Copy Bootnode Key
-  copy: src=bootnode.key dest=/home/{{ ansible_user }}/.ethereum/node_keys/bootnode.key owner={{ ansible_user }} group={{ ansible_user }}
+  copy: src=bootnode.key dest=/home/{{ ansible_user }}/{{ wrkchain_data_dir }}/node_keys/bootnode.key owner={{ ansible_user }} group={{ ansible_user }}
 
 - name: .bashrc
   copy: src=.bashrc dest=/home/{{ ansible_user }}/.bashrc owner={{ ansible_user }} group={{ ansible_user }}

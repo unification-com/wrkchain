@@ -28,11 +28,13 @@ def bootnode(config):
             'dockerfile': 'Docker/bootnode/Dockerfile',
             'args': {
                 'GO_VERSION': constants.GO_VERSION,
+                'WRKCHAIN_DATA_DIR': constants.DEFAULT_WRKCHAIN_DATA_DIR
             },
         },
         'environment': [f'BOOTNODE_PORT={config["docker_port"]}'],
         'command': f'/root/.go/bin/bootnode -nodekey '
-        f'/root/node_keys/bootnode.key -verbosity 4 --addr :{config["docker_port"]}',
+        f'/root/{constants.DEFAULT_WRKCHAIN_DATA_DIR}/node_keys/bootnode.key'
+        f' -verbosity 4 --addr :{config["docker_port"]}',
         'expose': [config["docker_port"]]
 
     }
@@ -53,7 +55,7 @@ def chaintest(config):
             'context': '..',
             'dockerfile': 'Docker/chaintest/Dockerfile',
             'args': {
-                'GO_VERSION': constants.GO_VERSION,
+                'GO_VERSION': constants.GO_VERSION
             },
         }
     }
@@ -86,6 +88,7 @@ def generate_nodes(nodes, bootnode_config, wrkchain_id):
                 'WALLET_PASS': 'pass',
                 'PRIVATE_KEY': validator['private_key'],
                 'GO_VERSION': constants.GO_VERSION,
+                'WRKCHAIN_DATA_DIR': constants.DEFAULT_WRKCHAIN_DATA_DIR
             },
         }
 

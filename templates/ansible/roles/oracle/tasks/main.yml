@@ -1,0 +1,13 @@
+---
+# Oracle Role
+
+- name: create unification-com go directory
+  file: path=/home/{{ ansible_user }}/.go/src/github.com/unification-com state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
+
+- name: clone the orcale
+  command: git clone https://github.com/unification-com/oracle --depth 1
+  args:
+    chdir: /home/{{ ansible_user }}/.go/src/github.com/unification-com
+    creates: /home/{{ ansible_user }}/.go/src/github.com/unification-com/oracle
+
+...

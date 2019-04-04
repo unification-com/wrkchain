@@ -1,3 +1,4 @@
+from wrkchain.constants import DEFAULT_WRKCHAIN_DATA_DIR
 from wrkchain.documentation.sections.doc_section import DocSection
 
 
@@ -69,7 +70,7 @@ class SectionNetwork(DocSection):
 
         if self.__bootnode_config['type'] == 'static':
             copy_static_files = f'2. `{doc_build_dir}/static-nodes.json` to ' \
-                f'`~/.ethereum/static-nodes.json`  \n'
+                f'`~/{DEFAULT_WRKCHAIN_DATA_DIR}/static-nodes.json`  \n'
 
         geth_cmd = f'$GOPATH/bin/geth --networkid {self.__wrkchain_id} \\\n' \
             f'--rpc \\\n' \
@@ -84,7 +85,8 @@ class SectionNetwork(DocSection):
             '__BUILD_DIR__': doc_build_dir,
             '__COPY_STATIC_FILES__': copy_static_files,
             '__GETH_COMMAND__': geth_cmd,
-            '__WRKCHAIN_NETWORK_ID__': self.__wrkchain_id
+            '__WRKCHAIN_NETWORK_ID__': self.__wrkchain_id,
+            '__WRKCHAIN_DATA_DIR__': DEFAULT_WRKCHAIN_DATA_DIR
         }
 
         contents = t.substitute(d)

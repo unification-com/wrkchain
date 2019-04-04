@@ -1,4 +1,5 @@
 from wrkchain.architectures.debian import generate_geth_cmd
+from wrkchain.constants import DEFAULT_WRKCHAIN_DATA_DIR
 from wrkchain.documentation.sections.doc_section import DocSection
 
 
@@ -33,7 +34,7 @@ class SectionNodes(DocSection):
             geth_cmd = generate_geth_cmd(
                 node, self.__bootnode_config, self.__wrkchain_id, listen_port,
                 linebreak=True, gopath='$GOPATH', docker=False,
-                path_to='~/.ethereum')
+                path_to='~')
 
             if node['is_validator']:
                 node_types.append('Validator')
@@ -47,7 +48,8 @@ class SectionNodes(DocSection):
                  '__NODE_TITLE__': node['title'],
                  '__COPY_STATIC_FILES__': copy_static_files,
                  '__NODE_IP__': node_ip,
-                 '__BUILD_DIR__': doc_build_dir
+                 '__BUILD_DIR__': doc_build_dir,
+                 '__WRKCHAIN_DATA_DIR__': DEFAULT_WRKCHAIN_DATA_DIR
                  }
             self.add_content(d, append=True)
 
@@ -59,7 +61,9 @@ class SectionNodes(DocSection):
 
         contents = t.substitute(
             {'__BOOTNODE_KEY_FILE__': public_address,
-             '__BUILD_DIR__': doc_build_dir})
+             '__BUILD_DIR__': doc_build_dir,
+             '__WRKCHAIN_DATA_DIR__': DEFAULT_WRKCHAIN_DATA_DIR
+             })
         return contents
 
 

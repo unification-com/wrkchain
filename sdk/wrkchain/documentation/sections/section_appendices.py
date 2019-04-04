@@ -21,7 +21,9 @@ class SectionAppendices(DocSection):
         appendix_2 = self.__appendix_2()
         appendix_3 = self.__appendix_3()
         appendix_4 = self.__appendix_4()
-        appendix_5 = self.__appendix_5()
+        appendix_5 = ''
+        if self.__network != 'eth':
+            appendix_5 = self.__appendix_5()
 
         d = {
             '__APPENDIX_1__': appendix_1,
