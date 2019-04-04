@@ -1,3 +1,4 @@
+from wrkchain.constants import DEFAULT_WRKCHAIN_DATA_DIR
 from wrkchain.documentation.sections.doc_section import DocSection
 
 
@@ -15,7 +16,8 @@ class SectionBootNodes(DocSection):
 
             d = {'__BOOTNODE_ENODE': bootnode['enode'],
                  '__BOOTNODE_PORT': bootnode['port'],
-                 '__BUILD_DIR__': self.__build_dir.replace('../', '')
+                 '__BUILD_DIR__': self.__build_dir.replace('../', ''),
+                 '__WRKCHAIN_DATA_DIR__': DEFAULT_WRKCHAIN_DATA_DIR
                  }
 
             self.add_content(d, append=False)
