@@ -221,3 +221,11 @@ def generate_ansible(build_dir, config):
     # Post Processing
     bootnode.link_bootnode_key(build_root)
     validator_builder.link_genesis(build_root)
+
+    relative_symlink(
+        build_root, 'ssh_keys', 'ansible/roles/base/files/',
+        'id_rsa_deploy_root.pub')
+
+    relative_symlink(
+        build_root, 'ssh_keys', 'ansible/roles/base/files/',
+        'id_rsa_root.pub')
