@@ -85,7 +85,8 @@ def write_composition(build_dir, composition):
 
 def write_static_nodes(build_dir, static_nodes, static_nodes_docker):
     write_build_file(build_dir + '/static-nodes.json', static_nodes)
-    write_build_file(build_dir + '/static-nodes-docker.json',
+    os.mkdir(build_dir + '/docker')
+    write_build_file(build_dir + '/docker/static-nodes.json',
                      static_nodes_docker)
 
 

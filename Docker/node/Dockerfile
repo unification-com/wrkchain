@@ -29,7 +29,7 @@ RUN go install github.com/ethereum/go-ethereum/cmd/geth
 
 ADD build/genesis.json /root/$WRKCHAIN_DATA_DIR/genesis.json
 COPY build/node_keys /root/$WRKCHAIN_DATA_DIR/node_keys
-COPY build/static-nodes-docker.json /root/$WRKCHAIN_DATA_DIR/static-nodes.json
+COPY build/docker/static-nodes.json /root/$WRKCHAIN_DATA_DIR/static-nodes.json
 
 RUN echo $WALLET_PASS > /root/.walletpassword
 RUN echo $PRIVATE_KEY > /root/.privatekey
