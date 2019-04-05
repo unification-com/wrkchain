@@ -31,7 +31,7 @@ def generate_geth_cmd(
 
     if node['is_validator']:
         flags = flags + [
-            f'--gasprice "0"',
+            f'--gasprice 0',
             f'--etherbase {node["address"]}',
             f'--password {wallet_password}',
             f'--mine',
