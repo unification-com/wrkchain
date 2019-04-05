@@ -152,7 +152,7 @@ def inject_geth_command(bootnode_config, wrkchain_id, workchain_nodes):
         cmd = generate_geth_cmd(
             validator, bootnode_config, wrkchain_id,
             validator['docker_listen_port'],
-            gopath='/home/deploy./go', docker=False, path_to='/home/deploy')
+            gopath='/home/deploy/.go', docker=False, path_to='/home/deploy')
         validator['geth_command'] = cmd
     return workchain_nodes
 
