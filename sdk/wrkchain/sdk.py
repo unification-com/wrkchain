@@ -240,7 +240,7 @@ def generate_wrkchain(config_file, build_dir, clean=False,
     write_composition(build_dir, docker_composition)
 
     click.echo("Generating Ansible")
-    generate_ansible(build_dir, config)
+    generate_ansible(build_dir, config, bootnode_config)
 
     click.echo("Generating documentation")
     documentation = generate_documentation(config, genesis_json,

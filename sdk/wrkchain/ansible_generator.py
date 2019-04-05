@@ -6,6 +6,7 @@ from ansible.parsing.dataloader import DataLoader
 from ansible.parsing.vault import FileVaultSecret, VaultLib
 from jinja2 import DebugUndefined, Environment, FileSystemLoader
 
+from wrkchain.architectures.debian import generate_geth_cmd
 from wrkchain.constants import GO_VERSION, WALLET_PASSWORD, PASSWORD_FILE, \
     DEFAULT_WRKCHAIN_DATA_DIR
 from wrkchain.keys import generate_ssh_keys
@@ -146,6 +147,15 @@ def transform_to_node_map(wrkchain_cfg):
     return ret
 
 
+def inject_geth_command(bootnode_config, wrkchain_id, workchain_nodes):
+    for key, validator in workchain_nodes.items():
+        cmd = generate_geth_cmd(
+            validator, bootnode_config, wrkchain_id,
+            validator['docker_listen_port'])
+        validator['geth_command'] = cmd
+    return workchain_nodes
+
+
 def process_custom_roles(template_root, ansible_dir, node_map):
     source = template_root / 'ansible' / 'custom_roles'
 
@@ -154,7 +164,8 @@ def process_custom_roles(template_root, ansible_dir, node_map):
 
         for node, node_d in node_map.items():
             d = {
-                'files/motd': node_d
+                'files/motd': node_d,
+                'templates/geth.service': node_d,
             }
             apply_custom_role(source, ansible_dir, role_name, node, d)
 
@@ -187,15 +198,13 @@ def write_keys(build_root: Path, name: str):
     target_public.chmod(0o600)
 
 
-def generate_ansible(build_dir, config):
+def generate_ansible(build_dir, config, configured_bootnode_cfg):
     build_root = Path(build_dir)
 
     ansible_dir = build_root / 'ansible'
 
     wrkchain_cfg = config['wrkchain']
-    bootnode_cfg = wrkchain_cfg['bootnode']
-
-    bootnode = Bootnode(bootnode_cfg)
+    bootnode = Bootnode(wrkchain_cfg['bootnode'])
     validator_builder = Validators(
         build_root, wrkchain_cfg['nodes'], ['bash', 'services'])
 
@@ -225,8 +234,12 @@ def generate_ansible(build_dir, config):
         'Vagrantfile': wrkchain_cfg
     }
     template_map(template_root() / 'ansible', ansible_dir, d)
-    process_custom_roles(template_root(), ansible_dir,
-                         transform_to_node_map(wrkchain_cfg))
+
+    network_id = config['wrkchain']['wrkchain_network_id']
+    node_map = transform_to_node_map(wrkchain_cfg)
+    workchain_nodes = inject_geth_command(
+        configured_bootnode_cfg, network_id, node_map)
+    process_custom_roles(template_root(), ansible_dir, workchain_nodes)
 
     # Post Processing
     bootnode.link_bootnode_key(build_root)
