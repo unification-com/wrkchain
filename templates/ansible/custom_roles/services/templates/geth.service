@@ -1,5 +1,5 @@
 [Unit]
-Description=Geth Service
+Description=Go Ethereum Service
 Requires=docker.service
 After=docker.service
 

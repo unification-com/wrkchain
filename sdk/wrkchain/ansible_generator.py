@@ -196,9 +196,8 @@ def generate_ansible(build_dir, config):
     bootnode_cfg = wrkchain_cfg['bootnode']
 
     bootnode = Bootnode(bootnode_cfg)
-    custom_roles = ['bash']
     validator_builder = Validators(
-        build_root, wrkchain_cfg['nodes'], custom_roles)
+        build_root, wrkchain_cfg['nodes'], ['bash', 'services'])
 
     # copy the password file before all else
     password_file = template_root() / 'ansible' / PASSWORD_FILE
