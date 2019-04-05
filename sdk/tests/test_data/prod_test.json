@@ -29,7 +29,7 @@
         "listen_port":30301,
         "docker_listen_port":30305,
         "is_validator":true,
-        "write_to_oracle":true,
+        "write_to_oracle":false,
         "rpc":false
       },
       {
@@ -42,7 +42,7 @@
         "listen_port":30301,
         "docker_listen_port":30306,
         "is_validator":true,
-        "write_to_oracle":true,
+        "write_to_oracle":false,
         "rpc":false
       },
       {
@@ -55,7 +55,7 @@
         "listen_port":30301,
         "docker_listen_port":30307,
         "is_validator":true,
-        "write_to_oracle":false,
+        "write_to_oracle":true,
         "rpc":{
           "port":8549,
           "docker_port":8547,
