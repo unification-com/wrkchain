@@ -1,7 +1,5 @@
 [Unit]
 Description=Go Ethereum Service
-Requires=docker.service
-After=docker.service
 
 [Service]
 User=deploy
