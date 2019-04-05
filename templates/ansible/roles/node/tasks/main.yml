@@ -22,4 +22,21 @@
   become: yes
   become_user: deploy
 
+- name: install geth service
+  template:
+    src: geth.service
+    dest: /etc/systemd/system/geth.service
+    mode: "0755"
+  become: yes
+
+- name: enable systemd services
+  systemd:
+    name: geth.service
+    enabled: yes
+  become: yes
+
+- name: reload systemd
+  command: systemctl daemon-reload
+  become: yes
+
 ...
