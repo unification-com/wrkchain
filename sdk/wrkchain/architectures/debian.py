@@ -23,8 +23,7 @@ def generate_geth_cmd(
         f'--networkid {wrkchain_id}',
         f'--syncmode=full',
         f'--verbosity=4',
-        f'--datadir={path_to}/{DEFAULT_WRKCHAIN_DATA_DIR}',
-        f'--identity="{node["title"]}"'
+        f'--datadir={path_to}/{DEFAULT_WRKCHAIN_DATA_DIR}'
     ]
 
     wallet_password = f'{path_to}/.walletpassword'
