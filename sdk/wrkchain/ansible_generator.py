@@ -7,8 +7,8 @@ from ansible.parsing.vault import FileVaultSecret, VaultLib
 from jinja2 import DebugUndefined, Environment, FileSystemLoader
 
 from wrkchain.architectures.debian import generate_geth_cmd
-from wrkchain.constants import GO_VERSION, WALLET_PASSWORD, PASSWORD_FILE, \
-    DEFAULT_WRKCHAIN_DATA_DIR
+from wrkchain.constants import (
+    GO_VERSION, WALLET_PASSWORD, PASSWORD_FILE, DEFAULT_WRKCHAIN_DATA_DIR)
 from wrkchain.keys import generate_ssh_keys
 from wrkchain.utils import template_root
 
