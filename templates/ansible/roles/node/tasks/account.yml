@@ -17,11 +17,11 @@
   no_log: true
 
 - name: Write the password file
-  copy: content="{{ password }}" dest=/home/deploy/.password
+  copy: content="{{ password }}" dest=/home/deploy/.walletpassword
   no_log: true
 
 - name: Import the account
-  command: /home/deploy/.go/bin/geth --datadir=/home/deploy/{{ wrkchain_data_dir }} account import --password /home/deploy/.password /home/deploy/.privatekey
+  command: /home/deploy/.go/bin/geth --datadir=/home/deploy/{{ wrkchain_data_dir }} account import --password /home/deploy/.walletpassword /home/deploy/.privatekey
 
 - name: Delete the privatekey
   file:
@@ -31,6 +31,6 @@
 - name: Delete the password file
   file:
     state: absent
-    path: /home/deploy/.password
+    path: /home/deploy/.walletpassword
 
 ...
