@@ -180,9 +180,11 @@ def write_keys(build_root: Path, name: str):
         target_private.parent.mkdir(parents=True)
 
     target_private.write_bytes(private_key)
+    target_private.chmod(0o600)
 
     target_public = build_root / 'ssh_keys' / f'{name}.pub'
     target_public.write_bytes(public_key)
+    target_public.chmod(0o600)
 
 
 def generate_ansible(build_dir, config):
