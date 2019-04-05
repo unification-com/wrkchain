@@ -175,13 +175,13 @@ def apply_custom_role(
 def write_keys(build_root: Path, name: str):
     private_key, public_key = generate_ssh_keys()
 
-    target_private = build_root / 'ssh_keys' / f'{name}_root'
+    target_private = build_root / 'ssh_keys' / f'{name}'
     if not target_private.parent.exists():
         target_private.parent.mkdir(parents=True)
 
     target_private.write_bytes(private_key)
 
-    target_public = build_root / 'ssh_keys' / f'{name}_root.pub'
+    target_public = build_root / 'ssh_keys' / f'{name}.pub'
     target_public.write_bytes(public_key)
 
 
@@ -204,7 +204,7 @@ def generate_ansible(build_dir, config):
         ansible_dir.mkdir(parents=True)
 
     # Generate some keys pairs
-    write_keys(build_root, 'id_rsa')
+    write_keys(build_root, 'id_rsa_root')
     write_keys(build_root, 'id_rsa_deploy')
 
     copy(str(password_file), str(ansible_dir / PASSWORD_FILE))
@@ -233,7 +233,7 @@ def generate_ansible(build_dir, config):
 
     relative_symlink(
         build_root, 'ssh_keys', 'ansible/roles/base/files/',
-        'id_rsa_deploy_root.pub')
+        'id_rsa_deploy.pub')
 
     relative_symlink(
         build_root, 'ssh_keys', 'ansible/roles/base/files/',

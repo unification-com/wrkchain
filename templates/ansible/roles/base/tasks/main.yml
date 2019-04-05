@@ -34,4 +34,13 @@
     comment: The Deployment User
     groups: deploy
   become: yes
+
+- name: ssh key for the root user
+  authorized_key: user=root key="{{ lookup('file', 'id_rsa_root.pub') }}"
+  become: yes
+
+- name: ssh key for the deploy user
+  authorized_key: user=deploy key="{{ lookup('file', 'id_rsa_deploy.pub') }}"
+  become: yes
+
 ...
