@@ -3,18 +3,23 @@
 
 - command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/geth
   args:
-    chdir: /home/{{ ansible_user }}
-    creates: /home/{{ ansible_user }}/.go/bin/geth
+    chdir: /home/deploy
+    creates: /home/deploy/.go/bin/geth
   environment:
     GOROOT: /usr/local/go
-    GOPATH: /home/{{ ansible_user }}/.go
+    GOPATH: /home/deploy/.go
+  become: yes
+  become_user: deploy
 
 - stat:
-    path: /home/{{ ansible_user }}/{{ wrkchain_data_dir }}/geth/chaindata/CURRENT
+    path: /home/deploy/{{ wrkchain_data_dir }}/geth/chaindata/CURRENT
   register: st
+  become: yes
 
 - name: Import accounts
   include: account.yml
   when: not st.stat.exists
+  become: yes
+  become_user: deploy
 
 ...
