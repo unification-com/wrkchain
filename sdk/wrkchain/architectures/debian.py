@@ -27,10 +27,7 @@ def generate_geth_cmd(
         f'--identity="{node["title"]}"'
     ]
 
-    if docker:
-        wallet_password = f'{path_to}/.walletpassword'
-    else:
-        wallet_password = 'YOUR_WALLET_PASSWORD'
+    wallet_password = f'{path_to}/.walletpassword'
 
     if node['is_validator']:
         flags = flags + [
