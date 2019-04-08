@@ -84,11 +84,24 @@ class WRKChainConfig:
             raise MissingConfigOverrideException(err)
 
         for i in range(len(self.__overrides['wrkchain']['nodes'])):
+            node_override = self.__overrides['wrkchain']['nodes'][i]
             for k in REQUIRED_WRKCHAIN_NODE_OVERRIDES:
-                if k not in self.__overrides['wrkchain']['nodes'][i].keys():
+                if k not in node_override.keys():
                     err = f'"{k}" not defined in wrkchain -> nodes -> Node ' \
                         f'{i} section in {config_file}.'
                     raise MissingConfigOverrideException(err)
+
+            # Check if node has been defined as both validator and RPC node
+            if dict_key_exists(node_override, 'is_validator') and \
+                dict_key_exists(node_override, 'rpc'):
+                if node_override['is_validator'] and node_override['rpc']:
+                    node_title = ''
+                    if dict_key_exists(node_override, 'title'):
+                        node_title = f' ({node_override["title"]})'
+                    err = f'wrkchain -> nodes -> Node {i}{node_title} Node' \
+                        f' may only be defined as either Validator OR JSON ' \
+                        f'RPC node'
+                    raise InvalidOverrideException(err)
 
         for k in REQUIRED_MAINCHAIN_OVERRIDES:
             if k not in self.__overrides['mainchain'].keys():
