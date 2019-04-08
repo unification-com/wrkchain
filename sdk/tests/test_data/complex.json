@@ -39,7 +39,7 @@
         "rpc":false
       },
       {
-        "title":"Validator & JSON RPC US",
+        "title":"Validator US",
         "name":"wrkchain-node-2",
         "address":"0xC1DA2B192821b7BbcCFFCd9f3806b48af86f6EeA",
         "private_key":"b7459e3be8b6825ac1b606d5f4ac61652e04086f0645d7f768b5e1a176afffcf",
@@ -49,25 +49,7 @@
         "docker_listen_port":30306,
         "is_validator":true,
         "write_to_oracle":true,
-        "rpc":{
-          "port":8547,
-          "docker_port":8546,
-          "rpccorsdomain":"*",
-          "rpcvhosts":"*",
-          "rpcaddr":"0.0.0.0",
-          "apis":{
-            "admin":false,
-            "db":false,
-            "debug":false,
-            "eth":true,
-            "miner":false,
-            "net":true,
-            "personal":false,
-            "shh":false,
-            "txpool":false,
-            "web3":true
-          }
-        }
+        "rpc":false
       },
       {
         "title":"Dedicated JSON-RPC Node",
