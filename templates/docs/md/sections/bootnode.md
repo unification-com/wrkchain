@@ -1,4 +1,9 @@
 
+**Note: It is recommended to only implement a `bootnode` for testing purposes.
+In a production environment, defined `bootstrap` nodes, using `static-nodes.json`
+are recommended. Set `bootnode.use=false`, or remove the `bootnode` section
+in your config, and re-run the SDK to disable `bootnode`**
+
 **Copy the required file**
 
 Copy the generated `$__BUILD_DIR__/node_keys/bootnode.key` to  `$$HOME/$__WRKCHAIN_DATA_DIR__/node_keys/bootnode.key` on the
