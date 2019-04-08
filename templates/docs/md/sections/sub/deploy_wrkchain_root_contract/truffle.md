@@ -37,14 +37,14 @@ Modify the `.env` file in the `wrkchain-root-contract` directory
 adding the following:
 
 ```text
-MNEMONIC=CHANGE THIS TO YOUR MNEMONIC FOR ORACLE ADDRESS WALLET!
+PRIVATE_KEY=CHANGE THIS TO YOUR PRIVATE_KEY FOR ORACLE ADDRESS WALLET
 ```
 
 Then run:
 
 ```bash
 truffle compile
-truffle migrate --network development_mnemonic
+truffle migrate --network und_mainchain
 ```
 
 **Post Deployment**
