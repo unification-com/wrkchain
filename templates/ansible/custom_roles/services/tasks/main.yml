@@ -1,0 +1,51 @@
+---
+# Custom Services for each Node
+
+- name: install geth service
+  template:
+    src: geth.service
+    dest: /etc/systemd/system/geth.service
+    mode: "0755"
+  become: yes
+
+- name: enable systemd services
+  systemd:
+    name: geth.service
+    enabled: yes
+  become: yes
+
+- name: reload systemd
+  command: systemctl daemon-reload
+  become: yes
+
+- name: Allow user deploy to start geth
+  lineinfile:
+    path: /etc/sudoers.d/deploy
+    line: 'deploy ALL=(ALL) NOPASSWD: /usr/bin/systemctl start geth.service'
+    state: present
+    mode: 0440
+    create: yes
+    validate: 'visudo -cf %s'
+  become: yes
+
+- name: Allow user deploy to stop geth
+  lineinfile:
+    path: /etc/sudoers.d/deploy
+    line: 'deploy ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop geth.service'
+    state: present
+    mode: 0440
+    create: yes
+    validate: 'visudo -cf %s'
+  become: yes
+
+- name: Allow user deploy to restart geth
+  lineinfile:
+    path: /etc/sudoers.d/deploy
+    line: 'deploy ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart geth.service'
+    state: present
+    mode: 0440
+    create: yes
+    validate: 'visudo -cf %s'
+  become: yes
+
+...

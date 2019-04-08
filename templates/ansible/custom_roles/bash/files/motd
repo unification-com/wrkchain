@@ -1,4 +1,4 @@
-Welcome to the WRKCHain Node: {{ title }}
+Welcome to the WRKChain Node: {{ title }}
 identified by: {{ name }}
 
 

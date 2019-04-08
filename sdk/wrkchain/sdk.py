@@ -85,7 +85,9 @@ def write_composition(build_dir, composition):
 
 def write_static_nodes(build_dir, static_nodes, static_nodes_docker):
     write_build_file(build_dir + '/static-nodes.json', static_nodes)
-    os.mkdir(build_dir + '/docker')
+    docker_dir = build_dir + '/docker'
+    if not os.path.exists(docker_dir):
+        os.mkdir(docker_dir)
     write_build_file(build_dir + '/docker/static-nodes.json',
                      static_nodes_docker)
 
@@ -238,7 +240,7 @@ def generate_wrkchain(config_file, build_dir, clean=False,
     write_composition(build_dir, docker_composition)
 
     click.echo("Generating Ansible")
-    generate_ansible(build_dir, config)
+    generate_ansible(build_dir, config, bootnode_config)
 
     click.echo("Generating documentation")
     documentation = generate_documentation(config, genesis_json,

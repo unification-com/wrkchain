@@ -34,7 +34,8 @@ Add name resolution to the node names. The simplest is to add mappings to
 
 Run each of the Ansible playbooks generated:
 ```bash
-ansible-playbook -u <REMOTE_USER> wrkchain-node-1.yml
+cd build/ansible
+ansible-playbook -u <REMOTE_USER> wrkchain-node-1.yml --vault-password-file passwordfile
 ```
 
 For example, on a standard AWS host, the REMOTE_USER is ec2-user.

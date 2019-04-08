@@ -23,18 +23,14 @@ def generate_geth_cmd(
         f'--networkid {wrkchain_id}',
         f'--syncmode=full',
         f'--verbosity=4',
-        f'--datadir={path_to}/{DEFAULT_WRKCHAIN_DATA_DIR}',
-        f'--identity="{node["title"]}"'
+        f'--datadir={path_to}/{DEFAULT_WRKCHAIN_DATA_DIR}'
     ]
 
-    if docker:
-        wallet_password = f'{path_to}/.walletpassword'
-    else:
-        wallet_password = 'YOUR_WALLET_PASSWORD'
+    wallet_password = f'{path_to}/.walletpassword'
 
     if node['is_validator']:
         flags = flags + [
-            f'--gasprice "0"',
+            f'--gasprice 0',
             f'--etherbase {node["address"]}',
             f'--password {wallet_password}',
             f'--mine',

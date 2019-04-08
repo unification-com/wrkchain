@@ -2,35 +2,35 @@
 # Account imports
 
 - name: create node_keys directory
-  file: path=/home/{{ ansible_user }}/{{ wrkchain_data_dir }}/node_keys state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
+  file: path=/home/deploy/{{ wrkchain_data_dir }}/node_keys state=directory owner=deploy group=deploy recurse=yes
 
 - name: Copy Genesis File
-  copy: src=genesis.json dest=/home/{{ ansible_user }}/{{ wrkchain_data_dir }}/genesis.json owner={{ ansible_user }} group={{ ansible_user }}
+  copy: src=genesis.json dest=/home/deploy/{{ wrkchain_data_dir }}/genesis.json owner=deploy group=deploy
 
 - name: Initialize the genesis file
-  command: /home/{{ ansible_user }}/.go/bin/geth --datadir=/home/{{ ansible_user }}/{{ wrkchain_data_dir }} init /home/{{ ansible_user }}/{{ wrkchain_data_dir }}/genesis.json
+  command: /home/deploy/.go/bin/geth --datadir=/home/deploy/{{ wrkchain_data_dir }} init /home/deploy/{{ wrkchain_data_dir }}/genesis.json
   args:
-    creates: /home/{{ ansible_user }}/{{ wrkchain_data_dir }}/geth/chaindata
+    creates: /home/deploy/{{ wrkchain_data_dir }}/geth/chaindata
 
 - name: Write the privatekey
-  copy: content="{{ private_key }}" dest=/home/{{ ansible_user }}/.privatekey
+  copy: content="{{ private_key }}" dest=/home/deploy/.privatekey
   no_log: true
 
 - name: Write the password file
-  copy: content="{{ password }}" dest=/home/{{ ansible_user }}/.password
+  copy: content="{{ password }}" dest=/home/deploy/.walletpassword
   no_log: true
 
 - name: Import the account
-  command: /home/{{ ansible_user }}/.go/bin/geth --datadir=/home/{{ ansible_user }}/{{ wrkchain_data_dir }} account import --password /home/{{ ansible_user }}/.password /home/{{ ansible_user }}/.privatekey
+  command: /home/deploy/.go/bin/geth --datadir=/home/deploy/{{ wrkchain_data_dir }} account import --password /home/deploy/.walletpassword /home/deploy/.privatekey
 
 - name: Delete the privatekey
   file:
     state: absent
-    path: /home/{{ ansible_user }}/.privatekey
+    path: /home/deploy/.privatekey
 
 - name: Delete the password file
   file:
     state: absent
-    path: /home/{{ ansible_user }}/.password
+    path: /home/deploy/.walletpassword
 
 ...

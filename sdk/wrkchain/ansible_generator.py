@@ -6,8 +6,9 @@ from ansible.parsing.dataloader import DataLoader
 from ansible.parsing.vault import FileVaultSecret, VaultLib
 from jinja2 import DebugUndefined, Environment, FileSystemLoader
 
-from wrkchain.constants import GO_VERSION, WALLET_PASSWORD, PASSWORD_FILE, \
-    DEFAULT_WRKCHAIN_DATA_DIR
+from wrkchain.architectures.debian import generate_geth_cmd
+from wrkchain.constants import (
+    GO_VERSION, WALLET_PASSWORD, PASSWORD_FILE, DEFAULT_WRKCHAIN_DATA_DIR)
 from wrkchain.keys import generate_ssh_keys
 from wrkchain.utils import template_root
 
@@ -146,6 +147,16 @@ def transform_to_node_map(wrkchain_cfg):
     return ret
 
 
+def inject_geth_command(bootnode_config, wrkchain_id, workchain_nodes):
+    for key, validator in workchain_nodes.items():
+        cmd = generate_geth_cmd(
+            validator, bootnode_config, wrkchain_id,
+            validator['docker_listen_port'],
+            gopath='/home/deploy/.go', docker=False, path_to='/home/deploy')
+        validator['geth_command'] = cmd
+    return workchain_nodes
+
+
 def process_custom_roles(template_root, ansible_dir, node_map):
     source = template_root / 'ansible' / 'custom_roles'
 
@@ -154,7 +165,8 @@ def process_custom_roles(template_root, ansible_dir, node_map):
 
         for node, node_d in node_map.items():
             d = {
-                'files/motd': node_d
+                'files/motd': node_d,
+                'templates/geth.service': node_d,
             }
             apply_custom_role(source, ansible_dir, role_name, node, d)
 
@@ -175,28 +187,27 @@ def apply_custom_role(
 def write_keys(build_root: Path, name: str):
     private_key, public_key = generate_ssh_keys()
 
-    target_private = build_root / 'ssh_keys' / f'{name}_root'
+    target_private = build_root / 'ssh_keys' / f'{name}'
     if not target_private.parent.exists():
         target_private.parent.mkdir(parents=True)
 
     target_private.write_bytes(private_key)
+    target_private.chmod(0o600)
 
-    target_public = build_root / 'ssh_keys' / f'{name}_root.pub'
+    target_public = build_root / 'ssh_keys' / f'{name}.pub'
     target_public.write_bytes(public_key)
+    target_public.chmod(0o600)
 
 
-def generate_ansible(build_dir, config):
+def generate_ansible(build_dir, config, configured_bootnode_cfg):
     build_root = Path(build_dir)
 
     ansible_dir = build_root / 'ansible'
 
     wrkchain_cfg = config['wrkchain']
-    bootnode_cfg = wrkchain_cfg['bootnode']
-
-    bootnode = Bootnode(bootnode_cfg)
-    custom_roles = ['bash']
+    bootnode = Bootnode(wrkchain_cfg['bootnode'])
     validator_builder = Validators(
-        build_root, wrkchain_cfg['nodes'], custom_roles)
+        build_root, wrkchain_cfg['nodes'], ['bash', 'services'])
 
     # copy the password file before all else
     password_file = template_root() / 'ansible' / PASSWORD_FILE
@@ -204,7 +215,7 @@ def generate_ansible(build_dir, config):
         ansible_dir.mkdir(parents=True)
 
     # Generate some keys pairs
-    write_keys(build_root, 'id_rsa')
+    write_keys(build_root, 'id_rsa_root')
     write_keys(build_root, 'id_rsa_deploy')
 
     copy(str(password_file), str(ansible_dir / PASSWORD_FILE))
@@ -224,8 +235,12 @@ def generate_ansible(build_dir, config):
         'Vagrantfile': wrkchain_cfg
     }
     template_map(template_root() / 'ansible', ansible_dir, d)
-    process_custom_roles(template_root(), ansible_dir,
-                         transform_to_node_map(wrkchain_cfg))
+
+    network_id = config['wrkchain']['wrkchain_network_id']
+    node_map = transform_to_node_map(wrkchain_cfg)
+    workchain_nodes = inject_geth_command(
+        configured_bootnode_cfg, network_id, node_map)
+    process_custom_roles(template_root(), ansible_dir, workchain_nodes)
 
     # Post Processing
     bootnode.link_bootnode_key(build_root)
@@ -233,7 +248,7 @@ def generate_ansible(build_dir, config):
 
     relative_symlink(
         build_root, 'ssh_keys', 'ansible/roles/base/files/',
-        'id_rsa_deploy_root.pub')
+        'id_rsa_deploy.pub')
 
     relative_symlink(
         build_root, 'ssh_keys', 'ansible/roles/base/files/',
