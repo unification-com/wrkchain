@@ -13,7 +13,7 @@ sdk:
 	$(MAKE) init-prepare
 	@mkdir -p `pwd`/$(BUILD_DIR)
 	docker build -f Docker/sdk/sdk.Dockerfile --build-arg HOST_UID=$(HOST_UID) -t sdk .
-	docker run -v `pwd`/$(BUILD_DIR):/home/sdkuser/build --env HOST_UID=$(HOST_UID) --env HOST_BUILD_DIR=$(BUILD_DIR) sdk
+	docker run -v `pwd`/$(BUILD_DIR):/home/sdkuser/build --env HOST_UID=$(HOST_UID) sdk
 
 test:
 	@cd sdk && py.test tests

@@ -198,9 +198,7 @@ def main():
 @click.argument('config_file')
 @click.argument('build_dir')
 @click.option('--clean', type=bool, default=False)
-@click.option('--host_build_dir', default=None)
-def generate_wrkchain(config_file, build_dir, clean=False,
-                      host_build_dir=None):
+def generate_wrkchain(config_file, build_dir, clean=False):
     log.info(f'Generating environment from: {config_file}')
 
     click.echo(f'Parsing {config_file}, and setting defaults')
@@ -247,11 +245,8 @@ def generate_wrkchain(config_file, build_dir, clean=False,
                                            bootnode_config, build_dir)
     write_documentation(build_dir, documentation)
 
-    info_build_dir = build_dir
-    if host_build_dir:
-        info_build_dir = host_build_dir
-    click.echo(f'Done. Build files located in {info_build_dir}')
-    click.echo(f'See {info_build_dir}/README.md')
+    click.echo(f'Done. Build files located in {build_dir}')
+    click.echo(f'See {build_dir}/README.md')
 
 
 if __name__ == "__main__":
