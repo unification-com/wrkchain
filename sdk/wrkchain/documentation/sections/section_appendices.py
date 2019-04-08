@@ -78,11 +78,17 @@ class SectionAppendices(DocSection):
     def __appendix_5(self):
         md_file = 'sub/appendices/appendix5.md'
         t = self.load_sub_section_template(md_file)
+
+        und_network_flag = ''
+        if self.__network == 'testnet':
+            und_network_flag = '--serenity'
+
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
              '__SUB_SECTION_NUMBER__': self.__sub_section_number,
              '__MAINCHAIN_NETWORK__': self.__network,
-             '__MAINCHAIN_NETWORK_ID__': self.__mainchain_network_id
+             '__MAINCHAIN_NETWORK_ID__': self.__mainchain_network_id,
+             '__UND_NETWORK_FLAG__': und_network_flag
              })
         self.__sub_section_number += 1
         return contents
