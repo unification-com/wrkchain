@@ -407,7 +407,10 @@ class WRKChainConfig:
             "docker_listen_port": GETH_START_PORT + node_num,
             "is_validator": True,
             "write_to_oracle": True,
-            "rpc": {
+            "rpc": False
+        }
+
+        rpc = {
                 "port": RPC_START_PORT + (node_num - 1),
                 "docker_port": RPC_START_PORT + (node_num - 1),
                 "rpccorsdomain": "*",
@@ -426,9 +429,9 @@ class WRKChainConfig:
                     "txpool": False
                 }
             }
-        }
+
         if rpc_only:
-            return node['rpc']
+            return rpc
         else:
             return node
 
