@@ -33,9 +33,19 @@ rm $$HOME/.privatekey
 ```
 
 The `geth account import` command will create a new wallet file in `$$HOME/$__WRKCHAIN_DATA_DIR__`,
-locking it with the value input for `YOUR_WALLET_PASSWORD`. Set a secure password,
-and remember it for the next step. Remember to delete the `.privatekey` file
-from the file system after creating the wallet.
+locking it with the password you input. Set a secure password, and save it to
+`$$HOME/.walletpassword`, which can be done with a simple command line text editor such as
+`nano` or `pico`:
+
+```bash
+nano $$HOME/.walletpassword
+```
+
+Once the account wallet has been created, the `.privatekey` file can be deleted:
+
+```bash
+rm $$HOME/.privatekey
+```
 
 **Running the Node**
 
