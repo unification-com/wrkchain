@@ -203,6 +203,18 @@ def test_parse_config_missing_nodes():
             WRKChainConfig(f)
 
 
+def test_parse_config_validator_and_rpc():
+    from wrkchain.config import WRKChainConfig, InvalidOverrideException
+
+    config_files = fail_examples('node_')
+    assert len(config_files) > 0
+
+    for f in config_files:
+        with pytest.raises(InvalidOverrideException):
+            # should fail - nodes defined as both validator and rpc
+            WRKChainConfig(f)
+
+
 def test_parse_config_missing_mainchain():
     from wrkchain.config import WRKChainConfig, \
         MissingConfigOverrideException

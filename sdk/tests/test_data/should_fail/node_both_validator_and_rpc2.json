@@ -1,0 +1,39 @@
+{
+    "wrkchain": {
+        "title": "Simple Single Node WRKChain",
+        "wrkchain_network_id": "cheese",
+        "nodes": [
+            {
+                "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
+                "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
+                "ip": "127.0.0.1",
+                "is_validator": true,
+                "rpc": {
+                    "port": 8549,
+                    "docker_port": 8547,
+                    "rpccorsdomain": "http://localhost",
+                    "rpcvhosts": "http://127.0.0.1",
+                    "rpcaddr": "127.0.0.1",
+                    "apis": {
+                        "admin": true,
+                        "db": true,
+                        "debug": true,
+                        "eth": true,
+                        "miner": false,
+                        "net": true,
+                        "personal": false,
+                        "shh": false,
+                        "txpool": false,
+                        "web3": true
+                    }
+                }
+            }
+        ],
+        "coin": {
+            "symbol": "SIMP"
+        }
+    },
+    "mainchain": {
+        "network": "testnet"
+    }
+}
