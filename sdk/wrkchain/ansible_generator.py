@@ -98,6 +98,13 @@ class Validators:
         relative_symlink(
             build_root, '/', 'ansible/roles/node/files/', 'genesis.json')
 
+    def link_node_keys(self, build_root):
+        node_keys = build_root / 'node_keys'
+        for key in node_keys.glob('*.key'):
+            relative_symlink(
+                build_root, 'node_keys', 'ansible/roles/node/files/',
+                f'{key.stem}.key')
+
 
 class Bootnode:
     def __init__(self, context):
