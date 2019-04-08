@@ -22,4 +22,12 @@
   become: yes
   become_user: deploy
 
+- copy:
+    src: "{{ node_key }}"
+    dest: /home/deploy/.und_wrkchain/node_keys
+    owner: deploy
+    mode: 644
+  become: yes
+  become_user: deploy
+
 ...
