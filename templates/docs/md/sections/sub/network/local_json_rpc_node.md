@@ -27,7 +27,12 @@ $$GOPATH/bin/geth --datadir=$$HOME/$__WRKCHAIN_DATA_DIR__ init $$HOME/$__WRKCHAI
 Finally, run the node using:
 
 ```bash
-$__GETH_COMMAND__
+$$GOPATH/bin/geth --networkid $__WRKCHAIN_NETWORK_ID__ \
+--rpc \
+--rpcapi "db,eth,net,web3,personal" \
+--rpcport "8550" \
+--syncmode=light \
+--datadir=$$HOME/$__WRKCHAIN_DATA_DIR__
 ```
 
 You will be able to connect (for example, via MetaMask) using the following parameters:

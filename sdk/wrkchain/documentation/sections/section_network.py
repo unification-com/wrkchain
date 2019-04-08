@@ -72,19 +72,11 @@ class SectionNetwork(DocSection):
             copy_static_files = f'2. `{doc_build_dir}/static-nodes.json` to ' \
                 f'`$HOME/{DEFAULT_WRKCHAIN_DATA_DIR}/static-nodes.json`  \n'
 
-        geth_cmd = f'$GOPATH/bin/geth --networkid {self.__wrkchain_id} \\\n' \
-            f'--rpc \\\n' \
-            f'--rpcapi "eth,personal,web3" \\\n' \
-            f'--rpcport "8550" \\\n' \
-            f'--syncmode=light \\\n' \
-            f'--verbosity=4'
-
         d = {
             '__SECTION_NUMBER__': self.__section_number,
             '__SUB_SECTION_NUMBER__': self.__sub_section_number,
             '__BUILD_DIR__': doc_build_dir,
             '__COPY_STATIC_FILES__': copy_static_files,
-            '__GETH_COMMAND__': geth_cmd,
             '__WRKCHAIN_NETWORK_ID__': self.__wrkchain_id,
             '__WRKCHAIN_DATA_DIR__': DEFAULT_WRKCHAIN_DATA_DIR
         }
