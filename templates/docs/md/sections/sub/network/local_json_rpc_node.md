@@ -35,7 +35,8 @@ $$GOPATH/bin/geth --networkid $__WRKCHAIN_NETWORK_ID__ \
 --datadir=$$HOME/$__WRKCHAIN_DATA_DIR__
 ```
 
-You will be able to connect (for example, via MetaMask) using the following parameters:
+You will be able to connect to your WRKChain network (for example, via 
+MetaMask) using the following parameters:
 
 **Web3 Provider URL:** http://localhost:8550  
 **Web3 Provider Host:** localhost  
