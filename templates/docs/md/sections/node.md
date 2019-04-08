@@ -8,7 +8,7 @@
 
 Copy the following files to the host you will be running "**$__NODE_TITLE__**"
 
-1. `$__BUILD_DIR__/genesis.json` to `~/$__WRKCHAIN_DATA_DIR__/genesis.json`
+1. `$__BUILD_DIR__/genesis.json` to `$$HOME/$__WRKCHAIN_DATA_DIR__/genesis.json`
 $__COPY_STATIC_FILES__
 
 **Initialising the Node**
@@ -20,19 +20,19 @@ initialising the genesis block and creating a wallet file:
 
 First, initialise the genesis block:
 ```bash
-$$GOPATH/bin/geth --datadir=~/$__WRKCHAIN_DATA_DIR__ init ~/$__WRKCHAIN_DATA_DIR__/genesis.json
+$$GOPATH/bin/geth --datadir=$$HOME/$__WRKCHAIN_DATA_DIR__ init $$HOME/$__WRKCHAIN_DATA_DIR__/genesis.json
 ```
 
 Next, create a new wallet file:
 ```bash
 echo "Enter the private key for PRIVATE_KEY_FOR_$__EV_PUBLIC_ADDRESS__. CTRL-D to end"
-cp /dev/stdin  ~/.privatekey
+cp /dev/stdin  $$HOME/.privatekey
 
-$$GOPATH/bin/geth --datadir=~/$__WRKCHAIN_DATA_DIR__ account import ~/.privatekey
-rm ~/.privatekey
+$$GOPATH/bin/geth --datadir=$$HOME/$__WRKCHAIN_DATA_DIR__ account import $$HOME/.privatekey
+rm $$HOME/.privatekey
 ```
 
-The `geth account import` command will create a new wallet file in `~/$__WRKCHAIN_DATA_DIR__`,
+The `geth account import` command will create a new wallet file in `$$HOME/$__WRKCHAIN_DATA_DIR__`,
 locking it with the value input for `YOUR_WALLET_PASSWORD`. Set a secure password,
 and remember it for the next step. Remember to delete the `.privatekey` file
 from the file system after creating the wallet.

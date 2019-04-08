@@ -70,7 +70,7 @@ class SectionNetwork(DocSection):
 
         if self.__bootnode_config['type'] == 'static':
             copy_static_files = f'2. `{doc_build_dir}/static-nodes.json` to ' \
-                f'`~/{DEFAULT_WRKCHAIN_DATA_DIR}/static-nodes.json`  \n'
+                f'`$HOME/{DEFAULT_WRKCHAIN_DATA_DIR}/static-nodes.json`  \n'
 
         geth_cmd = f'$GOPATH/bin/geth --networkid {self.__wrkchain_id} \\\n' \
             f'--rpc \\\n' \

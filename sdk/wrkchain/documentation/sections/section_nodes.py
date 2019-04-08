@@ -34,7 +34,7 @@ class SectionNodes(DocSection):
             geth_cmd = generate_geth_cmd(
                 node, self.__bootnode_config, self.__wrkchain_id, listen_port,
                 linebreak=True, gopath='$GOPATH', docker=False,
-                path_to='~')
+                path_to='$HOME')
 
             if node['is_validator']:
                 node_types.append('Validator')

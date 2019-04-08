@@ -26,13 +26,13 @@ Copy the `$__MAINCHAIN_NETWORK__` static nodes:
 _Linux_:
 
 ```bash
-cp $$GOPATH/src/github.com/unification-com/haiku-core/native/mainchain/Docker/validator/bootnode_keys/static-nodes.json ~/.und_mainchain/static-nodes.json
+cp $$GOPATH/src/github.com/unification-com/haiku-core/native/mainchain/Docker/validator/bootnode_keys/static-nodes.json $$HOME/.und_mainchain/static-nodes.json
 ```
 
 _OSX_:
 
 ```bash
-cp $$GOPATH/src/github.com/unification-com/haiku-core/native/mainchain/Docker/validator/bootnode_keys/static-nodes.json ~/Library/UndWRKChain/static-nodes.json
+cp $$GOPATH/src/github.com/unification-com/haiku-core/native/mainchain/Docker/validator/bootnode_keys/static-nodes.json $$HOME/Library/UndWRKChain/static-nodes.json
 ```
 
 **Running**
