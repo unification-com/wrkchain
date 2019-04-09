@@ -22,12 +22,21 @@
   become: yes
   become_user: deploy
 
-- copy:
+- name: copy the appropriate node key up
+  copy:
     src: "{{ node_key }}"
-    dest: /home/deploy/.und_wrkchain/node_keys
+    dest: "/home/deploy/.und_wrkchain/node_keys/{{ node_key }}"
     owner: deploy
+    group: deploy
     mode: 644
   become: yes
-  become_user: deploy
+
+- name: fix the permissions, because the copy command might be buggy
+  file:
+    path: "/home/deploy/.und_wrkchain/node_keys/{{ node_key }}"
+    owner: deploy
+    group: deploy
+    mode: 0644
+  become: yes
 
 ...
