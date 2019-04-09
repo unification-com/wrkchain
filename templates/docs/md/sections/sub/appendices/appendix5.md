@@ -23,8 +23,7 @@ $$GOPATH/bin/und $__UND_NETWORK_FLAG__ \
 --rpcapi "db,eth,net,web3,personal" \
 --rpcport "8551" \
 --syncmode=light \
---verbosity=4 \
---datadir=$$HOME/.und_mainchain
+--verbosity=4
 ```
 
 It should now be possible to interact with the Mainchain `$__MAINCHAIN_NETWORK__`
