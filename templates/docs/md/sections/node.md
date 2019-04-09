@@ -35,7 +35,7 @@ rm $$HOME/.privatekey
 The `geth account import` command will create a new wallet file in `$$HOME/$__WRKCHAIN_DATA_DIR__`,
 locking it with the password you input. Set a secure password, and save it to
 `$$HOME/.walletpassword`, which can be done with a simple command line text editor such as
-`nano` or `pico`:
+`nano` or `vi`:
 
 ```bash
 nano $$HOME/.walletpassword
