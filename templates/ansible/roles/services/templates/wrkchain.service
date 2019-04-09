@@ -1,5 +1,5 @@
 [Unit]
-Description=Go Ethereum Service
+Description=Unification WRKChain Service
 
 [Service]
 User=deploy
