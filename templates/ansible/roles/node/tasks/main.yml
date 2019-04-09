@@ -1,7 +1,8 @@
 ---
 # Node Role
 
-- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/geth
+- name: install go-ethereum geth
+  command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/geth
   args:
     chdir: /home/deploy
     creates: /home/deploy/.go/bin/geth
@@ -16,7 +17,7 @@
   register: st
   become: yes
 
-- name: Import accounts
+- name: import accounts
   include: account.yml
   when: not st.stat.exists
   become: yes
