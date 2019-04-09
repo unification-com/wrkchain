@@ -1,8 +1,9 @@
 ---
-# BASH Helpers
+# Custom BASH Helpers
 
 - name: .bashrc
-  copy: src=.bashrc dest=/home/{{ ansible_user }}/.bashrc owner={{ ansible_user }} group={{ ansible_user }}
+  template: src=.bashrc dest=/home/deploy/.bashrc owner=deploy group=deploy
+  become: yes
 
 - name: motd
   copy: src=motd dest=/etc/motd owner=root group=root
