@@ -11,6 +11,7 @@
     - base
     - ethereum
     - node
+    - services
 {%- for r in optional_roles %}
     - {{ r }}
 {%- endfor %}

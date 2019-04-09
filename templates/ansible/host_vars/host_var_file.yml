@@ -1,4 +1,5 @@
 ---
 # file: host_vars/{{ name }}
+command: {{ command }}
 node_key: {{ address }}.key
 
