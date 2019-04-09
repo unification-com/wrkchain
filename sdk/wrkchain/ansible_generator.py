@@ -96,6 +96,10 @@ class Validators:
 
     def link_genesis(self, build_root):
         relative_symlink(
+            build_root, '/', 'ansible/roles/node/files/', 'static-nodes.json')
+
+    def link_static_nodes(self, build_root):
+        relative_symlink(
             build_root, '/', 'ansible/roles/node/files/', 'genesis.json')
 
     def link_node_keys(self, build_root):
@@ -271,6 +275,7 @@ def generate_ansible(build_dir, config, configured_bootnode_cfg):
     # Post Processing
     bootnode.link_bootnode_key(build_root)
     validator_builder.link_genesis(build_root)
+    validator_builder.link_static_nodes(build_root)
     validator_builder.link_node_keys(build_root)
 
     relative_symlink(
