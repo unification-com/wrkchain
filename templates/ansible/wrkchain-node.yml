@@ -12,6 +12,7 @@
     - ethereum
     - node
     - services
+    - bash
 {%- for r in optional_roles %}
     - {{ r }}
 {%- endfor %}
