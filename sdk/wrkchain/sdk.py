@@ -14,8 +14,8 @@ from wrkchain.config import (
 from wrkchain.documentation.documentation import WRKChainDocumentation
 from wrkchain.genesis import build_genesis
 from wrkchain.mainchain import UndMainchain
-from wrkchain.utils import generate_truffle_env, get_oracle_addresses, \
-    repo_root, write_build_file
+from wrkchain.utils import (
+    generate_truffle_env, get_oracle_addresses, repo_root, write_build_file)
 
 
 log = logging.getLogger(__name__)
