@@ -1,16 +1,16 @@
 ---
-# Custom Services for each Node
+# Services for each Node
 
-- name: install geth service
+- name: install wrkchain service
   template:
-    src: geth.service
-    dest: /etc/systemd/system/geth.service
+    src: wrkchain.service
+    dest: /etc/systemd/system/wrkchain.service
     mode: "0755"
   become: yes
 
 - name: enable systemd services
   systemd:
-    name: geth.service
+    name: wrkchain.service
     enabled: yes
   become: yes
 
@@ -18,30 +18,30 @@
   command: systemctl daemon-reload
   become: yes
 
-- name: Allow user deploy to start geth
+- name: Allow user deploy to start wrkchain
   lineinfile:
     path: /etc/sudoers.d/deploy
-    line: 'deploy ALL=(ALL) NOPASSWD: /usr/bin/systemctl start geth.service'
+    line: 'deploy ALL=(ALL) NOPASSWD: /usr/bin/systemctl start wrkchain.service'
     state: present
     mode: 0440
     create: yes
     validate: 'visudo -cf %s'
   become: yes
 
-- name: Allow user deploy to stop geth
+- name: Allow user deploy to stop wrkchain
   lineinfile:
     path: /etc/sudoers.d/deploy
-    line: 'deploy ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop geth.service'
+    line: 'deploy ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop wrkchain.service'
     state: present
     mode: 0440
     create: yes
     validate: 'visudo -cf %s'
   become: yes
 
-- name: Allow user deploy to restart geth
+- name: Allow user deploy to restart wrkchain
   lineinfile:
     path: /etc/sudoers.d/deploy
-    line: 'deploy ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart geth.service'
+    line: 'deploy ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart wrkchain.service'
     state: present
     mode: 0440
     create: yes

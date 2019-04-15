@@ -1,7 +1,8 @@
 ---
 # Node Role
 
-- command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/geth
+- name: install go-ethereum geth
+  command: /usr/local/go/bin/go install github.com/ethereum/go-ethereum/cmd/geth
   args:
     chdir: /home/deploy
     creates: /home/deploy/.go/bin/geth
@@ -16,10 +17,44 @@
   register: st
   become: yes
 
-- name: Import accounts
+- name: import accounts
   include: account.yml
   when: not st.stat.exists
   become: yes
   become_user: deploy
+
+- name: copy the appropriate node key up
+  copy:
+    src: "{{ node_key }}"
+    dest: "/home/deploy/.und_wrkchain/node_keys/{{ node_key }}"
+    owner: deploy
+    group: deploy
+    mode: 644
+  become: yes
+
+- name: fix the permissions, because the copy command might be buggy
+  file:
+    path: "/home/deploy/.und_wrkchain/node_keys/{{ node_key }}"
+    owner: deploy
+    group: deploy
+    mode: 0644
+  become: yes
+
+- name: copy the static-nodes up
+  copy:
+    src: static-nodes.json
+    dest: /home/deploy/.und_wrkchain/static-nodes.json
+    owner: deploy
+    group: deploy
+    mode: 644
+  become: yes
+
+- name: fix the permissions, because the copy command might be buggy
+  file:
+    path: /home/deploy/.und_wrkchain/static-nodes.json
+    owner: deploy
+    group: deploy
+    mode: 0644
+  become: yes
 
 ...

@@ -1,11 +1,11 @@
 [Unit]
-Description=Go Ethereum Service
+Description=Unification WRKChain Service
 
 [Service]
 User=deploy
 Group=deploy
 WorkingDirectory=/home/deploy
-ExecStart={{ geth_command }}
+ExecStart={{ command }}
 
 [Install]
 WantedBy=default.target

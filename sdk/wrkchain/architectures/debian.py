@@ -34,7 +34,8 @@ def generate_geth_cmd(
             f'--etherbase {node["address"]}',
             f'--password {wallet_password}',
             f'--mine',
-            f'--unlock {node["address"]}'
+            f'--unlock {node["address"]}',
+            f'--nodiscover'
         ]
 
     if node['rpc']:

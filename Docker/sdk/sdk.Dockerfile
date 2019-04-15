@@ -65,8 +65,8 @@ COPY wrkchain.json /home/sdkuser/wrkchain.json
 
 RUN py.test /home/sdkuser/sdk/tests
 
-ENV HOST_BUILD_DIR=""
-
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-CMD ["python", "-m", "wrkchain.sdk", "generate_wrkchain", "/home/sdkuser/wrkchain.json", "/home/sdkuser/build", "--host_build_dir=${HOST_BUILD_DIR}"]
+WORKDIR /home/sdkuser
+
+CMD ["python", "-m", "wrkchain.sdk", "generate_wrkchain", "/home/sdkuser/wrkchain.json", "build"]

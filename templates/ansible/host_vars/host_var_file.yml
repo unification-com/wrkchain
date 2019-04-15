@@ -1,0 +1,6 @@
+---
+# file: host_vars/{{ name }}
+command: {{ command }}
+name: {{ name }}
+node_key: {{ address }}.key
+title: {{ title }}

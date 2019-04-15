@@ -96,7 +96,18 @@ class Validators:
 
     def link_genesis(self, build_root):
         relative_symlink(
+            build_root, '/', 'ansible/roles/node/files/', 'static-nodes.json')
+
+    def link_static_nodes(self, build_root):
+        relative_symlink(
             build_root, '/', 'ansible/roles/node/files/', 'genesis.json')
+
+    def link_node_keys(self, build_root):
+        node_keys = build_root / 'node_keys'
+        for key in node_keys.glob('*.key'):
+            relative_symlink(
+                build_root, 'node_keys', 'ansible/roles/node/files/',
+                f'{key.stem}.key')
 
 
 class Bootnode:
@@ -122,6 +133,8 @@ def template_map(source: Path, target: Path, maps: dict):
 
     for path in [x for x in source.rglob('*') if not x.is_dir()]:
         relative = path.relative_to(source)
+        if str(relative).startswith('host_vars'):
+            continue
         if str(relative).startswith('custom_role'):
             continue
 
@@ -147,13 +160,13 @@ def transform_to_node_map(wrkchain_cfg):
     return ret
 
 
-def inject_geth_command(bootnode_config, wrkchain_id, workchain_nodes):
+def inject_command(bootnode_config, wrkchain_id, workchain_nodes):
     for key, validator in workchain_nodes.items():
         cmd = generate_geth_cmd(
             validator, bootnode_config, wrkchain_id,
-            validator['docker_listen_port'],
+            validator['listen_port'],
             gopath='/home/deploy/.go', docker=False, path_to='/home/deploy')
-        validator['geth_command'] = cmd
+        validator['command'] = cmd
     return workchain_nodes
 
 
@@ -165,8 +178,7 @@ def process_custom_roles(template_root, ansible_dir, node_map):
 
         for node, node_d in node_map.items():
             d = {
-                'files/motd': node_d,
-                'templates/geth.service': node_d,
+                'files/motd': node_d
             }
             apply_custom_role(source, ansible_dir, role_name, node, d)
 
@@ -199,20 +211,45 @@ def write_keys(build_root: Path, name: str):
     target_public.chmod(0o600)
 
 
+def build_host_vars(build_root: Path, t_root: Path, workchain_nodes):
+    host_var_dir = build_root / 'ansible' / 'host_vars'
+    if not host_var_dir.exists():
+        host_var_dir.mkdir(parents=True)
+
+    loader = FileSystemLoader(str(t_root / 'ansible'))
+    environment = Environment(loader=loader, undefined=DebugUndefined)
+    template = environment.get_template('host_vars/host_var_file.yml')
+
+    for key, context in workchain_nodes.items():
+        dest = host_var_dir / f"{context['name']}.yml"
+        dest.write_text(template.render(context))
+
+
 def generate_ansible(build_dir, config, configured_bootnode_cfg):
     build_root = Path(build_dir)
+    templates = template_root()
 
     ansible_dir = build_root / 'ansible'
 
     wrkchain_cfg = config['wrkchain']
     bootnode = Bootnode(wrkchain_cfg['bootnode'])
+
+    # All custom roles removed
+    custom_roles = []
     validator_builder = Validators(
-        build_root, wrkchain_cfg['nodes'], ['bash', 'services'])
+        build_root, wrkchain_cfg['nodes'], custom_roles)
 
     # copy the password file before all else
     password_file = template_root() / 'ansible' / PASSWORD_FILE
     if not ansible_dir.exists():
         ansible_dir.mkdir(parents=True)
+
+    network_id = config['wrkchain']['wrkchain_network_id']
+    node_map = transform_to_node_map(wrkchain_cfg)
+    workchain_nodes = inject_command(
+        configured_bootnode_cfg, network_id, node_map)
+
+    build_host_vars(build_root, templates, workchain_nodes)
 
     # Generate some keys pairs
     write_keys(build_root, 'id_rsa_root')
@@ -221,30 +258,28 @@ def generate_ansible(build_dir, config, configured_bootnode_cfg):
     copy(str(password_file), str(ansible_dir / PASSWORD_FILE))
 
     d = {
-        'roles/ethereum/tasks/main.yml': {'go_version': GO_VERSION,
-                                          'wrkchain_data_dir':
-                                              DEFAULT_WRKCHAIN_DATA_DIR},
-        'roles/node/tasks/account.yml': {'wrkchain_data_dir':
-                                              DEFAULT_WRKCHAIN_DATA_DIR},
-        'roles/node/tasks/main.yml': {'wrkchain_data_dir':
-                                              DEFAULT_WRKCHAIN_DATA_DIR},
-        '/roles/bootnode/tasks/main.yml': {'wrkchain_data_dir':
-                                              DEFAULT_WRKCHAIN_DATA_DIR},
+        'roles/ethereum/tasks/main.yml': {
+            'go_version': GO_VERSION,
+            'wrkchain_data_dir': DEFAULT_WRKCHAIN_DATA_DIR},
+        'roles/node/tasks/account.yml': {
+            'wrkchain_data_dir': DEFAULT_WRKCHAIN_DATA_DIR},
+        'roles/node/tasks/main.yml': {
+            'wrkchain_data_dir': DEFAULT_WRKCHAIN_DATA_DIR},
+        '/roles/bootnode/tasks/main.yml': {
+            'wrkchain_data_dir': DEFAULT_WRKCHAIN_DATA_DIR},
         'wrkchain-bootnode.yml': bootnode,
         'wrkchain-node.yml': validator_builder,
         'Vagrantfile': wrkchain_cfg
     }
-    template_map(template_root() / 'ansible', ansible_dir, d)
+    template_map(templates / 'ansible', ansible_dir, d)
 
-    network_id = config['wrkchain']['wrkchain_network_id']
-    node_map = transform_to_node_map(wrkchain_cfg)
-    workchain_nodes = inject_geth_command(
-        configured_bootnode_cfg, network_id, node_map)
-    process_custom_roles(template_root(), ansible_dir, workchain_nodes)
+    process_custom_roles(templates, ansible_dir, workchain_nodes)
 
     # Post Processing
     bootnode.link_bootnode_key(build_root)
     validator_builder.link_genesis(build_root)
+    validator_builder.link_static_nodes(build_root)
+    validator_builder.link_node_keys(build_root)
 
     relative_symlink(
         build_root, 'ssh_keys', 'ansible/roles/base/files/',

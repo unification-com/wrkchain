@@ -18,12 +18,22 @@ WRKChain:
 ## Configuring a WRKChain
 
 See the [WRKChain SDK Wiki](https://github.com/unification-com/wrkchain/wiki) 
-for full documentation and configuration options
+for full documentation and configuration options.
+
+**Note**: Unless modifications are made to the configuration, there is no need
+to run this SDK more than once. The files generated in the
+`build` directory can be packaged and distributed to all hosts in the
+configuration.
 
 ## Generating a WRKChain
 
 Once the configuration options have been set and saved in a `config.json`, 
 the WRKChain environment can be generated using one of the following methods.
+
+**Note**: Unless modifications are made to the configuration, there is no need
+to run this SDK more than once. The files generated in the
+`build` directory can be packaged and distributed to all hosts in the
+configuration.
 
 ### Docker
 

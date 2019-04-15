@@ -42,12 +42,12 @@
                 "rpc": false
             },
             {
-                "title": "Validator EU & JSON-RPC Node",
+                "title": "JSON-RPC Node EU",
                 "address": "0x46eE44d01531371312c3BeC9198277e3F5474106",
                 "private_key": "d20e5beffa72c117498daf80140c15494c06dcc0fa4c61db7c6fff16572d78d5",
                 "listen_port": 30305,
                 "ip": "100.101.102.103",
-                "is_validator": true,
+                "is_validator": false,
                 "write_to_oracle": false,
                 "rpc": true
             }

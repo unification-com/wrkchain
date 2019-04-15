@@ -14,7 +14,8 @@ from wrkchain.config import (
 from wrkchain.documentation.documentation import WRKChainDocumentation
 from wrkchain.genesis import build_genesis
 from wrkchain.mainchain import UndMainchain
-from wrkchain.utils import get_oracle_addresses, repo_root, write_build_file
+from wrkchain.utils import generate_truffle_env, get_oracle_addresses, \
+    repo_root, write_build_file
 
 
 log = logging.getLogger(__name__)
@@ -67,6 +68,24 @@ def generate_genesis(config):
         pre_funded_accounts=pre_funded_accounts)
 
     return genesis_json, wrkchain_id
+
+def generate_envs(build_dir, config, genesis_json):
+    wrkchain_validators = []
+    nodes = config['wrkchain']['nodes']
+    mainchain_web3_provider = config['mainchain']['web3_provider']
+    mainchain_network_id = config['mainchain']['network_id']
+    wrkchain_network_id = config['wrkchain']['wrkchain_network_id']
+
+    for node in nodes:
+        if node['is_validator']:
+            wrkchain_validators.append(node['address'])
+
+    truffle_env = generate_truffle_env(mainchain_network_id,
+                                       mainchain_web3_provider,
+                         genesis_json, wrkchain_network_id,
+                         wrkchain_validators)
+
+    write_build_file(build_dir + '/truffle.env', truffle_env)
 
 
 def write_genesis(build_dir, genesis_json):
@@ -198,9 +217,7 @@ def main():
 @click.argument('config_file')
 @click.argument('build_dir')
 @click.option('--clean', type=bool, default=False)
-@click.option('--host_build_dir', default=None)
-def generate_wrkchain(config_file, build_dir, clean=False,
-                      host_build_dir=None):
+def generate_wrkchain(config_file, build_dir, clean=False):
     log.info(f'Generating environment from: {config_file}')
 
     click.echo(f'Parsing {config_file}, and setting defaults')
@@ -242,16 +259,16 @@ def generate_wrkchain(config_file, build_dir, clean=False,
     click.echo("Generating Ansible")
     generate_ansible(build_dir, config, bootnode_config)
 
+    click.echo("Generating portable truffle.env")
+    generate_envs(build_dir, config, genesis_json)
+
     click.echo("Generating documentation")
     documentation = generate_documentation(config, genesis_json,
                                            bootnode_config, build_dir)
     write_documentation(build_dir, documentation)
 
-    info_build_dir = build_dir
-    if host_build_dir:
-        info_build_dir = host_build_dir
-    click.echo(f'Done. Build files located in {info_build_dir}')
-    click.echo(f'See {info_build_dir}/README.md')
+    click.echo(f'Done. Build files located in {build_dir}')
+    click.echo(f'See {build_dir}/README.md')
 
 
 if __name__ == "__main__":

@@ -15,18 +15,7 @@ npm install -g truffle
 npm install
 ```
 
-Create a file called `.env` in the `wrkchain-root-contract` directory
-containing the following:
-
-```text
-MAINCHAIN_RPC_HOST=$__MAINCHAIN_RPC_HOST__
-MAINCHAIN_RPC_PORT=$__MAINCHAIN_RPC_PORT__
-MAINCHAIN_NETWORK_ID=$__MAINCHAIN_NETWORK_ID__
-MAINCHAIN_WEB3_PROVIDER_URL=$__MAINCHAIN_WEB3_PROVIDER_URL__
-WRKCHAIN_GENESIS=$__WRKCHAIN_GENESIS__
-WRKCHAIN_NETWORK_ID=$__WRKCHAIN_NETWORK_ID__
-WRKCHAIN_EVS=[$__WRKCHAIN_EVS__]
-```
+Copy `$__BUILD_DIR__/truffle.env` to `PATH/TO/wrkchain-root-contract/.env`
 
 **Configuring HDWalletProvider**
 
@@ -34,17 +23,17 @@ WRKCHAIN_EVS=[$__WRKCHAIN_EVS__]
 not production wallets!**</span>
 
 Modify the `.env` file in the `wrkchain-root-contract` directory
-adding the following:
+with the following:
 
 ```text
-MNEMONIC=CHANGE THIS TO YOUR MNEMONIC FOR ORACLE ADDRESS WALLET!
+PRIVATE_KEY=CHANGE THIS TO THE PRIVATE_KEY FOR ORACLE ADDRESS WALLET
 ```
 
 Then run:
 
 ```bash
 truffle compile
-truffle migrate --network development_mnemonic
+truffle migrate --network und_mainchain
 ```
 
 **Post Deployment**

@@ -13,40 +13,19 @@ go get github.com/unification-com/mainchain
 go install github.com/unification-com/mainchain/cmd/und
 ```
 
-**Initialisation**
-
-Initialise the client with the `$__MAINCHAIN_NETWORK__`'s `genesis` block:
-
-```bash
-und init $$GOPATH/src/github.com/unification-com/haiku-core/native/mainchain/Docker/assets/genesis.json
-```
-
-Copy the `$__MAINCHAIN_NETWORK__` static nodes:
-
-_Linux_:
-
-```bash
-cp $$GOPATH/src/github.com/unification-com/haiku-core/native/mainchain/Docker/validator/bootnode_keys/static-nodes.json ~/.und_mainchain/static-nodes.json
-```
-
-_OSX_:
-
-```bash
-cp $$GOPATH/src/github.com/unification-com/haiku-core/native/mainchain/Docker/validator/bootnode_keys/static-nodes.json ~/Library/UndWRKChain/static-nodes.json
-```
-
 **Running**
 
 Run your local Mainchain JSON RPC Node:
 
 ```bash
-$$GOPATH/bin/und --networkid $__MAINCHAIN_NETWORK_ID__ \
+$$GOPATH/bin/und $__UND_NETWORK_FLAG__ \
 --rpc \
---rpcapi "eth,personal,web3" \
+--rpcapi "db,eth,net,web3,personal" \
 --rpcport "8551" \
 --syncmode=light \
 --verbosity=4
 ```
 
-It should now be possible to connect to the Mainchain `$__MAINCHAIN_NETWORK__`
-via <http://localhost:8551> (for example, using MetaMask)
+It should now be possible to interact with the Mainchain `$__MAINCHAIN_NETWORK__`
+via <http://localhost:8551> (for example, using MetaMask, or MEW to generate
+and send transactions)

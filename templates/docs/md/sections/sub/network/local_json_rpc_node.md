@@ -13,13 +13,13 @@ Follow the instructions to install `geth` on the computer you would like to
 
 Copy the following files to the computer
 
-1. `$__BUILD_DIR__/genesis.json` to `~/$__WRKCHAIN_DATA_DIR__/genesis.json`
+1. `$__BUILD_DIR__/genesis.json` to `$$HOME/$__WRKCHAIN_DATA_DIR__/genesis.json`
 $__COPY_STATIC_FILES__
 
 **Initialise the node**
 
 ```bash
-$$GOPATH/bin/geth --datadir=~/$__WRKCHAIN_DATA_DIR__ init ~/$__WRKCHAIN_DATA_DIR__/genesis.json
+$$GOPATH/bin/geth --datadir=$$HOME/$__WRKCHAIN_DATA_DIR__ init $$HOME/$__WRKCHAIN_DATA_DIR__/genesis.json
 ```
 
 **Running the Node**
@@ -27,10 +27,16 @@ $$GOPATH/bin/geth --datadir=~/$__WRKCHAIN_DATA_DIR__ init ~/$__WRKCHAIN_DATA_DIR
 Finally, run the node using:
 
 ```bash
-$__GETH_COMMAND__
+$$GOPATH/bin/geth --networkid $__WRKCHAIN_NETWORK_ID__ \
+--rpc \
+--rpcapi "db,eth,net,web3,personal" \
+--rpcport "8550" \
+--syncmode=light \
+--datadir=$$HOME/$__WRKCHAIN_DATA_DIR__
 ```
 
-You will be able to connect (for example, via MetaMask) using the following parameters:
+You will be able to connect to your WRKChain network (for example, via 
+MetaMask) using the following parameters:
 
 **Web3 Provider URL:** http://localhost:8550  
 **Web3 Provider Host:** localhost  

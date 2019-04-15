@@ -9,7 +9,7 @@ First, install Go version $__GO_VERSION__:
 ```bash
 wget https://dl.google.com/go/go1.$__GO_VERSION__.linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go1.$__GO_VERSION__.linux-amd64.tar.gz
-mkdir ~/.go
+mkdir $$HOME/.go
 ```
 
 Then set your `GOPATH` and `GOROOT`:
@@ -21,7 +21,7 @@ export PATH=$$PATH:$$GOROOT/bin:$$GOPATH/bin
 ```
 
 **Note:** it's advisable to permanently set these environment variables
- in your shell's `rc`, for example `~/.bashrc`.
+ in your shell's `rc`, for example `$$HOME/.bashrc`.
 
 The latest documentation regarding installing Go can be found here
 <https://golang.org/doc/install>
