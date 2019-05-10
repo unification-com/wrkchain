@@ -1,5 +1,7 @@
 # WRKChain SDK
 
+[![Join the chat at https://gitter.im/unification-com/wrkchain](https://badges.gitter.im/unification-com/wrkchain.svg)](https://gitter.im/unification-com/wrkchain?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 The WRKChain SDK is a set of tools to quickly configure and deploy a WRKChain environment
 
 WRKChains are rooted on Mainchain with their own WRKChainRoot smart contract, and also run their own 
