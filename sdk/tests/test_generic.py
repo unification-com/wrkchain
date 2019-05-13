@@ -40,6 +40,7 @@ test_config = {
   "wrkchain":{
     "title":"Example WRKChain",
     "oracle_write_frequency": 60,
+    "oracle_hashes":"parent,receipt,tx",
     "wrkchain_network_id":6450628417,
     "ledger":{
       "base":"geth",

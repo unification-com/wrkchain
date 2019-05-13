@@ -15,6 +15,7 @@ REQUIRED_MAINCHAIN_OVERRIDES = ['network']
 VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet', 'eth']
 VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
                   'shh', 'txpool', 'web3']
+VALID_ORACLE_HASHES = ['parent', 'receipt', 'tx', 'state']
 VALID_LEDGERS = ['geth']
 VALID_GETH_CONSENSUS = ['clique']
 
@@ -157,11 +158,21 @@ class WRKChainConfig:
                 err = f'Invalid consensus method "{consensus}"'
                 raise InvalidOverrideException(err)
 
+        if dict_key_exists(self.__overrides, 'wrkchain', 'oracle_hashes'):
+            oracle_hashes = self.__overrides['wrkchain']['oracle_hashes']
+            oracle_hashes_list = oracle_hashes.split(",")
+            for oh in oracle_hashes_list:
+                if oh not in VALID_ORACLE_HASHES:
+                    err = f'Invalid Oracle hash type ({oh})'
+                    raise InvalidOverrideException(err)
+
+
     def __load_basic_defaults(self):
         basic_default = {
             'wrkchain': {
                 'title': 'My WRKChain',
                 'oracle_write_frequency': 3600,
+                'oracle_hashes': 'parent,receipt,tx,state',
                 'wrkchain_network_id': False,
                 'ledger': self.__load_default_ledger(),
                 'bootnode': self.__load_default_bootnode(),
@@ -181,6 +192,11 @@ class WRKChainConfig:
         # Title
         if 'title' in wrkchain_overrides:
             self.__config['wrkchain']['title'] = wrkchain_overrides['title']
+
+        # Oracle config
+        if 'oracle_hashes' in wrkchain_overrides:
+            self.__config['wrkchain']['oracle_hashes'] = \
+                wrkchain_overrides['oracle_hashes']
 
         if 'oracle_write_frequency' in wrkchain_overrides:
             self.__config['wrkchain']['oracle_write_frequency'] = \
