@@ -7,11 +7,10 @@ will need to:
 
 1. Install the required node software on each of the hosts that will run
 your WRKChain network 
-2. Fund the public addresses used to write to your WRKChain Root smart 
+2. Fund the public addresses used to write to the WRKChain Root smart 
 contract  
-3. Deploy the WRKCHain Root smart contract   
-4. Run the Nodes  
-5. Run the WRKCHain Oracle software
+3. Run the Nodes  
+4. Run the WRKChain Oracle software
 
 $__UND_JSON_RPC_NOTE__
 

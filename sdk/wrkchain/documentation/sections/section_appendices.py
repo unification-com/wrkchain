@@ -80,15 +80,18 @@ class SectionAppendices(DocSection):
         t = self.load_sub_section_template(md_file)
 
         und_network_flag = ''
+        und_genesis_json = 'und-testnet-50005'
         if self.__network == 'testnet':
-            und_network_flag = '--serenity'
+            und_network_flag = '--und-testnet'
+            und_genesis_json = 'und-testnet-50005'
 
         contents = t.substitute(
             {'__SECTION_NUMBER__': self.__section_number,
              '__SUB_SECTION_NUMBER__': self.__sub_section_number,
              '__MAINCHAIN_NETWORK__': self.__network,
              '__MAINCHAIN_NETWORK_ID__': self.__mainchain_network_id,
-             '__UND_NETWORK_FLAG__': und_network_flag
+             '__UND_NETWORK_FLAG__': und_network_flag,
+             '__UND_GENESIS_JSON__': und_genesis_json
              })
         self.__sub_section_number += 1
         return contents

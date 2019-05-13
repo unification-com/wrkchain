@@ -40,6 +40,7 @@ test_config = {
   "wrkchain":{
     "title":"Example WRKChain",
     "oracle_write_frequency": 60,
+    "oracle_hashes":"parent,receipt,tx",
     "wrkchain_network_id":6450628417,
     "ledger":{
       "base":"geth",
@@ -131,8 +132,8 @@ test_config = {
     "network_id":50005,
     "web3_provider":{
       "type":"http",
-      "uri":"http://52.14.173.249:8101",
-      "host":"52.14.173.249",
+      "uri":"http://67.231.18.141:8101",
+      "host":"67.231.18.141",
       "port":"8101"
     }
   },

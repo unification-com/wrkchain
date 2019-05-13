@@ -11,11 +11,10 @@ docker-compose -f build/docker-compose.yml up --build
 To learn how to interact with Docker, start here <https://www.docker.com> and
 <https://docs.docker.com/compose/>
 
-**Note**: _do not_ run the WRKChain Oracle using the Docker Testnet as a source for
-your deployed **production** WRKChain Root Smart Contract.
+**Note**: The WRKChain Docker test environment's data is not persistent, and 
+should only be used for development and testing purposes.
+
+**Important**: _do not_ run the WRKChain Oracle using the WRKChain's Docker Testnet
+ as a source for **production** WRKChain Root Smart Contract.
 Once a WRKChain block's hashes have been committed to the WRKChain Root Smart 
 Contract by the WRKChain Oracle, they _**cannot be modified**_.
-
-**If testing the WRKChain Oracle is required in addition to testing the WRKChain,
-it is recommended to deploy a separate WRKChain Root smart contract on our 
-`mainchain testnet`.**
