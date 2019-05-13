@@ -489,15 +489,15 @@ class WRKChainConfig:
         if network == 'mainnet':
             web3_provider = {
                 "type": "http",
-                "uri": "http://52.14.173.249:8101",
-                "host": "52.14.173.249",
+                "uri": "http://67.231.18.141:8101",
+                "host": "67.231.18.141",
                 "port": "8101"
             }
         elif network == 'testnet':
             web3_provider = {
                 "type": "http",
-                "uri": "http://52.14.173.249:8101",
-                "host": "52.14.173.249",
+                "uri": "http://67.231.18.141:8101",
+                "host": "67.231.18.141",
                 "port": "8101"
             }
         elif network == 'eth':
@@ -511,8 +511,8 @@ class WRKChainConfig:
             # default to AWS Testnet
             web3_provider = {
                 "type": "http",
-                "uri": "http://52.14.173.249:8101",
-                "host": "52.14.173.249",
+                "uri": "http://67.231.18.141:8101",
+                "host": "67.231.18.141",
                 "port": "8101"
             }
         return web3_provider
