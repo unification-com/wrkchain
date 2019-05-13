@@ -10,7 +10,7 @@ your WRKChain network
 2. Fund the public addresses used to write to the WRKChain Root smart 
 contract  
 3. Run the Nodes  
-4. Run the WRKCHain Oracle software
+4. Run the WRKChain Oracle software
 
 $__UND_JSON_RPC_NOTE__
 
