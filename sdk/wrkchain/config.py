@@ -12,7 +12,7 @@ REQUIRED_OVERRIDES = ['wrkchain', 'mainchain']
 REQUIRED_WRKCHAIN_OVERRIDES = ['nodes']
 REQUIRED_WRKCHAIN_NODE_OVERRIDES = ['address', 'ip']
 REQUIRED_MAINCHAIN_OVERRIDES = ['network']
-VALID_MAINCHAIN_NETWORKS = ['testnet', 'mainnet', 'eth']
+VALID_MAINCHAIN_NETWORKS = ['testnet']  # ['testnet', 'mainnet', 'eth']
 VALID_RPC_APIS = ['admin', 'db', 'debug', 'eth', 'miner', 'net', 'personal',
                   'shh', 'txpool', 'web3']
 VALID_ORACLE_HASHES = ['parent', 'receipt', 'tx', 'state']
