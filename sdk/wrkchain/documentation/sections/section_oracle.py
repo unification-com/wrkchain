@@ -21,6 +21,7 @@ class SectionOracle(DocSection):
     def generate(self):
         default_wrkchain_web3_provider = '[YOUR_WRKCHAIN_JSON_RPC_URL]'
         web3_providers = []
+        no_json_rpc_note = ''
 
         for node in self.__nodes:
             if node['rpc']:
@@ -32,6 +33,13 @@ class SectionOracle(DocSection):
 
         if web3_providers:
             default_wrkchain_web3_provider = web3_providers[0]
+        else:
+            no_json_rpc_note = '**Note**: No JSON RPC Node has been ' \
+                               'configured. See section "Running a local' \
+                               ' WRKChain JSON RPC Node" for instructions on' \
+                               ' how to run a JSON RPC Node for your ' \
+                               'WRKChain, and replace ' \
+                               '`[YOUR_WRKCHAIN_JSON_RPC_URL]` with the URL'
 
         if self.__network == 'eth':
             network_title = 'Ethereum mainnet'
@@ -54,7 +62,8 @@ class SectionOracle(DocSection):
             '__ORACLE_DATA_DIR__': '.wrkchain_oracle',
             '__MAIN_ORACLE_ADDRESS__': self.__oracle_addresses[0],
             '__ORACLE_ADDRESSES_CMD__': ','.join(self.__oracle_addresses),
-            '__ORACLE_HASHES__': oracle_hashes.rstrip('\n')
+            '__ORACLE_HASHES__': oracle_hashes.rstrip('\n'),
+            '__NO_JSON_RPC_NOTE__': no_json_rpc_note
 
         }
         self.add_content(d, append=False)

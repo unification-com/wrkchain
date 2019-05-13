@@ -65,4 +65,6 @@ $__ORACLE_HASHES__
   --freq $__ORACLE_WRITE_FREQUENCY__
 ```
 
-For more information on flags and configuration, see https://github.com/unification-com/oracle
+For more information on flags and configuration, see <https://github.com/unification-com/oracle>
+
+$__NO_JSON_RPC_NOTE__
