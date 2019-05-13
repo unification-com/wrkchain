@@ -413,7 +413,7 @@ class WRKChainConfig:
         subnet = self.__get_docker_subnet()
 
         node = {
-            "title": f'Validator & JSON RPC {node_num}',
+            "title": f'Node {node_num}',
             "name": f'wrkchain-node-{node_num}',
             "address": "",
             "private_key": "",
