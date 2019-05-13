@@ -28,4 +28,12 @@
     creates: /home/{{ ansible_user }}/.go/src/github.com/unification-com/oracle
   become_user: deploy
 
+- name: install the oracle
+  command: /usr/local/go/bin/go install github.com/unification-com/oracle/cmd/wrkoracle
+  args:
+    creates: /home/{{ ansible_user }}/.go/bin/wrkoracle
+  environment:
+    GOPATH: /home/{{ ansible_user }}/.go
+  become_user: deploy
+
 ...
