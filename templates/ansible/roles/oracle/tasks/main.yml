@@ -5,6 +5,22 @@
   file: path=/home/{{ ansible_user }}/.go/src/github.com/unification-com state=directory owner={{ ansible_user }} group={{ ansible_user }} recurse=yes
   become_user: deploy
 
+- name: get the cli helper
+  command: /usr/local/go/bin/go get gopkg.in/urfave/cli.v1
+  args:
+    chdir: /home/{{ ansible_user }}/.go/src/github.com/unification-com
+    creates: /home/{{ ansible_user }}/.go/src/gopkg.in/urfave/cli.v1
+  environment:
+    GOPATH: /home/{{ ansible_user }}/.go
+  become_user: deploy
+
+- name: clone the mainchain
+  command: git clone https://github.com/unification-com/mainchain --depth 1
+  args:
+    chdir: /home/{{ ansible_user }}/.go/src/github.com/unification-com
+    creates: /home/{{ ansible_user }}/.go/src/github.com/unification-com/mainchain
+  become_user: deploy
+
 - name: clone the orcale
   command: git clone https://github.com/unification-com/oracle --depth 1
   args:
