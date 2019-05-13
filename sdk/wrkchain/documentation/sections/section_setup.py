@@ -55,10 +55,11 @@ class SectionSetup(DocSection):
         return fund_content
 
     def __fund_testnet(self, t):
-        faucet_urls = ''
-        for address in self.__oracle_addresses:
-            faucet_urls += f'<{constants.TESTNET_FAUCET_URL}{address}>  \n'
-        fund_content = t.substitute({'__FAUCET_URLS___': faucet_urls})
+        d = {
+            '__ORACLE_ADDRESSES__': '\n'.join(self.__oracle_addresses),
+            '__FAUCET_URL___': constants.TESTNET_FAUCET_URL
+        }
+        fund_content = t.substitute(d)
 
         return fund_content
 
