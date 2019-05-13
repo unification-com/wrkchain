@@ -27,7 +27,6 @@ class SectionSetup(DocSection):
     def generate(self):
         d = {
             '__FUND_ORACLE_ADDRESSES__': self.__fund(),
-            '__DEPLOY_WRKCHAIN_ROOT_CONTRACT__': self.__deply_contract(),
             '__MAINCHAIN_NETWORK__': self.__network_title()
         }
         self.add_content(d, append=False)
