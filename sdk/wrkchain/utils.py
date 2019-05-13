@@ -100,21 +100,3 @@ def dict_key_exists(element, *keys):
         except KeyError:
             return False
     return True
-
-
-def generate_truffle_env(mainchain_network_id, mainchain_web3_provider,
-                         wrkchain_genesis, wrkchain_network_id,
-                         wrkchain_validators):
-
-    wrkchain_evs = ', '.join('"{0}"'.format(w) for w in wrkchain_validators)
-
-    env_contents = f'MAINCHAIN_RPC_HOST={mainchain_web3_provider["host"]}\n' \
-                   f'MAINCHAIN_RPC_PORT={mainchain_web3_provider["port"]}\n' \
-                   f'MAINCHAIN_NETWORK_ID={mainchain_network_id}\n' \
-                   f'MAINCHAIN_WEB3_PROVIDER_URL={mainchain_web3_provider["uri"]}\n' \
-                   f'WRKCHAIN_GENESIS={wrkchain_genesis}\n' \
-                   f'WRKCHAIN_NETWORK_ID={wrkchain_network_id}\n' \
-                   f'WRKCHAIN_EVS=[{wrkchain_evs}]\n' \
-                   f'PRIVATE_KEY=\n'
-
-    return env_contents

@@ -52,6 +52,8 @@ wrkoracle register --password $$HOME/.und_mainchain/.password \
   --mainchain.rpc "$__MAINCHAIN_WEB3_PROVIDER_URL__"
 ```
 
+**Note**: The `register` command only needs to be run once.
+
 ### Recording WRKChain header hashes with the `record` command
 
 ```bash
@@ -59,11 +61,8 @@ wrkoracle record --password $$HOME/.und_mainchain/.password \
   --account $__MAIN_ORACLE_ADDRESS__ \
   --mainchain.rpc "$__MAINCHAIN_WEB3_PROVIDER_URL__" \
   --wrkchain.rpc "$__WRKCHAIN_WEB3_PROVIDER_URL__" \
-  --hash.parent \
-  --hash.receipt \
-  --hash.tx \
-  --hash.state \
-  --freq 60
+$__ORACLE_HASHES__
+  --freq $__ORACLE_WRITE_FREQUENCY__
 ```
 
 For more information on flags and configuration, see https://github.com/unification-com/oracle
