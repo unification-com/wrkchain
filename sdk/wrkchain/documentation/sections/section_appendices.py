@@ -82,7 +82,7 @@ class SectionAppendices(DocSection):
         und_network_flag = ''
         und_genesis_json = 'und-testnet-50005'
         if self.__network == 'testnet':
-            und_network_flag = '--und-testnet'
+            und_network_flag = '--und-testnet \\\n  --networkid 50005'
             und_genesis_json = 'und-testnet-50005'
 
         contents = t.substitute(
