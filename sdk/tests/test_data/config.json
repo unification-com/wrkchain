@@ -67,9 +67,9 @@
         "network_id": 50005,
         "web3_provider": {
             "type": "http",
-            "uri": "http://67.231.18.141:8101",
-            "host": "67.231.18.141",
-            "port": "8101"
+            "uri":"https://rpc-testnet.unification.io",
+            "host":"rpc-testnet.unification.io",
+            "port":"443"
         }
     }
 }
