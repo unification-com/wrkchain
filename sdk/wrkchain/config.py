@@ -489,16 +489,16 @@ class WRKChainConfig:
         if network == 'mainnet':
             web3_provider = {
                 "type": "http",
-                "uri": "http://67.231.18.141:8101",
-                "host": "67.231.18.141",
-                "port": "8101"
+                "uri": "https://rpc-testnet.unification.io",
+                "host": "rpc-testnet.unification.io",
+                "port": "443"
             }
         elif network == 'testnet':
             web3_provider = {
                 "type": "http",
-                "uri": "http://67.231.18.141:8101",
-                "host": "67.231.18.141",
-                "port": "8101"
+                "uri": "https://rpc-testnet.unification.io",
+                "host": "rpc-testnet.unification.io",
+                "port": "443"
             }
         elif network == 'eth':
             web3_provider = {
@@ -511,9 +511,9 @@ class WRKChainConfig:
             # default to AWS Testnet
             web3_provider = {
                 "type": "http",
-                "uri": "http://67.231.18.141:8101",
-                "host": "67.231.18.141",
-                "port": "8101"
+                "uri": "https://rpc-testnet.unification.io",
+                "host": "rpc-testnet.unification.io",
+                "port": "443"
             }
         return web3_provider
 
