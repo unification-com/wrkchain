@@ -48,8 +48,7 @@ ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 ENV PYTHONPATH /home/sdkuser/sdk
 
-RUN pip install -r requirements.txt && \
-    git clone https://github.com/unification-com/wrkchain-root-contract.git --depth 1
+RUN pip install -r requirements.txt
 
 COPY sdk /home/sdkuser/sdk
 COPY templates /home/sdkuser/templates
