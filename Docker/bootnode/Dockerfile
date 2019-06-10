@@ -13,8 +13,8 @@ WORKDIR "/root"
 ARG GO_VERSION
 ARG WRKCHAIN_DATA_DIR
 
-RUN wget https://dl.google.com/go/go1.$GO_VERSION.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.$GO_VERSION.linux-amd64.tar.gz && \
+RUN wget https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz && \
     mkdir ~/.go
 
 ENV GOPATH="/root/.go"

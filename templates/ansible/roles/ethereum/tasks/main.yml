@@ -11,7 +11,7 @@
 
 - name: Download and unpack Go
   unarchive:
-    src: https://dl.google.com/go/go1.{{ go_version }}.linux-amd64.tar.gz
+    src: https://dl.google.com/go/go{{ go_version }}.linux-amd64.tar.gz
     dest: /usr/local
     remote_src: yes
     creates: /usr/local/go
