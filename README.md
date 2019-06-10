@@ -70,7 +70,10 @@ go-ethereum's `bootnode` CMD, which can be installed as follows:
 2. `go get github.com/ethereum/go-ethereum`
 3. `go install github.com/ethereum/go-ethereum/cmd/bootnode`
 
-Then, install the Python requirements:
+It is also dependant on Pandoc, which is available via many package managers
+<https://pandoc.org/installing.html> 
+
+Finally, install the Python requirements:
 
 ```bash
 pip install -r requirements.txt
