@@ -1,4 +1,4 @@
-ansible==2.7.10
+ansible==2.10.0
 click==6.7
 cryptography==2.6.1
 docker-compose==1.24.0rc1
